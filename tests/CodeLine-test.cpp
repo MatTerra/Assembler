@@ -3,6 +3,7 @@
 //
 #include "gtest/gtest.h"
 #include "codeline.h"
+#include <string>
 
 TEST(CodeLine, may_instantiate_codeline){
     auto *cl = new CodeLine(";blank line");
@@ -72,4 +73,48 @@ TEST(CodeLine_Operation, should_get_operation){
 TEST(CodeLine_Operation, operation_should_be_empty_if_none){
     auto *cl = new CodeLine("label:     ; Comment");
     ASSERT_EQ("", cl->getOperation());
+}
+
+TEST(CodeLine_Operation, operation_should_be_empty_if_none_no_spaces){
+    auto *cl = new CodeLine("label:; Comment");
+    ASSERT_EQ("", cl->getOperation());
+}
+
+TEST(CodeLine_Operand, should_get_operands){
+    auto *cl = new CodeLine("label:     add  8 ; Comment");
+    auto result = std::vector<std::string>();
+    result.insert(result.cend(), "8");
+    ASSERT_EQ(result, cl->getOperands());
+}
+
+TEST(CodeLine_Operand, should_get_multiple_operands){
+    auto *cl = new CodeLine("label:     copy  8     ,    7 ; Comment");
+    auto result = std::vector<std::string>();
+    result.insert(result.cend(), "8");
+    result.insert(result.cend(), "7");
+    ASSERT_EQ(result, cl->getOperands());
+}
+
+TEST(CodeLine_Operand, should_get_multiple_operands_good_format){
+    auto *cl = new CodeLine("label:     copy 8, 7 ; Comment");
+    auto result = std::vector<std::string>();
+    result.insert(result.cend(), "8");
+    result.insert(result.cend(), "7");
+    ASSERT_EQ(result, cl->getOperands());
+}
+
+TEST(CodeLine_Operand, should_have_operands){
+    auto *cl = new CodeLine("label:     copy 8, 7 ; Comment");
+    ASSERT_TRUE(cl->hasOperands());
+}
+
+TEST(CodeLine_Operand, should_be_empty_if_no_operands){
+    auto *cl = new CodeLine("end:     stop ; final");
+    auto result = std::vector<std::string>();
+    ASSERT_EQ(result, cl->getOperands());
+}
+
+TEST(CodeLine_Operand, shouldnt_have_operands_if_no_operands){
+    auto *cl = new CodeLine("end:     stop ; final");
+    ASSERT_FALSE(cl->hasOperands());
 }
