@@ -4,11 +4,9 @@
 #ifndef MONTADOR_CODELINE_H
 #define MONTADOR_CODELINE_H
 
-static const char *const whitespaces = " \t\r\f\v";
-
 #include <string>
 #include <utility>
-#include "stringutils.cpp"
+#include "stringutils.h"
 
 
 class CodeLine {
