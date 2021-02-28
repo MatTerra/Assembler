@@ -35,8 +35,8 @@ void CodeLine::extractComment() {
 }
 
 void CodeLine::extractRawOperation(){
-    size_t labelEnd = rawLine.find(":") + 1;
-    size_t commentStart = rawLine.find(";");
+    size_t labelEnd = rawLine.find(':') + 1;
+    size_t commentStart = rawLine.find(';');
 
     rawOperation = rawLine.substr(labelEnd, commentStart - labelEnd);
     trim(rawOperation);
