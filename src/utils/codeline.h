@@ -16,10 +16,11 @@ public:
     bool hasComment();
     bool hasOperation();
     bool hasOperands(){ return !operands.empty(); };
-    std::string getRawLine(){ return rawLine; };
+    bool operator==(CodeLine other) const;
+    std::string getRawLine() const { return rawLine; } ;
     std::string getLabel(){ return label; };
     std::string getComment(){ return comment; };
-    std::string getOperation(){ return operation; };
+    std::string getOperationMnemonic(){ return operation; };
     std::vector<std::string> getOperands(){ return operands; };
 
 private:
@@ -32,7 +33,7 @@ private:
 
     void extractLabel();
     void extractComment();
-    void extractOperation();
+    void extractOperationMnemonic();
     void extractRawOperation();
     void extractOperands();
 };

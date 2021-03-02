@@ -12,7 +12,7 @@ CodeLine::CodeLine(std::string line) :rawLine(std::move(line)){
         extractComment();
     extractRawOperation();
     if (hasOperation()){
-        extractOperation();
+        extractOperationMnemonic();
         extractOperands();
     }
 }
@@ -46,7 +46,7 @@ bool CodeLine::hasOperation() {
     return rawOperation.length() > 0;
 }
 
-void CodeLine::extractOperation() {
+void CodeLine::extractOperationMnemonic() {
     operation = rawOperation.substr(0,
                                     rawOperation.find_first_of(whitespaces));
 }
@@ -59,10 +59,14 @@ void CodeLine::extractOperands() {
     size_t initPos = 0;
     while (initPos != std::string::npos){
         auto nextPos = rawOperands.find(',', initPos+1);
-        auto operand = rawOperands.substr(initPos+1, nextPos-1);
+        auto operand = rawOperands.substr(initPos+1, (nextPos-1)-initPos);
         trim(operand);
         initPos = nextPos;
         operands.insert(operands.cend(), operand);
     }
+}
+
+bool CodeLine::operator==(const CodeLine other) const {
+    return getRawLine() == other.getRawLine();
 }
 

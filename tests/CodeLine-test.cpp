@@ -67,17 +67,17 @@ TEST(CodeLine_Operation, shouldnt_have_operation){
 
 TEST(CodeLine_Operation, should_get_operation){
     auto *cl = new CodeLine("label:     add  8 ; Comment");
-    ASSERT_EQ("add", cl->getOperation());
+    ASSERT_EQ("add", cl->getOperationMnemonic());
 }
 
 TEST(CodeLine_Operation, operation_should_be_empty_if_none){
     auto *cl = new CodeLine("label:     ; Comment");
-    ASSERT_EQ("", cl->getOperation());
+    ASSERT_EQ("", cl->getOperationMnemonic());
 }
 
 TEST(CodeLine_Operation, operation_should_be_empty_if_none_no_spaces){
     auto *cl = new CodeLine("label:; Comment");
-    ASSERT_EQ("", cl->getOperation());
+    ASSERT_EQ("", cl->getOperationMnemonic());
 }
 
 TEST(CodeLine_Operand, should_get_operands){
@@ -117,4 +117,10 @@ TEST(CodeLine_Operand, should_be_empty_if_no_operands){
 TEST(CodeLine_Operand, shouldnt_have_operands_if_no_operands){
     auto *cl = new CodeLine("end:     stop ; final");
     ASSERT_FALSE(cl->hasOperands());
+}
+
+TEST(CodeLine_equals, should_be_equal_if_raw_equals){
+    auto cl = CodeLine("end:     stop ; final");
+    auto cl2 = CodeLine("end:     stop ; final");
+    ASSERT_TRUE(cl==cl2);
 }

@@ -14,7 +14,7 @@ SymbolTable *SymbolTable::getInstance() {
     return instance;
 }
 
-uint16_t SymbolTable::getSymbolCount() {
+size_t SymbolTable::getSymbolCount() {
     return symbolTable.size();
 }
 
