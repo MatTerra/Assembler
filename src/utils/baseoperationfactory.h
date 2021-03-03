@@ -8,10 +8,13 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
 #include "operations/muloperation.h"
+#include "operations/divoperation.h"
+#include "operations/jmpoperation.h"
 
 template <typename T>
 class BaseFactory {
@@ -25,7 +28,10 @@ public:
                 " type because doesn'T derive from base class");
         _createFuncs[name] = &createFunc<TDerived>;
     }
+
     T* create(std::string name, std::vector<uint16_t> operands) {
+        std::transform(name.begin(), name.end(), name.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
         if (_createFuncs.find(name) != _createFuncs.end()) {
             return _createFuncs[name](operands);
         }
@@ -49,6 +55,8 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<AddOperation>("add");
     operFactory->registerType<SubOperation>("sub");
     operFactory->registerType<MulOperation>("mul");
+    operFactory->registerType<DivOperation>("div");
+    operFactory->registerType<JmpOperation>("jmp");
     return operFactory;
 }
 

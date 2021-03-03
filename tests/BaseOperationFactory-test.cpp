@@ -27,6 +27,15 @@ TEST(BaseOperationFactory_Add, create_add_should_return_add_operation){
     ASSERT_EQ(1, addOperation->getOpCode());
 }
 
+TEST(BaseOperationFactory_Add, create_should_find_if_capital){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto addOperation = operationFactory->create("ADD", operands);
+    ASSERT_TRUE(addOperation != nullptr);
+    ASSERT_EQ("add", addOperation->getOperation());
+    ASSERT_EQ(1, addOperation->getOpCode());
+}
+
 TEST(BaseOperationFactory_Sub, create_sub_should_return_sub_operation){
     std::vector<uint16_t> operands;
     auto operationFactory = getBaseOperationFactory();
@@ -39,8 +48,26 @@ TEST(BaseOperationFactory_Sub, create_sub_should_return_sub_operation){
 TEST(BaseOperationFactory_Mul, create_mul_should_return_mul_operation){
     std::vector<uint16_t> operands;
     auto operationFactory = getBaseOperationFactory();
-    auto mulOperation = operationFactory->create("mul", operands);
+    auto mulOperation = operationFactory->create("MuL", operands);
     ASSERT_TRUE(mulOperation != nullptr);
     ASSERT_EQ("mul", mulOperation->getOperation());
     ASSERT_EQ(3, mulOperation->getOpCode());
+}
+
+TEST(BaseOperationFactory_Div, create_div_should_return_div_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto divOperation = operationFactory->create("Div", operands);
+    ASSERT_TRUE(divOperation != nullptr);
+    ASSERT_EQ("div", divOperation->getOperation());
+    ASSERT_EQ(4, divOperation->getOpCode());
+}
+
+TEST(BaseOperationFactory_Jmp, create_jmp_should_return_jmp_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto divOperation = operationFactory->create("jmp", operands);
+    ASSERT_TRUE(divOperation != nullptr);
+    ASSERT_EQ("jmp", divOperation->getOperation());
+    ASSERT_EQ(5, divOperation->getOpCode());
 }

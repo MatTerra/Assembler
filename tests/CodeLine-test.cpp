@@ -103,6 +103,14 @@ TEST(CodeLine_Operand, should_get_multiple_operands_good_format){
     ASSERT_EQ(result, cl->getOperands());
 }
 
+TEST(CodeLine_Operand, should_get_multiple_operands_no_space_after_comma){
+    auto *cl = new CodeLine(" copy 8,7");
+    auto result = std::vector<std::string>();
+    result.insert(result.cend(), "8");
+    result.insert(result.cend(), "7");
+    ASSERT_EQ(result, cl->getOperands());
+}
+
 TEST(CodeLine_Operand, should_have_operands){
     auto *cl = new CodeLine("label:     copy 8, 7 ; Comment");
     ASSERT_TRUE(cl->hasOperands());
