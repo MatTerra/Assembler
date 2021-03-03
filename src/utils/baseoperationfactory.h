@@ -10,6 +10,7 @@
 #include <vector>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
+#include "operations/suboperation.h"
 
 template <typename T>
 class BaseFactory {
@@ -45,6 +46,7 @@ private:
 static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     auto *operFactory = new BaseFactory<BaseOperation>();
     operFactory->registerType<AddOperation>("add");
+    operFactory->registerType<SubOperation>("sub");
     return operFactory;
 }
 
