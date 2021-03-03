@@ -107,3 +107,12 @@ TEST(BaseOperationFactory_Copy, create_copy_should_return_copy_operation){
     ASSERT_EQ("copy", copyOperation->getOperation());
     ASSERT_EQ(9, copyOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Load, create_load_should_return_load_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto loadOperation = operationFactory->create("load", operands);
+    ASSERT_TRUE(loadOperation != nullptr);
+    ASSERT_EQ("load", loadOperation->getOperation());
+    ASSERT_EQ(10, loadOperation->getOpCode());
+}

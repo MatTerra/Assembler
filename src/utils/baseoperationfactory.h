@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <operations/loadoperation.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -65,6 +66,7 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<JmppOperation>("jmpp");
     operFactory->registerType<JmpzOperation>("jmpz");
     operFactory->registerType<CopyOperation>("copy");
+    operFactory->registerType<LoadOperation>("load");
     return operFactory;
 }
 
