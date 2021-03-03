@@ -11,6 +11,7 @@
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
+#include "operations/muloperation.h"
 
 template <typename T>
 class BaseFactory {
@@ -47,6 +48,7 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     auto *operFactory = new BaseFactory<BaseOperation>();
     operFactory->registerType<AddOperation>("add");
     operFactory->registerType<SubOperation>("sub");
+    operFactory->registerType<MulOperation>("mul");
     return operFactory;
 }
 

@@ -26,3 +26,21 @@ TEST(BaseOperationFactory_Add, create_add_should_return_add_operation){
     ASSERT_EQ("add", addOperation->getOperation());
     ASSERT_EQ(1, addOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Sub, create_sub_should_return_sub_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto subOperation = operationFactory->create("sub", operands);
+    ASSERT_TRUE(subOperation != nullptr);
+    ASSERT_EQ("sub", subOperation->getOperation());
+    ASSERT_EQ(2, subOperation->getOpCode());
+}
+
+TEST(BaseOperationFactory_Mul, create_mul_should_return_mul_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto mulOperation = operationFactory->create("mul", operands);
+    ASSERT_TRUE(mulOperation != nullptr);
+    ASSERT_EQ("mul", mulOperation->getOperation());
+    ASSERT_EQ(3, mulOperation->getOpCode());
+}

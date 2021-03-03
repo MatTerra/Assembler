@@ -21,7 +21,7 @@ TEST(SubOperation, name_should_be_sub){
     ASSERT_EQ("sub", sub->getOperation());
 }
 
-TEST(SubOperation, subress_size_should_be_2){
+TEST(SubOperation, address_size_should_be_2){
     std::vector<uint16_t> operands;
     operands.insert(operands.cend(), 1);
     BaseOperation *sub = new SubOperation(operands);
