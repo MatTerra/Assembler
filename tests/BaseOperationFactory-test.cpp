@@ -71,3 +71,12 @@ TEST(BaseOperationFactory_Jmp, create_jmp_should_return_jmp_operation){
     ASSERT_EQ("jmp", divOperation->getOperation());
     ASSERT_EQ(5, divOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Jmpn, create_jmpn_should_return_jmpn_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto divOperation = operationFactory->create("jmpn", operands);
+    ASSERT_TRUE(divOperation != nullptr);
+    ASSERT_EQ("jmpn", divOperation->getOperation());
+    ASSERT_EQ(6, divOperation->getOpCode());
+}
