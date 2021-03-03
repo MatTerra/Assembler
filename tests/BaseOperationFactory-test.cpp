@@ -116,3 +116,12 @@ TEST(BaseOperationFactory_Load, create_load_should_return_load_operation){
     ASSERT_EQ("load", loadOperation->getOperation());
     ASSERT_EQ(10, loadOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Store, create_store_should_return_store_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto storeOperation = operationFactory->create("store", operands);
+    ASSERT_TRUE(storeOperation != nullptr);
+    ASSERT_EQ("store", storeOperation->getOperation());
+    ASSERT_EQ(11, storeOperation->getOpCode());
+}
