@@ -98,3 +98,12 @@ TEST(BaseOperationFactory_Jmpz, create_jmpz_should_return_jmpz_operation){
     ASSERT_EQ("jmpz", jmpzOperation->getOperation());
     ASSERT_EQ(8, jmpzOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Copy, create_copy_should_return_copy_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto copyOperation = operationFactory->create("copy", operands);
+    ASSERT_TRUE(copyOperation != nullptr);
+    ASSERT_EQ("copy", copyOperation->getOperation());
+    ASSERT_EQ(9, copyOperation->getOpCode());
+}
