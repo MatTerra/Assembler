@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 #include "stringutils.h"
+#include "baseoperation.h"
 
 
 class CodeLine {
@@ -20,14 +21,15 @@ public:
     std::string getRawLine() const { return rawLine; } ;
     std::string getLabel(){ return label; };
     std::string getComment(){ return comment; };
-    std::string getOperationMnemonic(){ return operation; };
+    std::string getOperationMnemonic(){ return operationMnemonic; };
     std::vector<std::string> getOperands(){ return operands; };
 
 private:
     std::string rawLine;
     std::string label;
     std::string rawOperation;
-    std::string operation;
+    std::string operationMnemonic;
+    BaseOperation *operation;
     std::vector<std::string> operands;
     std::string comment;
 

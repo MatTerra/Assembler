@@ -40,6 +40,20 @@ TEST(CodeLine_Label, should_remove_whitespaces_before_label){
     ASSERT_EQ("label", cl->getLabel());
 }
 
+TEST(CodeLine_Label, should_get_first_label){
+    auto *cl = new CodeLine("label:label2: add 8 ; just a comment ;;");
+    ASSERT_EQ("label", cl->getLabel());
+}
+
+TEST(CodeLine_Label, should_get_correct_mnemonic){
+    auto *cl = new CodeLine("label:label2: add 8 ; just a comment ;;");
+    ASSERT_EQ("add", cl->getOperationMnemonic());
+}
+TEST(CodeLine_Label, should_get_correct_mnemonic_with_colon_on_comment){
+    auto *cl = new CodeLine("label:label2: add 8 ; just a comment: to make it fail ;;");
+    ASSERT_EQ("add", cl->getOperationMnemonic());
+}
+
 TEST(CodeLine_Comment, should_have_comment){
     auto *cl = new CodeLine("; Just a comment");
     ASSERT_TRUE(cl->hasComment());

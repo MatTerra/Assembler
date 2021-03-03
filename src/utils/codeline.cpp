@@ -31,11 +31,11 @@ bool CodeLine::hasComment() {
 }
 
 void CodeLine::extractComment() {
-    comment = rawLine.substr(rawLine.find(';') + 1);
+    comment = rawLine.substr(rawLine.find_first_of(';') + 1);
 }
 
 void CodeLine::extractRawOperation(){
-    size_t labelEnd = rawLine.find(':') + 1;
+    size_t labelEnd = rawLine.find_last_of(':', rawLine.find_first_of(';')) + 1;
     size_t commentStart = rawLine.find(';');
 
     rawOperation = rawLine.substr(labelEnd, commentStart - labelEnd);
@@ -47,8 +47,8 @@ bool CodeLine::hasOperation() {
 }
 
 void CodeLine::extractOperationMnemonic() {
-    operation = rawOperation.substr(0,
-                                    rawOperation.find_first_of(whitespaces));
+    operationMnemonic = rawOperation.substr(0,
+                                            rawOperation.find_first_of(whitespaces));
 }
 
 void CodeLine::extractOperands() {
