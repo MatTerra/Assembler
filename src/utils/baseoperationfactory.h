@@ -12,6 +12,7 @@
 #include <operations/loadoperation.h>
 #include <operations/storeoperation.h>
 #include <operations/inputoperation.h>
+#include <operations/outputoperation.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -71,6 +72,7 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<LoadOperation>("load");
     operFactory->registerType<StoreOperation>("store");
     operFactory->registerType<InputOperation>("input");
+    operFactory->registerType<OutputOperation>("output");
     return operFactory;
 }
 

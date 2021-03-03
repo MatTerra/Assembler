@@ -134,3 +134,12 @@ TEST(BaseOperationFactory_Input, create_input_should_return_input_operation){
     ASSERT_EQ("input", inputOperation->getOperation());
     ASSERT_EQ(12, inputOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Output, create_output_should_return_output_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto outputOperation = operationFactory->create("output", operands);
+    ASSERT_TRUE(outputOperation != nullptr);
+    ASSERT_EQ("output", outputOperation->getOperation());
+    ASSERT_EQ(13, outputOperation->getOpCode());
+}
