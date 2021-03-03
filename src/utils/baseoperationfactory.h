@@ -13,6 +13,7 @@
 #include <operations/storeoperation.h>
 #include <operations/inputoperation.h>
 #include <operations/outputoperation.h>
+#include <operations/stopoperation.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -73,6 +74,7 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<StoreOperation>("store");
     operFactory->registerType<InputOperation>("input");
     operFactory->registerType<OutputOperation>("output");
+    operFactory->registerType<StopOperation>("stop");
     return operFactory;
 }
 
