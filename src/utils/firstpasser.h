@@ -16,7 +16,6 @@ public:
     explicit FirstPasser(std::string fileContent);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
-
     std::vector<CodeLine> getCodeLines();
 
     void pass();
@@ -25,6 +24,11 @@ private:
     std::string fileContent;
     SymbolTable *symbolTable;
     std::vector<CodeLine> codeLines;
+
+    void addCodeLine(const CodeLine &codeLine);
+    unsigned long getLineEnd(size_t initPos) const;
+    std::string getLine(size_t initPos, unsigned long nextPos) const;
+    void updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine);
 };
 
 

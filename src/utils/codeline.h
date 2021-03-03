@@ -25,6 +25,8 @@ public:
     BaseOperation *getOperation(){ return operation; };
     std::vector<std::string> getOperands(){ return operands; };
 
+    uint16_t getAddressSize();
+
 private:
     std::string rawLine;
     std::string label;
@@ -39,7 +41,6 @@ private:
     void extractOperationMnemonic();
     void extractRawOperation();
     void extractOperands();
-
     void extractOperation();
 };
 

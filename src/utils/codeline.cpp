@@ -77,3 +77,9 @@ void CodeLine::extractOperation() {
     operation = operationFactory->create(operationMnemonic, operands);
 }
 
+uint16_t CodeLine::getAddressSize() {
+    if (operation == nullptr)
+        return 0;
+    return operation->getAddressSize();
+}
+

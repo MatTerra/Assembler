@@ -93,7 +93,27 @@ TEST(CodeLine_Operation, should_get_operation){
     auto *cl = new CodeLine("label:     add  8 ; Comment");
     ASSERT_TRUE(cl->getOperation() != nullptr);
     ASSERT_EQ("add", cl->getOperation()->getOperation());
+}
 
+TEST(CodeLine_Operation, should_get_operation_addr_size_2){
+    auto *cl = new CodeLine("label:     add  8 ; Comment");
+    ASSERT_EQ(2, cl->getAddressSize());
+}
+
+TEST(CodeLine_Operation, should_get_operation_addr_size_3){
+    auto *cl = new CodeLine("label:     copy  8,3 ; Comment");
+    ASSERT_EQ(3, cl->getAddressSize());
+}
+
+
+TEST(CodeLine_Operation, should_get_operation_addr_size_1){
+    auto *cl = new CodeLine("label:     stop ; Comment");
+    ASSERT_EQ(1, cl->getAddressSize());
+}
+
+TEST(CodeLine_Operation, should_get_operation_addr_size_0){
+    auto *cl = new CodeLine("label:     ; Comment");
+    ASSERT_EQ(0, cl->getAddressSize());
 }
 
 TEST(CodeLine_Operation, operation_should_be_empty_if_none){

@@ -16,13 +16,34 @@ std::vector<CodeLine> FirstPasser::getCodeLines() {
 
 void FirstPasser::pass() {
     size_t initPos = 0;
+    uint16_t nowAddress = 0;
     while (true){
-        auto nextPos = fileContent.find_first_of('\n', initPos+1);
-        auto line = fileContent.substr(initPos, (nextPos)-initPos);
-        const CodeLine &codeLine = CodeLine(line);
-        codeLines.insert(codeLines.cend(), codeLine);
+        auto nextPos = getLineEnd(initPos);
+
+        CodeLine codeLine = CodeLine(getLine(initPos, nextPos));
+        addCodeLine(codeLine);
+
+        updateSymbolTable(nowAddress, codeLine);
+
+        nowAddress+=codeLine.getAddressSize();
+
         if (nextPos == std::string::npos)
             break;
-        initPos = ++nextPos;
+        initPos = nextPos + 1;
     }
+}
+
+void FirstPasser::updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine) {
+    if (codeLine.hasLabel())
+        symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
+}
+
+std::string FirstPasser::getLine(size_t initPos,
+                                 unsigned long nextPos) const { return fileContent.substr(initPos, (nextPos) - initPos); }
+
+unsigned long FirstPasser::getLineEnd(
+        size_t initPos) const { return fileContent.find_first_of('\n', initPos + 1); }
+
+void FirstPasser::addCodeLine(const CodeLine &codeLine) {
+    codeLines.insert(codeLines.cend(), codeLine);
 }

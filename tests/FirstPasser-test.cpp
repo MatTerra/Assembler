@@ -49,3 +49,13 @@ TEST(FirstPasser_CodeLines, pass_should_generate_lines_vector_with_multiple_line
     fp->pass();
     ASSERT_EQ(codeLines, fp->getCodeLines());
 }
+
+TEST(FirstPasser_ShouldGenerateSymbolTable, pass_should_register_all_symbols){
+    std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
+    auto *fp = new FirstPasser(lines);
+    fp->pass();
+    auto *st = SymbolTable::getInstance();
+    ASSERT_EQ(0, st->getSymbolAddress("start"));
+    ASSERT_EQ(3, st->getSymbolAddress("ok"));
+    delete st;
+}
