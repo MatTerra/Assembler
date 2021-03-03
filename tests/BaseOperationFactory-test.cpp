@@ -89,3 +89,12 @@ TEST(BaseOperationFactory_Jmpp, create_jmpp_should_return_jmpp_operation){
     ASSERT_EQ("jmpp", jmppOperation->getOperation());
     ASSERT_EQ(7, jmppOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Jmpz, create_jmpz_should_return_jmpz_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto jmpzOperation = operationFactory->create("jmpz", operands);
+    ASSERT_TRUE(jmpzOperation != nullptr);
+    ASSERT_EQ("jmpz", jmpzOperation->getOperation());
+    ASSERT_EQ(8, jmpzOperation->getOpCode());
+}
