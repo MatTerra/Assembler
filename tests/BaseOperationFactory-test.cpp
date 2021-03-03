@@ -66,17 +66,26 @@ TEST(BaseOperationFactory_Div, create_div_should_return_div_operation){
 TEST(BaseOperationFactory_Jmp, create_jmp_should_return_jmp_operation){
     std::vector<uint16_t> operands;
     auto operationFactory = getBaseOperationFactory();
-    auto divOperation = operationFactory->create("jmp", operands);
-    ASSERT_TRUE(divOperation != nullptr);
-    ASSERT_EQ("jmp", divOperation->getOperation());
-    ASSERT_EQ(5, divOperation->getOpCode());
+    auto jmpOperation = operationFactory->create("jmp", operands);
+    ASSERT_TRUE(jmpOperation != nullptr);
+    ASSERT_EQ("jmp", jmpOperation->getOperation());
+    ASSERT_EQ(5, jmpOperation->getOpCode());
 }
 
 TEST(BaseOperationFactory_Jmpn, create_jmpn_should_return_jmpn_operation){
     std::vector<uint16_t> operands;
     auto operationFactory = getBaseOperationFactory();
-    auto divOperation = operationFactory->create("jmpn", operands);
-    ASSERT_TRUE(divOperation != nullptr);
-    ASSERT_EQ("jmpn", divOperation->getOperation());
-    ASSERT_EQ(6, divOperation->getOpCode());
+    auto jmpnOperation = operationFactory->create("jmpn", operands);
+    ASSERT_TRUE(jmpnOperation != nullptr);
+    ASSERT_EQ("jmpn", jmpnOperation->getOperation());
+    ASSERT_EQ(6, jmpnOperation->getOpCode());
+}
+
+TEST(BaseOperationFactory_Jmpp, create_jmpp_should_return_jmpp_operation){
+    std::vector<uint16_t> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto jmppOperation = operationFactory->create("jmpp", operands);
+    ASSERT_TRUE(jmppOperation != nullptr);
+    ASSERT_EQ("jmpp", jmppOperation->getOperation());
+    ASSERT_EQ(7, jmppOperation->getOpCode());
 }

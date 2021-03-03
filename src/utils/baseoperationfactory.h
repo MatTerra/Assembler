@@ -16,6 +16,7 @@
 #include "operations/divoperation.h"
 #include "operations/jmpoperation.h"
 #include "operations/jmpnoperation.h"
+#include "operations/jmppoperation.h"
 
 template <typename T>
 class BaseFactory {
@@ -59,6 +60,7 @@ static BaseFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<DivOperation>("div");
     operFactory->registerType<JmpOperation>("jmp");
     operFactory->registerType<JmpnOperation>("jmpn");
+    operFactory->registerType<JmppOperation>("jmpp");
     return operFactory;
 }
 
