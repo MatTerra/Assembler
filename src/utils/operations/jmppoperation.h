@@ -6,13 +6,14 @@
 #define MONTADOR_JMPPOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class JmppOperation : public BaseOperation{
 public:
-    JmppOperation(std::vector<uint16_t> operands)
+    JmppOperation(std::vector<std::string> operands)
         :BaseOperation("jmpp", 2, 7, std::move(operands)){};
     std::string getOutput() override;
 };

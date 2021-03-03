@@ -22,6 +22,7 @@ public:
     std::string getLabel(){ return label; };
     std::string getComment(){ return comment; };
     std::string getOperationMnemonic(){ return operationMnemonic; };
+    BaseOperation *getOperation(){ return operation; };
     std::vector<std::string> getOperands(){ return operands; };
 
 private:
@@ -38,6 +39,8 @@ private:
     void extractOperationMnemonic();
     void extractRawOperation();
     void extractOperands();
+
+    void extractOperation();
 };
 
 #endif //MONTADOR_CODELINE_H

@@ -6,13 +6,14 @@
 #define MONTADOR_ADDOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class AddOperation : public BaseOperation{
 public:
-    AddOperation(std::vector<uint16_t> operands)
+    AddOperation(std::vector<std::string> operands)
         :BaseOperation("add", 2, 1, std::move(operands)){};
     std::string getOutput() override;
 };

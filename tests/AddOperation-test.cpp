@@ -8,58 +8,67 @@
 #include <vector>
 
 TEST(AddOperation, may_instantiate_addoperation){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_TRUE(add != nullptr);
 }
 
 TEST(AddOperation, name_should_be_add){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_EQ("add", add->getOperation());
 }
 
 TEST(AddOperation, address_size_should_be_2){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_EQ(2, add->getAddressSize());
 }
 
 TEST(AddOperation, opcode_should_be_1){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_EQ(1, add->getOpCode());
 }
 
 TEST(AddOperation, should_list_operands){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_EQ(operands, add->getOperands());
 }
 
+//TEST(AddOperation, should_set_operands){
+//    std::vector<std::string> operands;
+//    operands.insert(operands.cend(), "1");
+//    BaseOperation *add = new AddOperation(operands);
+//    operands.insert(operands.cend(), "2");
+//    add->setOperands(operands);
+//    ASSERT_EQ(operands, add->getOperands());
+//}
+
 TEST(AddOperation, should_be_valid_with_1_operand){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_TRUE(add->isValid());
 }
 
 TEST(AddOperation, shouldnt_be_valid_with_2_operands){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 1);
-    operands.insert(operands.cend(), 2);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
+    operands.insert(operands.cend(), "2");
     BaseOperation *add = new AddOperation(operands);
     ASSERT_FALSE(add->isValid());
 }
 
 TEST(AddOperation, should_generate_output){
-    std::vector<uint16_t> operands;
-    operands.insert(operands.cend(), 0);
+    std::vector<std::string> operands;
+    operands.insert(operands.cend(), "1");
     BaseOperation *add = new AddOperation(operands);
-    ASSERT_EQ("01 00", add->getOutput());
+    ASSERT_EQ("01 01", add->getOutput());
 }

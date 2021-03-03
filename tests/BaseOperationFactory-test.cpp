@@ -12,14 +12,14 @@ TEST(BaseOperationFactory, get_operation_factory_shoud_retorn_factory){
 }
 
 TEST(BaseOperationFactory, create_unknow_should_return_nullptr){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto unknownOperation = operationFactory->create("ad", operands);
     ASSERT_TRUE(unknownOperation == nullptr);
 }
 
 TEST(BaseOperationFactory_Add, create_add_should_return_add_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto addOperation = operationFactory->create("add", operands);
     ASSERT_TRUE(addOperation != nullptr);
@@ -28,7 +28,7 @@ TEST(BaseOperationFactory_Add, create_add_should_return_add_operation){
 }
 
 TEST(BaseOperationFactory_Add, create_should_find_if_capital){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto addOperation = operationFactory->create("ADD", operands);
     ASSERT_TRUE(addOperation != nullptr);
@@ -37,7 +37,7 @@ TEST(BaseOperationFactory_Add, create_should_find_if_capital){
 }
 
 TEST(BaseOperationFactory_Sub, create_sub_should_return_sub_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto subOperation = operationFactory->create("sub", operands);
     ASSERT_TRUE(subOperation != nullptr);
@@ -46,7 +46,7 @@ TEST(BaseOperationFactory_Sub, create_sub_should_return_sub_operation){
 }
 
 TEST(BaseOperationFactory_Mul, create_mul_should_return_mul_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto mulOperation = operationFactory->create("MuL", operands);
     ASSERT_TRUE(mulOperation != nullptr);
@@ -55,7 +55,7 @@ TEST(BaseOperationFactory_Mul, create_mul_should_return_mul_operation){
 }
 
 TEST(BaseOperationFactory_Div, create_div_should_return_div_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto divOperation = operationFactory->create("Div", operands);
     ASSERT_TRUE(divOperation != nullptr);
@@ -64,7 +64,7 @@ TEST(BaseOperationFactory_Div, create_div_should_return_div_operation){
 }
 
 TEST(BaseOperationFactory_Jmp, create_jmp_should_return_jmp_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto jmpOperation = operationFactory->create("jmp", operands);
     ASSERT_TRUE(jmpOperation != nullptr);
@@ -73,7 +73,7 @@ TEST(BaseOperationFactory_Jmp, create_jmp_should_return_jmp_operation){
 }
 
 TEST(BaseOperationFactory_Jmpn, create_jmpn_should_return_jmpn_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto jmpnOperation = operationFactory->create("jmpn", operands);
     ASSERT_TRUE(jmpnOperation != nullptr);
@@ -82,7 +82,7 @@ TEST(BaseOperationFactory_Jmpn, create_jmpn_should_return_jmpn_operation){
 }
 
 TEST(BaseOperationFactory_Jmpp, create_jmpp_should_return_jmpp_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto jmppOperation = operationFactory->create("jmpp", operands);
     ASSERT_TRUE(jmppOperation != nullptr);
@@ -91,7 +91,7 @@ TEST(BaseOperationFactory_Jmpp, create_jmpp_should_return_jmpp_operation){
 }
 
 TEST(BaseOperationFactory_Jmpz, create_jmpz_should_return_jmpz_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto jmpzOperation = operationFactory->create("jmpz", operands);
     ASSERT_TRUE(jmpzOperation != nullptr);
@@ -100,7 +100,7 @@ TEST(BaseOperationFactory_Jmpz, create_jmpz_should_return_jmpz_operation){
 }
 
 TEST(BaseOperationFactory_Copy, create_copy_should_return_copy_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto copyOperation = operationFactory->create("copy", operands);
     ASSERT_TRUE(copyOperation != nullptr);
@@ -109,7 +109,7 @@ TEST(BaseOperationFactory_Copy, create_copy_should_return_copy_operation){
 }
 
 TEST(BaseOperationFactory_Load, create_load_should_return_load_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto loadOperation = operationFactory->create("load", operands);
     ASSERT_TRUE(loadOperation != nullptr);
@@ -118,7 +118,7 @@ TEST(BaseOperationFactory_Load, create_load_should_return_load_operation){
 }
 
 TEST(BaseOperationFactory_Store, create_store_should_return_store_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto storeOperation = operationFactory->create("store", operands);
     ASSERT_TRUE(storeOperation != nullptr);
@@ -127,7 +127,7 @@ TEST(BaseOperationFactory_Store, create_store_should_return_store_operation){
 }
 
 TEST(BaseOperationFactory_Input, create_input_should_return_input_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto inputOperation = operationFactory->create("input", operands);
     ASSERT_TRUE(inputOperation != nullptr);
@@ -136,7 +136,7 @@ TEST(BaseOperationFactory_Input, create_input_should_return_input_operation){
 }
 
 TEST(BaseOperationFactory_Output, create_output_should_return_output_operation){
-    std::vector<uint16_t> operands;
+    std::vector<std::string> operands;
     auto operationFactory = getBaseOperationFactory();
     auto outputOperation = operationFactory->create("output", operands);
     ASSERT_TRUE(outputOperation != nullptr);

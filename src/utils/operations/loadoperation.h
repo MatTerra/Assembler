@@ -6,13 +6,14 @@
 #define MONTADOR_LOADOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class LoadOperation : public BaseOperation{
 public:
-    LoadOperation(std::vector<uint16_t> operands)
+    LoadOperation(std::vector<std::string> operands)
         :BaseOperation("load", 2, 10, std::move(operands)){};
     std::string getOutput() override;
 };

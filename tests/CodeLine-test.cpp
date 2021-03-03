@@ -79,9 +79,21 @@ TEST(CodeLine_Operation, shouldnt_have_operation){
     ASSERT_FALSE(cl->hasOperation());
 }
 
-TEST(CodeLine_Operation, should_get_operation){
+TEST(CodeLine_Operation, operation_should_be_null){
+    auto *cl = new CodeLine("label:      ; Comment");
+    ASSERT_EQ(nullptr, cl->getOperation());
+}
+
+TEST(CodeLine_Operation, should_get_operation_mnemonic){
     auto *cl = new CodeLine("label:     add  8 ; Comment");
     ASSERT_EQ("add", cl->getOperationMnemonic());
+}
+
+TEST(CodeLine_Operation, should_get_operation){
+    auto *cl = new CodeLine("label:     add  8 ; Comment");
+    ASSERT_TRUE(cl->getOperation() != nullptr);
+    ASSERT_EQ("add", cl->getOperation()->getOperation());
+
 }
 
 TEST(CodeLine_Operation, operation_should_be_empty_if_none){

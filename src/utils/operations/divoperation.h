@@ -6,13 +6,14 @@
 #define MONTADOR_DIVOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class DivOperation : public BaseOperation{
 public:
-    DivOperation(std::vector<uint16_t> operands)
+    DivOperation(std::vector<std::string> operands)
         :BaseOperation("div", 2, 4, std::move(operands)){};
     std::string getOutput() override;
 };

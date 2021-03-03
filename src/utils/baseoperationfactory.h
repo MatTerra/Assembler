@@ -38,7 +38,7 @@ public:
         _createFuncs[name] = &createFunc<TDerived>;
     }
 
-    T* create(std::string name, std::vector<uint16_t> operands) {
+    T* create(std::string name, std::vector<std::string> operands) {
         std::transform(name.begin(), name.end(), name.begin(),
                        [](unsigned char c){ return std::tolower(c); });
         if (_createFuncs.find(name) != _createFuncs.end()) {
@@ -50,12 +50,12 @@ public:
 
 private:
     template <typename TDerived>
-    static T* createFunc(std::vector<uint16_t> operands)
+    static T* createFunc(std::vector<std::string> operands)
     {
         return new TDerived(operands);
     }
 
-    typedef T* (*PCreateFunc)(std::vector<uint16_t>);
+    typedef T* (*PCreateFunc)(std::vector<std::string>);
     std::unordered_map<std::string ,PCreateFunc> _createFuncs;
 };
 

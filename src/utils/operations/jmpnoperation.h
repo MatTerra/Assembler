@@ -6,13 +6,14 @@
 #define MONTADOR_JMPNOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class JmpnOperation : public BaseOperation{
 public:
-    JmpnOperation(std::vector<uint16_t> operands)
+    JmpnOperation(std::vector<std::string> operands)
         :BaseOperation("jmpn", 2, 6, std::move(operands)){};
     std::string getOutput() override;
 };

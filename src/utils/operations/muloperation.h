@@ -6,13 +6,14 @@
 #define MONTADOR_MULOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class MulOperation : public BaseOperation{
 public:
-    MulOperation(std::vector<uint16_t> operands)
+    MulOperation(std::vector<std::string> operands)
         :BaseOperation("mul", 2, 3, std::move(operands)){};
     std::string getOutput() override;
 };

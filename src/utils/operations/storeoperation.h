@@ -6,13 +6,14 @@
 #define MONTADOR_STOREOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class StoreOperation : public BaseOperation{
 public:
-    StoreOperation(std::vector<uint16_t> operands)
+    StoreOperation(std::vector<std::string> operands)
         :BaseOperation("store", 2, 11, std::move(operands)){};
     std::string getOutput() override;
 };

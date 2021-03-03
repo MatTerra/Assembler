@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "codeline.h"
+#include "baseoperationfactory.h"
 
 CodeLine::CodeLine(std::string line) :rawLine(std::move(line)){
     if (hasLabel())
@@ -14,6 +15,7 @@ CodeLine::CodeLine(std::string line) :rawLine(std::move(line)){
     if (hasOperation()){
         extractOperationMnemonic();
         extractOperands();
+        extractOperation();
     }
 }
 
@@ -68,5 +70,10 @@ void CodeLine::extractOperands() {
 
 bool CodeLine::operator==(const CodeLine other) const {
     return getRawLine() == other.getRawLine();
+}
+
+void CodeLine::extractOperation() {
+    auto operationFactory = getBaseOperationFactory();
+    operation = operationFactory->create(operationMnemonic, operands);
 }
 

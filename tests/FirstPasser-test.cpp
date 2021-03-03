@@ -27,7 +27,7 @@ TEST(FirstPasser_SymbolTable, should_have_symbol_table){
 }
 
 TEST(FirstPasser_CodeLines, pass_should_generate_lines_vector){
-    std::string lines = "start: add ok ; simple add";
+    std::string lines = "start: add 8 ; simple add";
     auto *cl = new CodeLine(lines);
     auto codeLines = std::vector<CodeLine>();
     codeLines.insert(codeLines.cend(), *cl);
@@ -37,8 +37,8 @@ TEST(FirstPasser_CodeLines, pass_should_generate_lines_vector){
 }
 
 TEST(FirstPasser_CodeLines, pass_should_generate_lines_vector_with_multiple_lines){
-    std::string lines = "start: add ok ; simple add\n  stop\nok: CONST 1";
-    auto *cl = new CodeLine("start: add ok ; simple add");
+    std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
+    auto *cl = new CodeLine("start: add 8 ; simple add");
     auto *cl2 = new CodeLine("  stop");
     auto *cl3 = new CodeLine("ok: CONST 1");
     auto codeLines = std::vector<CodeLine>();

@@ -6,13 +6,14 @@
 #define MONTADOR_COPYOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class CopyOperation : public BaseOperation{
 public:
-    CopyOperation(std::vector<uint16_t> operands)
+    CopyOperation(std::vector<std::string> operands)
         :BaseOperation("copy", 3, 9, std::move(operands)){};
     std::string getOutput() override;
 };

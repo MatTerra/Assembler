@@ -6,13 +6,14 @@
 #define MONTADOR_OUTPUTOPERATION_H
 
 #include "baseoperation.h"
+#include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 
 class OutputOperation : public BaseOperation{
 public:
-    OutputOperation(std::vector<uint16_t> operands)
+    OutputOperation(std::vector<std::string> operands)
         :BaseOperation("output", 2, 13, std::move(operands)){};
     std::string getOutput() override;
 };
