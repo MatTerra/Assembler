@@ -23,7 +23,7 @@ TEST(FirstPasser_CodeLines, code_lines_should_be_empty){
 
 TEST(FirstPasser_SymbolTable, should_have_symbol_table){
     auto *fp = new FirstPasser("");
-    ASSERT_EQ(SymbolTable::getInstance(), fp->getSymbolTable());
+    ASSERT_NE(nullptr, fp->getSymbolTable());
 }
 
 TEST(FirstPasser_CodeLines, pass_should_generate_lines_vector){
@@ -54,7 +54,7 @@ TEST(FirstPasser_ShouldGenerateSymbolTable, pass_should_register_all_symbols){
     std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
     auto *fp = new FirstPasser(lines);
     fp->pass();
-    auto *st = SymbolTable::getInstance();
+    auto *st = fp->getSymbolTable();
     ASSERT_EQ(0, st->getSymbolAddress("start"));
     ASSERT_EQ(3, st->getSymbolAddress("ok"));
     delete st;

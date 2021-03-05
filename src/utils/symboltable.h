@@ -12,8 +12,6 @@
 class SymbolTable {
 
 public:
-    ~SymbolTable();
-    static SymbolTable *getInstance();
     size_t getSymbolCount();
     void addSymbol(std::string symbol, uint16_t address);
 
@@ -22,8 +20,6 @@ public:
     uint16_t getSymbolAddress(std::string symbol);
 
 private:
-    SymbolTable() = default;
-    static SymbolTable *instance;
     std::unordered_map<std::string, uint16_t> symbolTable;
 };
 

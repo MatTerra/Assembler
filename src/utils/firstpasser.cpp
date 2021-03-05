@@ -7,7 +7,7 @@
 
 FirstPasser::FirstPasser(std::string fileContent)
         :fileContent(std::move(fileContent)){
-    symbolTable = SymbolTable::getInstance();
+    symbolTable = new SymbolTable();
 }
 
 std::vector<CodeLine> FirstPasser::getCodeLines() {
