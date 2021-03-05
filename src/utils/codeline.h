@@ -27,6 +27,8 @@ public:
 
     uint16_t getAddressSize();
 
+    std::string getOpCode();
+
 private:
     std::string rawLine;
     std::string label;

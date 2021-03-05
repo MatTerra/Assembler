@@ -3,7 +3,7 @@
 //
 
 #include "symboltable.h"
-#include "symbolnotfoundexception.h"
+#include "exceptions/symbolnotfoundexception.h"
 
 size_t SymbolTable::getSymbolCount() {
     return symbolTable.size();

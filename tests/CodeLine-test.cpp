@@ -126,6 +126,16 @@ TEST(CodeLine_Operation, operation_should_be_empty_if_none_no_spaces){
     ASSERT_EQ("", cl->getOperationMnemonic());
 }
 
+TEST(CodeLine_Operation, get_op_code_should_return_string_for_opcode){
+    auto *cl = new CodeLine("label: stop; Comment");
+    ASSERT_EQ("14", cl->getOpCode());
+}
+
+TEST(CodeLine_Operation, get_op_code_should_return_empty_string_if_no_operation){
+    auto *cl = new CodeLine("label: ; Comment");
+    ASSERT_EQ("", cl->getOpCode());
+}
+
 TEST(CodeLine_Operand, should_get_operands){
     auto *cl = new CodeLine("label:     add  8 ; Comment");
     auto result = std::vector<std::string>();

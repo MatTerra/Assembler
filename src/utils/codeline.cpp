@@ -83,3 +83,9 @@ uint16_t CodeLine::getAddressSize() {
     return operation->getAddressSize();
 }
 
+std::string CodeLine::getOpCode() {
+    if (operation != nullptr)
+        return std::to_string(operation->getOpCode());
+    return "";
+}
+

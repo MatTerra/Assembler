@@ -3,7 +3,7 @@
 //
 #include "gtest/gtest.h"
 #include "symboltable.h"
-#include "symbolnotfoundexception.h"
+#include "exceptions/symbolnotfoundexception.h"
 #include <string>
 
 TEST(SymbolTable, may_get_symboltable_instance){

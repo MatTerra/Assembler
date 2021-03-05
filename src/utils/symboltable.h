@@ -14,9 +14,7 @@ class SymbolTable {
 public:
     size_t getSymbolCount();
     void addSymbol(std::string symbol, uint16_t address);
-
     bool hasSymbol(std::string string);
-
     uint16_t getSymbolAddress(std::string symbol);
 
 private:

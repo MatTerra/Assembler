@@ -3,7 +3,6 @@
 //
 #include "gtest/gtest.h"
 #include "firstpasser.h"
-#include "symboltable.h"
 #include "codeline.h"
 
 TEST(FirstPasser, may_instantiate_first_passer){
