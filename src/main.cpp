@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     }
     std::string content = readFile(argv[1]);
 
-    auto first = new FirstPasser(content);
+    auto first = new CodeFirstPasser(content);
     first->pass();
 
     auto second = new SecondPasser(first->getCodeLines(),

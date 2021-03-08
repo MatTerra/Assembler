@@ -5,22 +5,23 @@
 #include <iostream>
 #include "firstpasser.h"
 
-FirstPasser::FirstPasser(std::string fileContent)
+CodeFirstPasser::CodeFirstPasser(std::string fileContent)
         :fileContent(std::move(fileContent)){
     symbolTable = new SymbolTable();
 }
 
-std::vector<CodeLine> FirstPasser::getCodeLines() {
+std::vector<CodeLine> CodeFirstPasser::getCodeLines() {
     return codeLines;
 }
 
-void FirstPasser::pass() {
+void CodeFirstPasser::pass() {
     size_t initPos = 0;
     uint16_t nowAddress = 0;
     while (true){
         auto nextPos = getLineEnd(initPos);
+        auto line = getLine(initPos, nextPos);
 
-        CodeLine codeLine = CodeLine(getLine(initPos, nextPos));
+        CodeLine codeLine = CodeLine(line);
         addCodeLine(codeLine);
 
         updateSymbolTable(nowAddress, codeLine);
@@ -33,17 +34,19 @@ void FirstPasser::pass() {
     }
 }
 
-void FirstPasser::updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine) {
+void CodeFirstPasser::updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine) {
     if (codeLine.hasLabel())
         symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
 }
 
-std::string FirstPasser::getLine(size_t initPos,
-                                 unsigned long nextPos) const { return fileContent.substr(initPos, (nextPos) - initPos); }
+std::string CodeFirstPasser::getLine(size_t initPos, unsigned long nextPos) const {
+    return fileContent.substr(initPos, (nextPos) - initPos);
+}
 
-unsigned long FirstPasser::getLineEnd(
-        size_t initPos) const { return fileContent.find_first_of('\n', initPos + 1); }
+unsigned long CodeFirstPasser::getLineEnd(size_t initPos) const {
+    return fileContent.find_first_of('\n', initPos + 1);
+}
 
-void FirstPasser::addCodeLine(const CodeLine &codeLine) {
+void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
     codeLines.insert(codeLines.cend(), codeLine);
 }

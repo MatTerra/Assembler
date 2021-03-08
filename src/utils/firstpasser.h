@@ -11,9 +11,9 @@
 #include "symboltable.h"
 #include "codeline.h"
 
-class FirstPasser {
+class CodeFirstPasser {
 public:
-    explicit FirstPasser(std::string fileContent);
+    explicit CodeFirstPasser(std::string fileContent);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
     std::vector<CodeLine> getCodeLines();

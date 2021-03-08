@@ -20,6 +20,11 @@ TEST(CodeLine_Label, should_get_label){
     ASSERT_EQ("label", cl->getLabel());
 }
 
+TEST(CodeLine_Label, shouldnt_have_label_if_colon_in_comment){
+    auto *cl = new CodeLine("label ; okok :");
+    ASSERT_FALSE(cl->hasLabel());
+}
+
 TEST(CodeLine_Label, label_should_be_empty_if_no_label){
     auto *cl = new CodeLine("add 8");
     ASSERT_EQ("", cl->getLabel());
@@ -45,11 +50,11 @@ TEST(CodeLine_Label, should_get_first_label){
     ASSERT_EQ("label", cl->getLabel());
 }
 
-TEST(CodeLine_Label, should_get_correct_mnemonic){
+TEST(CodeLine_Mnemonic, should_get_correct_mnemonic){
     auto *cl = new CodeLine("label:label2: add 8 ; just a comment ;;");
     ASSERT_EQ("add", cl->getOperationMnemonic());
 }
-TEST(CodeLine_Label, should_get_correct_mnemonic_with_colon_on_comment){
+TEST(CodeLine_Mnemonic, should_get_correct_mnemonic_with_colon_on_comment){
     auto *cl = new CodeLine("label:label2: add 8 ; just a comment: to make it fail ;;");
     ASSERT_EQ("add", cl->getOperationMnemonic());
 }

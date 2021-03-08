@@ -5,7 +5,7 @@
 #define STRING_UTILS_H
 
 #include <string>
-static const char *const whitespaces = " \t\r\f\v";
+static const char *const whitespaces = " \t\r\f\v\n";
 
 static void removeLeadingWhitespaces(std::string &myString){
     myString.erase(0, myString.find_first_not_of(whitespaces));

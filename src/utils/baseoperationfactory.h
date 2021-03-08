@@ -14,6 +14,8 @@
 #include <operations/inputoperation.h>
 #include <operations/outputoperation.h>
 #include <operations/stopoperation.h>
+#include <datatypes/spacedatatype.h>
+#include <datatypes/constdatatype.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -24,9 +26,10 @@
 #include "operations/jmppoperation.h"
 #include "operations/jmpzoperation.h"
 #include "operations/copyoperation.h"
+#include "datatype.h"
 
 template <typename T>
-class BaseFactory {
+class BaseOperationFactory {
 
 public:
     template <typename TDerived>
@@ -59,8 +62,8 @@ private:
     std::unordered_map<std::string ,PCreateFunc> _createFuncs;
 };
 
-static BaseFactory<BaseOperation> *getBaseOperationFactory(){
-    auto *operFactory = new BaseFactory<BaseOperation>();
+static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
+    auto *operFactory = new BaseOperationFactory<BaseOperation>();
     operFactory->registerType<AddOperation>("add");
     operFactory->registerType<SubOperation>("sub");
     operFactory->registerType<MulOperation>("mul");
