@@ -87,3 +87,73 @@ TEST(SecondPasser, error_should_consider_starting_line){
     ASSERT_EQ(InvalidOperandCountException(3,"JMP").what(),
               secondPasser->getErrors()[0].what());
 }
+
+TEST(SecondPasser, should_count_0_errors_if_ok){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP start ; nothing to do"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ(0,
+              secondPasser->getErrorCount());
+}
+
+TEST(SecondPasser, should_be_able_to_count_errors){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP start, start; nothing to do"));
+    cl.insert(cl.cbegin(), CodeLine(" jmpnp start"));
+    cl.insert(cl.cbegin(), CodeLine(" add ok"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ(3,
+              secondPasser->getErrorCount());
+}
+
+TEST(SecondPasser, should_count_1_line){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP start ; nothing to do"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ(1, secondPasser->getLineCount());
+}
+
+TEST(SecondPasser, should_be_able_to_count_3_lines_with_comments){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP start; nothing to do"));
+    cl.insert(cl.cbegin(), CodeLine(" ; just comment"));
+    cl.insert(cl.cbegin(), CodeLine(" add start"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ(3, secondPasser->getLineCount());
+}
+
+TEST(SecondPasser, should_be_able_to_parse_3_lines_independently){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("start: JMP start; nothing to do"));
+    cl.insert(cl.end(), CodeLine(" ; just comment"));
+    cl.insert(cl.end(), CodeLine(" add start"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ("05 00", secondPasser->getProcessedLine(0));
+    ASSERT_EQ("", secondPasser->getProcessedLine(1));
+    ASSERT_EQ("01 00", secondPasser->getProcessedLine(2));
+}
+
+TEST(SecondPasser, get_non_existent_line_shouldnt_crash){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("end:      stop; nothing to do"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ("", secondPasser->getProcessedLine(1));
+}

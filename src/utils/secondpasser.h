@@ -11,6 +11,7 @@
 #include <string>
 #include "codeline.h"
 #include "symboltable.h"
+#include "exceptions/parsingexception.h"
 
 class SecondPasser {
 public:
@@ -22,8 +23,11 @@ public:
     void pass();
 
     std::string getProcessedLine(int line);
-
     std::vector<ParsingException> getErrors();
+
+    int16_t getErrorCount();
+
+    uint16_t getLineCount();
 
 private:
     uint16_t startingLine;
@@ -31,18 +35,15 @@ private:
     SymbolTable *symbolTable;
     std::vector<std::string> processedLines;
     std::vector<ParsingException> errors;
-    std::ostringstream processedLine;
 
-    void addOpCodeToProcessedLine(CodeLine &line);
-
-    void addOperandsAddressesToProcessedLine(CodeLine &line);
-
-    void addFormattedOperandToProcessedLine(std::string &operand);
-
-    void processOperation(CodeLine &line);
-
+    void
+    addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);
+    void addOperandsAddressesToProcessedLine(CodeLine &line,
+                                             std::ostringstream &processedLine);
+    void addFormattedOperandToProcessedLine(std::string &operand,
+                                            std::ostringstream &processedLine);
+    void processOperation(CodeLine &line, std::ostringstream &processedLine);
     void processLine(CodeLine &line, uint16_t lineNumber);
-
     void validateOperation(CodeLine &line) const;
 };
 

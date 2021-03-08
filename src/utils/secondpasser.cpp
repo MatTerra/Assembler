@@ -12,6 +12,8 @@
 #include "secondpasser.h"
 
 std::string SecondPasser::getProcessedLine(int line) {
+    if (line >= getLineCount())
+        return "";
     return processedLines[line];
 }
 
@@ -23,12 +25,12 @@ void SecondPasser::pass() {
 
 void SecondPasser::processLine(CodeLine &line, uint16_t lineNumber) {
     try {
-        processedLine.clear();
+        std::ostringstream processedLine;
 
         if (line.hasOperation())
-            processOperation(line);
+            processOperation(line, processedLine);
 
-        processedLines.insert(processedLines.cend(),
+        processedLines.insert(processedLines.end(),
                               processedLine.str());
     } catch (SymbolNotFoundException &exception) {
         errors.insert(errors.cend(),
@@ -43,10 +45,11 @@ void SecondPasser::processLine(CodeLine &line, uint16_t lineNumber) {
     }
 }
 
-void SecondPasser::processOperation(CodeLine &line) {
+void SecondPasser::processOperation(CodeLine &line,
+                                    std::ostringstream &processedLine) {
     validateOperation(line);
-    addOpCodeToProcessedLine(line);
-    addOperandsAddressesToProcessedLine(line);
+    addOpCodeToProcessedLine(line, processedLine);
+    addOperandsAddressesToProcessedLine(line, processedLine);
 }
 
 void SecondPasser::validateOperation(CodeLine &line) const {
@@ -56,20 +59,31 @@ void SecondPasser::validateOperation(CodeLine &line) const {
         throw InvalidOperationException(line.getOperationMnemonic());
 }
 
-void SecondPasser::addOpCodeToProcessedLine(CodeLine &line) {
+void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
+                                            std::ostringstream &processedLine) {
     processedLine << std::setfill('0') << std::setw(2) << line.getOpCode();
 }
 
-void SecondPasser::addOperandsAddressesToProcessedLine(CodeLine &line) {
+void SecondPasser::addOperandsAddressesToProcessedLine(CodeLine &line,
+                                                       std::ostringstream &processedLine) {
     for (auto &operand : line.getOperands())
-        addFormattedOperandToProcessedLine(operand);
+        addFormattedOperandToProcessedLine(operand, processedLine);
 }
 
-void SecondPasser::addFormattedOperandToProcessedLine(std::string &operand) {
+void SecondPasser::addFormattedOperandToProcessedLine(std::string &operand,
+                                                      std::ostringstream &processedLine) {
     processedLine << " " << std::setfill('0')
                   << std::setw(2) << symbolTable->getSymbolAddress(operand);
 }
 
 std::vector<ParsingException> SecondPasser::getErrors() {
     return errors;
+}
+
+int16_t SecondPasser::getErrorCount() {
+    return errors.size();
+}
+
+uint16_t SecondPasser::getLineCount() {
+    return processedLines.size();
 }
