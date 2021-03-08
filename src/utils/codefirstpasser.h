@@ -2,8 +2,8 @@
 // Created by mateusberardo on 01/03/2021.
 //
 
-#ifndef MONTADOR_FIRSTPASSER_H
-#define MONTADOR_FIRSTPASSER_H
+#ifndef MONTADOR_CODEFIRSTPASSER_H
+#define MONTADOR_CODEFIRSTPASSER_H
 
 #include <string>
 #include <utility>
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //MONTADOR_FIRSTPASSER_H
+#endif //MONTADOR_CODEFIRSTPASSER_H

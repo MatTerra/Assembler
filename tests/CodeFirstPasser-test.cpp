@@ -2,7 +2,7 @@
 // Created by mateusberardo on 01/03/2021.
 //
 #include "gtest/gtest.h"
-#include "firstpasser.h"
+#include "codefirstpasser.h"
 #include "codeline.h"
 
 TEST(CodeFirstPasser, may_instantiate_first_passer){

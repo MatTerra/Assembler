@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "firstpasser.h"
+#include "codefirstpasser.h"
 
 CodeFirstPasser::CodeFirstPasser(std::string fileContent)
         :fileContent(std::move(fileContent)){
