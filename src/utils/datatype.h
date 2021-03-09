@@ -16,6 +16,7 @@ public:
             : symbol(std::move(symbol)), value(value){};
     std::string getSymbol(){ return symbol; }
     int16_t getValue() const{ return value; }
+    virtual uint8_t getRequiredOperandCount() = 0;
 protected:
     std::string symbol;
     int16_t value;

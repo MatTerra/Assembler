@@ -1,6 +1,7 @@
 //
 // Created by mateusberardo on 08/03/2021.
 //
+#include <exceptions/invalidoperandcountexception.h>
 #include "gtest/gtest.h"
 #include "datafirstpasser.h"
 #include "dataline.h"
@@ -94,8 +95,24 @@ TEST(DataFirstPasser, should_count_errors){
     std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2, 2);
     fp->pass();
-    std::vector<ParsingException> errors;
-    errors.insert(errors.end(), UnknownOperationException(2, "cons"));
-    errors.insert(errors.end(), UnknownOperationException(3, "spac"));
     ASSERT_EQ(2, fp->getErrorCount());
+}
+
+TEST(DataFirstPasser, should_count_all_errors){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1,2";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2, 2);
+    fp->pass();
+    ASSERT_EQ(3, fp->getErrorCount());
+}
+
+TEST(DataFirstPasser, should_register_all_errors){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1, 2";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    std::vector<ParsingException> errors;
+    errors.insert(errors.end(), UnknownOperationException(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationException(2, "spac"));
+    errors.insert(errors.end(), InvalidOperandCountException(3, "const"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }

@@ -19,6 +19,8 @@ public:
 
     int16_t getValue();
 
+    bool isValid();
+
 private:
     DataType *operation;
     void extractOperation() override;;

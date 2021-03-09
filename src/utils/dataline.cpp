@@ -22,7 +22,10 @@ void DataLine::extractOperation() {
                    operationMnemonic.begin(),
                    [](unsigned char c){ return std::tolower(c); });
     if (operationMnemonic == "const") {
-        operation = new ConstDataType(getLabel(), getOperands()[0]);
+        if (operands.size() == 1)
+            operation = new ConstDataType(getLabel(), getOperands()[0]);
+        else
+            operation = new ConstDataType(getLabel(), "0");
     } else if (operationMnemonic == "space"){
         operation = new SpaceDataType(getLabel());
     } else {
@@ -35,4 +38,10 @@ int16_t DataLine::getValue() {
     if (operation == nullptr)
         return 0;
     return operation->getValue();
+}
+
+bool DataLine::isValid() {
+    if (operation == nullptr)
+        return true;
+    return operands.size() == operation->getRequiredOperandCount();
 }

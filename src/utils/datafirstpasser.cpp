@@ -5,6 +5,7 @@
 #include <exceptions/invalidoperationexception.h>
 #include <exceptions/unknownoperationexception.h>
 #include <exceptions/operationnotfoundexception.h>
+#include <exceptions/invalidoperandcountexception.h>
 #include "datafirstpasser.h"
 
 
@@ -27,6 +28,10 @@ void DataFirstPasser::pass() {
 
         try {
             DataLine dataLine = DataLine(line);
+            if (!dataLine.isValid())
+                errors.insert(errors.end(),
+                              InvalidOperandCountException(nowLine,
+                                                           dataLine.getOperationMnemonic()));
             addDataLine(dataLine);
 
             updateSymbolTable(nowAddress, dataLine);

@@ -24,3 +24,9 @@ TEST(ConstDataType, should_get_int_negative_value){
     auto space = new ConstDataType("test", "-2");
     ASSERT_EQ(-2, space->getValue());
 }
+
+TEST(ConstDataType, should_have_one_operand){
+    auto space = new ConstDataType("test", "-2");
+    ASSERT_EQ(1, space->getRequiredOperandCount());
+}
+

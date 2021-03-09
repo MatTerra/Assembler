@@ -19,3 +19,8 @@ TEST(SpaceDataType, should_get_int_value){
     auto space = new SpaceDataType("test");
     ASSERT_EQ(0, space->getValue());
 }
+
+TEST(SpaceDataType, should_have_0_operands){
+    auto space = new SpaceDataType("test");
+    ASSERT_EQ(0, space->getRequiredOperandCount());
+}

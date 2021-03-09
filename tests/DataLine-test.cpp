@@ -182,6 +182,36 @@ TEST(DataLine_Operand, shouldnt_have_operands_if_no_operands){
     ASSERT_FALSE(dl->hasOperands());
 }
 
+TEST(DataLine_Operand, should_be_valid_if_space_no_operand){
+    auto *dl = new DataLine("end:     space ; final");
+    ASSERT_TRUE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_invalid_if_space_has_operands){
+    auto *dl = new DataLine("end:     space 1 ; final");
+    ASSERT_FALSE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_valid_if_const_one_operand){
+    auto *dl = new DataLine("end:     const 2 ; final");
+    ASSERT_TRUE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_invalid_if_const_two_operands){
+    auto *dl = new DataLine("end:     const 1, 2 ; final");
+    ASSERT_FALSE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_invalid_if_const_no_operands){
+    auto *dl = new DataLine("end:     const  ; final");
+    ASSERT_FALSE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_valid_if_no_operation){
+    auto *dl = new DataLine("end:     ; final");
+    ASSERT_TRUE(dl->isValid());
+}
+
 TEST(DataLine_equals, should_be_equal_if_raw_equals){
     auto dl = DataLine("end:     space ; final");
     auto dl2 = DataLine("end:     space ; final");

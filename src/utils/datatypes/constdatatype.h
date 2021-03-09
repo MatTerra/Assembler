@@ -12,6 +12,7 @@
 class ConstDataType : public DataType {
 public:
     ConstDataType(std::string symbol, std::string value);
+    uint8_t getRequiredOperandCount() override { return 1; }
 
 };
 

@@ -12,6 +12,7 @@
 class SpaceDataType : public DataType {
 public:
     SpaceDataType(std::string symbol);
+    uint8_t getRequiredOperandCount() override { return 0; }
 
 };
 
