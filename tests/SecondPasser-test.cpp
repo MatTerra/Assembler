@@ -112,6 +112,38 @@ TEST(SecondPasser, should_be_able_to_count_errors){
               secondPasser->getErrorCount());
 }
 
+TEST(SecondPasser, should_be_able_to_count_multiple_errors_per_line){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP start, ok; nothing to do"));
+    cl.insert(cl.cbegin(), CodeLine(" jmpnp start"));
+    cl.insert(cl.cbegin(), CodeLine(" add ok"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ(4,
+              secondPasser->getErrorCount());
+}
+
+TEST(SecondPasser, should_be_able_to_generate_multiple_errors_per_line){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("start: JMP start, ok; nothing to do"));
+    cl.insert(cl.end(), CodeLine(" jmpnp start"));
+    cl.insert(cl.end(), CodeLine(" add ok"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto errors = std::vector<ParsingException>();
+    errors.insert(errors.end(), InvalidOperandCountException(1,"JMP"));
+    errors.insert(errors.end(), UndefinedSymbolException(1,"ok"));
+    errors.insert(errors.end(), UnknownOperationException(2, "jmpnp"));
+    errors.insert(errors.end(), UndefinedSymbolException(3, "ok"));
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    for (int i = 0; i < secondPasser->getErrorCount(); i++)
+        ASSERT_EQ(errors[i].what(),
+                  secondPasser->getErrors()[i].what());
+}
+
 TEST(SecondPasser, should_count_1_line){
     auto cl = std::vector<CodeLine>();
     cl.insert(cl.cbegin(), CodeLine("start: JMP start ; nothing to do"));

@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 #include "datafirstpasser.h"
 #include "dataline.h"
+#include "exceptions/unknownoperationexception.h"
 
 TEST(DataFirstPasser, may_instantiate_first_passer){
     auto *fp = new DataFirstPasser("", new SymbolTable());
@@ -65,4 +66,36 @@ TEST(DataFirstPasser_ShouldGenerateSymbolTable, symbol_should_consider_starting_
     auto *st = fp->getSymbolTable();
     ASSERT_EQ(2, st->getSymbolAddress("start"));
     ASSERT_EQ(4, st->getSymbolAddress("ok"));
+}
+
+TEST(DataFirstPasser, should_register_invalid_mnemonics){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    std::vector<ParsingException> errors;
+    errors.insert(errors.end(), UnknownOperationException(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationException(2, "spac"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
+}
+
+TEST(DataFirstPasser, should_consider_line_offset){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2, 2);
+    fp->pass();
+    std::vector<ParsingException> errors;
+    errors.insert(errors.end(), UnknownOperationException(2, "cons"));
+    errors.insert(errors.end(), UnknownOperationException(3, "spac"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
+}
+
+TEST(DataFirstPasser, should_count_errors){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2, 2);
+    fp->pass();
+    std::vector<ParsingException> errors;
+    errors.insert(errors.end(), UnknownOperationException(2, "cons"));
+    errors.insert(errors.end(), UnknownOperationException(3, "spac"));
+    ASSERT_EQ(2, fp->getErrorCount());
 }

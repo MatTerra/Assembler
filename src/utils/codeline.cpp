@@ -9,6 +9,8 @@
 CodeLine::CodeLine(std::string line) :ProcessedLine(std::move(line)){
     if (hasOperation())
         extractOperation();
+    else
+        operation = nullptr;
 }
 
 void CodeLine::extractOperation() {

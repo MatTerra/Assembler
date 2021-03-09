@@ -39,12 +39,16 @@ private:
     void
     addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);
     void addOperandsAddressesToProcessedLine(CodeLine &line,
-                                             std::ostringstream &processedLine);
+                                             std::ostringstream &processedLine,
+                                             long lineNumber);
     void addFormattedOperandToProcessedLine(std::string &operand,
-                                            std::ostringstream &processedLine);
-    void processOperation(CodeLine &line, std::ostringstream &processedLine);
+                                            std::ostringstream &processedLine,
+                                            long lineNumber);
+    void processOperation(CodeLine &line,
+                          std::ostringstream &processedLine,
+                          long lineNumber);
     void processLine(CodeLine &line, uint16_t lineNumber);
-    void validateOperation(CodeLine &line) const;
+    void validateOperation(CodeLine &line, long lineNumber);
 };
 
 

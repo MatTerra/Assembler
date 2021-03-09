@@ -2,13 +2,16 @@
 // Created by mateusberardo on 08/03/2021.
 //
 
-#include <iostream>
+#include <exceptions/invalidoperationexception.h>
+#include <exceptions/unknownoperationexception.h>
+#include <exceptions/operationnotfoundexception.h>
 #include "datafirstpasser.h"
 
+
 DataFirstPasser::DataFirstPasser(std::string fileContent, SymbolTable *st,
-                                 uint16_t startingAddress)
-        :fileContent(std::move(fileContent)), symbolTable(st),
-         startingAddress(startingAddress){
+                                 uint16_t startingAddress, long startingLine)
+        : fileContent(std::move(fileContent)), symbolTable(st),
+          startingAddress(startingAddress), nowLine(startingLine){
 }
 
 std::vector<DataLine> DataFirstPasser::getDataLines() {
@@ -22,16 +25,23 @@ void DataFirstPasser::pass() {
         auto nextPos = getLineEnd(initPos);
         auto line = getLine(initPos, nextPos);
 
-        DataLine dataLine = DataLine(line);
-        addDataLine(dataLine);
+        try {
+            DataLine dataLine = DataLine(line);
+            addDataLine(dataLine);
 
-        updateSymbolTable(nowAddress, dataLine);
+            updateSymbolTable(nowAddress, dataLine);
 
-        nowAddress+=dataLine.getAddressSize();
+            nowAddress+=dataLine.getAddressSize();
 
+
+        } catch (OperationNotFoundException &exception) {
+            errors.insert(errors.end(),
+                          UnknownOperationException(nowLine, exception.what()));
+        }
         if (nextPos == std::string::npos)
             break;
         initPos = nextPos + 1;
+        nowLine++;
     }
 }
 
@@ -50,4 +60,12 @@ unsigned long DataFirstPasser::getLineEnd(size_t initPos) const {
 
 void DataFirstPasser::addDataLine(const DataLine &dataLine) {
     dataLines.insert(dataLines.cend(), dataLine);
+}
+
+std::vector<ParsingException> DataFirstPasser::getErrors() {
+    return errors;
+}
+
+int16_t DataFirstPasser::getErrorCount() {
+    return errors.size();
 }

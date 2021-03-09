@@ -1,3 +1,4 @@
+            section text
 start:      add     end, ok                 ; Simple add something
             jmp     ok
             jmpnz   ok

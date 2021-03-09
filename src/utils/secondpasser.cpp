@@ -24,39 +24,30 @@ void SecondPasser::pass() {
 }
 
 void SecondPasser::processLine(CodeLine &line, uint16_t lineNumber) {
-    try {
-        std::ostringstream processedLine;
+    std::ostringstream processedLine;
 
-        if (line.hasOperation())
-            processOperation(line, processedLine);
+    if (line.hasOperation())
+        processOperation(line, processedLine, lineNumber);
 
-        processedLines.insert(processedLines.end(),
-                              processedLine.str());
-    } catch (SymbolNotFoundException &exception) {
-        errors.insert(errors.cend(),
-                      UndefinedSymbolException(lineNumber, exception.what()));
-    } catch (OperationNotFoundException &exception){
-        errors.insert(errors.cend(),
-                      UnknownOperationException(lineNumber, exception.what()));
-    } catch (std::runtime_error &exception){
-        errors.insert(errors.cend(),
-                      InvalidOperandCountException(lineNumber,
-                                                   exception.what()));
-    }
+    processedLines.insert(processedLines.end(),
+                          processedLine.str());
 }
 
 void SecondPasser::processOperation(CodeLine &line,
-                                    std::ostringstream &processedLine) {
-    validateOperation(line);
+                                    std::ostringstream &processedLine,
+                                    long lineNumber) {
+    validateOperation(line, lineNumber);
     addOpCodeToProcessedLine(line, processedLine);
-    addOperandsAddressesToProcessedLine(line, processedLine);
+    addOperandsAddressesToProcessedLine(line, processedLine, lineNumber);
 }
 
-void SecondPasser::validateOperation(CodeLine &line) const {
-    if (line.getOperation() == nullptr)
-        throw OperationNotFoundException(line.getOperationMnemonic());
+void SecondPasser::validateOperation(CodeLine &line, long lineNumber) {
+    if (line.getOperation() == nullptr) {
+        errors.insert(errors.end(), UnknownOperationException(lineNumber, line.getOperationMnemonic()));
+        return;
+    }
     if (!line.getOperation()->isValid())
-        throw InvalidOperationException(line.getOperationMnemonic());
+        errors.insert(errors.end(), InvalidOperandCountException(lineNumber, line.getOperationMnemonic()));
 }
 
 void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
@@ -65,15 +56,23 @@ void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
 }
 
 void SecondPasser::addOperandsAddressesToProcessedLine(CodeLine &line,
-                                                       std::ostringstream &processedLine) {
+                                                       std::ostringstream &processedLine,
+                                                       long lineNumber) {
     for (auto &operand : line.getOperands())
-        addFormattedOperandToProcessedLine(operand, processedLine);
+        addFormattedOperandToProcessedLine(operand, processedLine, lineNumber);
 }
 
 void SecondPasser::addFormattedOperandToProcessedLine(std::string &operand,
-                                                      std::ostringstream &processedLine) {
-    processedLine << " " << std::setfill('0')
-                  << std::setw(2) << symbolTable->getSymbolAddress(operand);
+                                                      std::ostringstream &processedLine,
+                                                      long lineNumber) {
+    try{
+        processedLine << " " << std::setfill('0')
+                      << std::setw(2)
+                      << symbolTable->getSymbolAddress(operand);
+    }  catch (SymbolNotFoundException &exception) {
+        errors.insert(errors.end(),
+                      UndefinedSymbolException(lineNumber, operand));
+    }
 }
 
 std::vector<ParsingException> SecondPasser::getErrors() {

@@ -20,7 +20,7 @@ public:
 
     void pass();
 
-    uint16_t getFinalAddress();
+    uint16_t getFinalAddress() const;
 
 private:
     std::string fileContent;
@@ -30,9 +30,9 @@ private:
     void addCodeLine(const CodeLine &codeLine);
     unsigned long getLineEnd(size_t initPos) const;
     std::string getLine(size_t initPos, unsigned long nextPos) const;
-    void updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine);
+    void updateSymbolTable(CodeLine &codeLine);
 
-    uint16_t nowAddress;
+    uint16_t nowAddress{};
 };
 
 

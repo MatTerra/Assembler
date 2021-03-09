@@ -6,7 +6,7 @@
 #include "codefirstpasser.h"
 
 CodeFirstPasser::CodeFirstPasser(std::string fileContent)
-        :fileContent(std::move(fileContent)){
+        :fileContent(std::move(fileContent)), nowAddress(0){
     symbolTable = new SymbolTable();
 }
 
@@ -16,7 +16,6 @@ std::vector<CodeLine> CodeFirstPasser::getCodeLines() {
 
 void CodeFirstPasser::pass() {
     size_t initPos = 0;
-    nowAddress = 0;
     while (true){
         auto nextPos = getLineEnd(initPos);
         auto line = getLine(initPos, nextPos);
@@ -24,7 +23,7 @@ void CodeFirstPasser::pass() {
         CodeLine codeLine = CodeLine(line);
         addCodeLine(codeLine);
 
-        updateSymbolTable(nowAddress, codeLine);
+        updateSymbolTable(codeLine);
 
         nowAddress+=codeLine.getAddressSize();
 
@@ -34,7 +33,7 @@ void CodeFirstPasser::pass() {
     }
 }
 
-void CodeFirstPasser::updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine) {
+void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
     if (codeLine.hasLabel())
         symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
 }
@@ -51,6 +50,6 @@ void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
     codeLines.insert(codeLines.cend(), codeLine);
 }
 
-uint16_t CodeFirstPasser::getFinalAddress() {
+uint16_t CodeFirstPasser::getFinalAddress() const {
     return nowAddress;
 }

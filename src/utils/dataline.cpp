@@ -26,6 +26,7 @@ void DataLine::extractOperation() {
     } else if (operationMnemonic == "space"){
         operation = new SpaceDataType(getLabel());
     } else {
+        operation = nullptr;
         throw OperationNotFoundException(operationMnemonic);
     }
 }

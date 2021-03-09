@@ -58,10 +58,19 @@ TEST(FirstPasser_CodeLines, pass_should_generate_code_lines_vector_with_multiple
 
 TEST(FirstPasser_ShouldGenerateSymbolTable, pass_should_register_all_symbols){
     std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
-    auto *fp = new CodeFirstPasser(lines);
+    auto fp = new CodeFirstPasser(lines);
     fp->pass();
     auto *st = fp->getSymbolTable();
     ASSERT_EQ(0, st->getSymbolAddress("start"));
     ASSERT_EQ(3, st->getSymbolAddress("ok"));
-    delete st;
+}
+
+TEST(FirstPasser, should_generate_correct_addresses){
+    auto lines="start:      add     one                 ; Simple add something\njmp     end\n; Let's finish this empty file\nend:        stop";
+    auto fp = new CodeFirstPasser(lines);
+    fp->pass();
+    auto *st = fp->getSymbolTable();
+    ASSERT_EQ(0, st->getSymbolAddress("start"));
+    ASSERT_EQ(4, st->getSymbolAddress("end"));
+    ASSERT_EQ(5, fp->getFinalAddress());
 }

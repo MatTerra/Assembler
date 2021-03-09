@@ -1,4 +1,8 @@
-start:      add     end                 ; Simple add something
+            section text
+start:      add     one                 ; Simple add something
             jmp     end
 ; Let's finish this empty file
 end:        stop
+            section data
+one:        CONST 1
+two:        CONST -2

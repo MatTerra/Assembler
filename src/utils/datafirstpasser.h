@@ -10,16 +10,21 @@
 #include <vector>
 #include "symboltable.h"
 #include "dataline.h"
+#include "exceptions/parsingexception.h"
 
 class DataFirstPasser {
 public:
     explicit DataFirstPasser(std::string fileContent, SymbolTable *st,
-                             uint16_t startingAddress=0);
+                             uint16_t startingAddress=0, long startingLine=1);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
     std::vector<DataLine> getDataLines();
 
     void pass();
+
+    std::vector<ParsingException> getErrors();
+
+    int16_t getErrorCount();
 
 private:
     std::string fileContent;
@@ -32,6 +37,8 @@ private:
     void updateSymbolTable(uint16_t nowAddress, DataLine &dataLine);
 
     uint16_t startingAddress;
+    std::vector<ParsingException> errors;
+    long nowLine;
 };
 
 
