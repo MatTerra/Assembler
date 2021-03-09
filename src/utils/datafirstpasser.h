@@ -13,7 +13,8 @@
 
 class DataFirstPasser {
 public:
-    explicit DataFirstPasser(std::string fileContent, SymbolTable *st);
+    explicit DataFirstPasser(std::string fileContent, SymbolTable *st,
+                             uint16_t startingAddress=0);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
     std::vector<DataLine> getDataLines();
@@ -29,6 +30,8 @@ private:
     unsigned long getLineEnd(size_t initPos) const;
     std::string getLine(size_t initPos, unsigned long nextPos) const;
     void updateSymbolTable(uint16_t nowAddress, DataLine &dataLine);
+
+    uint16_t startingAddress;
 };
 
 

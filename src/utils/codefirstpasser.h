@@ -20,6 +20,8 @@ public:
 
     void pass();
 
+    uint16_t getFinalAddress();
+
 private:
     std::string fileContent;
     SymbolTable *symbolTable;
@@ -29,6 +31,8 @@ private:
     unsigned long getLineEnd(size_t initPos) const;
     std::string getLine(size_t initPos, unsigned long nextPos) const;
     void updateSymbolTable(uint16_t nowAddress, CodeLine &codeLine);
+
+    uint16_t nowAddress;
 };
 
 

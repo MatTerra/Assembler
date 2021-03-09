@@ -5,8 +5,10 @@
 #include <iostream>
 #include "datafirstpasser.h"
 
-DataFirstPasser::DataFirstPasser(std::string fileContent, SymbolTable *st)
-        :fileContent(std::move(fileContent)), symbolTable(st){
+DataFirstPasser::DataFirstPasser(std::string fileContent, SymbolTable *st,
+                                 uint16_t startingAddress)
+        :fileContent(std::move(fileContent)), symbolTable(st),
+         startingAddress(startingAddress){
 }
 
 std::vector<DataLine> DataFirstPasser::getDataLines() {
@@ -15,7 +17,7 @@ std::vector<DataLine> DataFirstPasser::getDataLines() {
 
 void DataFirstPasser::pass() {
     size_t initPos = 0;
-    uint16_t nowAddress = 0;
+    uint16_t nowAddress = startingAddress;
     while (true){
         auto nextPos = getLineEnd(initPos);
         auto line = getLine(initPos, nextPos);

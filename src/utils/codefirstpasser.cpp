@@ -16,7 +16,7 @@ std::vector<CodeLine> CodeFirstPasser::getCodeLines() {
 
 void CodeFirstPasser::pass() {
     size_t initPos = 0;
-    uint16_t nowAddress = 0;
+    nowAddress = 0;
     while (true){
         auto nextPos = getLineEnd(initPos);
         auto line = getLine(initPos, nextPos);
@@ -49,4 +49,8 @@ unsigned long CodeFirstPasser::getLineEnd(size_t initPos) const {
 
 void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
     codeLines.insert(codeLines.cend(), codeLine);
+}
+
+uint16_t CodeFirstPasser::getFinalAddress() {
+    return nowAddress;
 }

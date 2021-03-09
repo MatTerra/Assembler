@@ -56,5 +56,13 @@ TEST(DataFirstPasser_ShouldGenerateSymbolTable, pass_should_register_all_symbols
     auto *st = fp->getSymbolTable();
     ASSERT_EQ(0, st->getSymbolAddress("start"));
     ASSERT_EQ(2, st->getSymbolAddress("ok"));
-    delete st;
+}
+
+TEST(DataFirstPasser_ShouldGenerateSymbolTable, symbol_should_consider_starting_address){
+    std::string lines = "start: const 8 ; simple const\n  space\nok: CONST 1";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    auto *st = fp->getSymbolTable();
+    ASSERT_EQ(2, st->getSymbolAddress("start"));
+    ASSERT_EQ(4, st->getSymbolAddress("ok"));
 }

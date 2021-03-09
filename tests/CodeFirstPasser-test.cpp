@@ -35,6 +35,13 @@ TEST(FirstPasser_CodeLines, pass_should_generate_code_lines_vector){
     ASSERT_EQ(codeLines, fp->getCodeLines());
 }
 
+TEST(FirstPasser_CodeLines, should_get_final_address){
+    std::string lines = "start: add 8 ; simple add";
+    auto *fp = new CodeFirstPasser(lines);
+    fp->pass();
+    ASSERT_EQ(2, fp->getFinalAddress());
+}
+
 TEST(FirstPasser_CodeLines, pass_should_generate_code_lines_vector_with_multiple_code_lines){
     std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
     auto *cl = new CodeLine("start: add 8 ; simple add");
