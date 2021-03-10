@@ -10,7 +10,7 @@
 #include <iomanip>
 
 std::string readFile(const char *filename);
-void printErrors(std::vector<ParsingException> errors);
+void printErrors(std::vector<ParsingError> errors);
 
 bool hasErrors(SecondPasser *second);
 bool hasErrors(DataFirstPasser *passer);
@@ -127,7 +127,7 @@ bool hasErrors(DataFirstPasser *passer) {
     return passer->getErrorCount() > 0;
 }
 
-void printErrors(std::vector<ParsingException> errors) {
+void printErrors(std::vector<ParsingError> errors) {
     for (auto &error : errors)
         std::cout << error.what() << std::endl;
 }

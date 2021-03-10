@@ -1,9 +1,9 @@
 //
 // Created by mateusberardo on 05/03/2021.
 //
-#include <exceptions/undefinedsymbolexception.h>
-#include <exceptions/unknownoperationexception.h>
-#include <exceptions/invalidoperandcountexception.h>
+#include <parsingerrors/undefinedsymbolerror.h>
+#include <parsingerrors/unknownoperationerror.h>
+#include <parsingerrors/invalidoperandcounterror.h>
 #include "gtest/gtest.h"
 #include "secondpasser.h"
 #include "codeline.h"
@@ -51,7 +51,7 @@ TEST(SecondPasser, should_have_error_if_symbol_not_found){
     sb->addSymbol("start", 0);
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
-    ASSERT_EQ(UndefinedSymbolException(1, "stop").what(),
+    ASSERT_EQ(UndefinedSymbolError(1, "stop").what(),
               secondPasser->getErrors()[0].what());
 }
 
@@ -62,7 +62,7 @@ TEST(SecondPasser, should_have_error_if_mnemonic_unknown){
     sb->addSymbol("start", 0);
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
-    ASSERT_EQ(UnknownOperationException(1, "stp").what(),
+    ASSERT_EQ(UnknownOperationError(1, "stp").what(),
               secondPasser->getErrors()[0].what());
 }
 
@@ -73,7 +73,7 @@ TEST(SecondPasser, should_have_error_if_invalid_number_of_operands){
     sb->addSymbol("start", 0);
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
-    ASSERT_EQ(InvalidOperandCountException(1,"JMP").what(),
+    ASSERT_EQ(InvalidOperandCountError(1, "JMP").what(),
               secondPasser->getErrors()[0].what());
 }
 
@@ -84,7 +84,7 @@ TEST(SecondPasser, error_should_consider_starting_line){
     sb->addSymbol("start", 0);
     auto *secondPasser = new SecondPasser(cl, sb, 3);
     secondPasser->pass();
-    ASSERT_EQ(InvalidOperandCountException(3,"JMP").what(),
+    ASSERT_EQ(InvalidOperandCountError(3, "JMP").what(),
               secondPasser->getErrors()[0].what());
 }
 
@@ -132,11 +132,11 @@ TEST(SecondPasser, should_be_able_to_generate_multiple_errors_per_line){
     cl.insert(cl.end(), CodeLine(" add ok"));
     auto sb = new SymbolTable();
     sb->addSymbol("start", 0);
-    auto errors = std::vector<ParsingException>();
-    errors.insert(errors.end(), InvalidOperandCountException(1,"JMP"));
-    errors.insert(errors.end(), UndefinedSymbolException(1,"ok"));
-    errors.insert(errors.end(), UnknownOperationException(2, "jmpnp"));
-    errors.insert(errors.end(), UndefinedSymbolException(3, "ok"));
+    auto errors = std::vector<ParsingError>();
+    errors.insert(errors.end(), InvalidOperandCountError(1, "JMP"));
+    errors.insert(errors.end(), UndefinedSymbolError(1, "ok"));
+    errors.insert(errors.end(), UnknownOperationError(2, "jmpnp"));
+    errors.insert(errors.end(), UndefinedSymbolError(3, "ok"));
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
     for (int i = 0; i < secondPasser->getErrorCount(); i++)

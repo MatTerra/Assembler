@@ -10,7 +10,7 @@
 #include <vector>
 #include "symboltable.h"
 #include "dataline.h"
-#include "exceptions/parsingexception.h"
+#include "parsingerrors/parsingerror.h"
 
 class DataFirstPasser {
 public:
@@ -22,7 +22,7 @@ public:
 
     void pass();
 
-    std::vector<ParsingException> getErrors();
+    std::vector<ParsingError> getErrors();
 
     int16_t getErrorCount();
 
@@ -37,7 +37,7 @@ private:
     void updateSymbolTable(uint16_t nowAddress, DataLine &dataLine);
 
     uint16_t startingAddress;
-    std::vector<ParsingException> errors;
+    std::vector<ParsingError> errors;
     long nowLine;
 };
 

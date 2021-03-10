@@ -1,11 +1,11 @@
 //
 // Created by mateusberardo on 08/03/2021.
 //
-#include <exceptions/invalidoperandcountexception.h>
+#include <parsingerrors/invalidoperandcounterror.h>
 #include "gtest/gtest.h"
 #include "datafirstpasser.h"
 #include "dataline.h"
-#include "exceptions/unknownoperationexception.h"
+#include "parsingerrors/unknownoperationerror.h"
 
 TEST(DataFirstPasser, may_instantiate_first_passer){
     auto *fp = new DataFirstPasser("", new SymbolTable());
@@ -73,9 +73,9 @@ TEST(DataFirstPasser, should_register_invalid_mnemonics){
     std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
     fp->pass();
-    std::vector<ParsingException> errors;
-    errors.insert(errors.end(), UnknownOperationException(1, "cons"));
-    errors.insert(errors.end(), UnknownOperationException(2, "spac"));
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), UnknownOperationError(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationError(2, "spac"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }
@@ -84,9 +84,9 @@ TEST(DataFirstPasser, should_consider_line_offset){
     std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2, 2);
     fp->pass();
-    std::vector<ParsingException> errors;
-    errors.insert(errors.end(), UnknownOperationException(2, "cons"));
-    errors.insert(errors.end(), UnknownOperationException(3, "spac"));
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), UnknownOperationError(2, "cons"));
+    errors.insert(errors.end(), UnknownOperationError(3, "spac"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }
@@ -109,10 +109,10 @@ TEST(DataFirstPasser, should_register_all_errors){
     std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1, 2";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
     fp->pass();
-    std::vector<ParsingException> errors;
-    errors.insert(errors.end(), UnknownOperationException(1, "cons"));
-    errors.insert(errors.end(), UnknownOperationException(2, "spac"));
-    errors.insert(errors.end(), InvalidOperandCountException(3, "const"));
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), UnknownOperationError(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationError(2, "spac"));
+    errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }

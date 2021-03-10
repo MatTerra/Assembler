@@ -3,12 +3,10 @@
 //
 #include <iomanip>
 #include <sstream>
-#include <exceptions/undefinedsymbolexception.h>
+#include <parsingerrors/undefinedsymbolerror.h>
 #include <exceptions/symbolnotfoundexception.h>
-#include <exceptions/operationnotfoundexception.h>
-#include <exceptions/unknownoperationexception.h>
-#include <exceptions/invalidoperandcountexception.h>
-#include <exceptions/invalidoperationexception.h>
+#include <parsingerrors/unknownoperationerror.h>
+#include <parsingerrors/invalidoperandcounterror.h>
 #include "secondpasser.h"
 
 std::string SecondPasser::getProcessedLine(int line) {
@@ -43,11 +41,11 @@ void SecondPasser::processOperation(CodeLine &line,
 
 void SecondPasser::validateOperation(CodeLine &line, long lineNumber) {
     if (line.getOperation() == nullptr) {
-        errors.insert(errors.end(), UnknownOperationException(lineNumber, line.getOperationMnemonic()));
+        errors.insert(errors.end(), UnknownOperationError(lineNumber, line.getOperationMnemonic()));
         return;
     }
     if (!line.getOperation()->isValid())
-        errors.insert(errors.end(), InvalidOperandCountException(lineNumber, line.getOperationMnemonic()));
+        errors.insert(errors.end(), InvalidOperandCountError(lineNumber, line.getOperationMnemonic()));
 }
 
 void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
@@ -71,11 +69,11 @@ void SecondPasser::addFormattedOperandToProcessedLine(std::string &operand,
                       << symbolTable->getSymbolAddress(operand);
     }  catch (SymbolNotFoundException &exception) {
         errors.insert(errors.end(),
-                      UndefinedSymbolException(lineNumber, operand));
+                      UndefinedSymbolError(lineNumber, operand));
     }
 }
 
-std::vector<ParsingException> SecondPasser::getErrors() {
+std::vector<ParsingError> SecondPasser::getErrors() {
     return errors;
 }
 

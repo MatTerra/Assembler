@@ -5,6 +5,7 @@
 #include "symboltable.h"
 #include "exceptions/symbolnotfoundexception.h"
 #include <string>
+#include <exceptions/symbolalreadyexistsexception.h>
 
 TEST(SymbolTable, may_get_symboltable_instance){
     auto *st = new SymbolTable();
@@ -37,6 +38,12 @@ TEST(SymbolTable_Symbol, symbol_should_exist_after_adding){
     auto *st = new SymbolTable();
     st->addSymbol("test", 0);
     ASSERT_TRUE(st->hasSymbol("test"));
+}
+
+TEST(SymbolTable_Symbol, add_duplicate_symbol_should_throw_exception){
+    auto *st = new SymbolTable();
+    st->addSymbol("test", 0);
+    ASSERT_THROW(st->addSymbol("test", 1), SymbolAlreadyExistsException);
 }
 
 TEST(SymbolTable_Address, should_return_symbol_address){

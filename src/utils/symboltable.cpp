@@ -2,6 +2,7 @@
 // Created by mateusberardo on 28/02/2021.
 //
 
+#include <exceptions/symbolalreadyexistsexception.h>
 #include "symboltable.h"
 #include "exceptions/symbolnotfoundexception.h"
 
@@ -10,6 +11,8 @@ size_t SymbolTable::getSymbolCount() {
 }
 
 void SymbolTable::addSymbol(std::string symbol, uint16_t address) {
+    if(hasSymbol(symbol))
+        throw SymbolAlreadyExistsException(symbol);
     symbolTable.emplace(symbol, address);
 }
 

@@ -2,10 +2,9 @@
 // Created by mateusberardo on 08/03/2021.
 //
 
-#include <exceptions/invalidoperationexception.h>
-#include <exceptions/unknownoperationexception.h>
+#include <parsingerrors/unknownoperationerror.h>
 #include <exceptions/operationnotfoundexception.h>
-#include <exceptions/invalidoperandcountexception.h>
+#include <parsingerrors/invalidoperandcounterror.h>
 #include "datafirstpasser.h"
 
 
@@ -30,8 +29,7 @@ void DataFirstPasser::pass() {
             DataLine dataLine = DataLine(line);
             if (!dataLine.isValid())
                 errors.insert(errors.end(),
-                              InvalidOperandCountException(nowLine,
-                                                           dataLine.getOperationMnemonic()));
+                              InvalidOperandCountError(nowLine, dataLine.getOperationMnemonic()));
             addDataLine(dataLine);
 
             updateSymbolTable(nowAddress, dataLine);
@@ -41,7 +39,7 @@ void DataFirstPasser::pass() {
 
         } catch (OperationNotFoundException &exception) {
             errors.insert(errors.end(),
-                          UnknownOperationException(nowLine, exception.what()));
+                          UnknownOperationError(nowLine, exception.what()));
         }
         if (nextPos == std::string::npos)
             break;
@@ -67,7 +65,7 @@ void DataFirstPasser::addDataLine(const DataLine &dataLine) {
     dataLines.insert(dataLines.cend(), dataLine);
 }
 
-std::vector<ParsingException> DataFirstPasser::getErrors() {
+std::vector<ParsingError> DataFirstPasser::getErrors() {
     return errors;
 }
 
