@@ -4,7 +4,7 @@
 
 #include "invalidoperandcounterror.h"
 
-InvalidOperandCountError::InvalidOperandCountError(uint16_t line,
+InvalidOperandCountError::InvalidOperandCountError(uint64_t line,
                                                    std::string operation)
         : ParsingError(line, "Semantic Error"){
     std::ostringstream what_arg_stream;

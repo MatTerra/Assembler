@@ -5,7 +5,7 @@
 
 #include "undefinedsymbolerror.h"
 
-UndefinedSymbolError::UndefinedSymbolError(uint16_t line,
+UndefinedSymbolError::UndefinedSymbolError(uint64_t line,
                                            std::string symbol)
         : ParsingError(line, "Semantic Error") {
     std::ostringstream what_arg_stream;

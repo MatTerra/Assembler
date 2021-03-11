@@ -8,7 +8,8 @@
 #include "datatypes/spacedatatype.h"
 #include "datatypes/constdatatype.h"
 
-DataLine::DataLine(std::string line) : ProcessedLine(std::move(line)) {
+DataLine::DataLine(std::string line)
+        : ProcessedLine(std::move(line)), operation(nullptr) {
     if (hasOperation())
         extractOperation();
 }
@@ -21,6 +22,11 @@ void DataLine::extractOperation() {
     std::transform(operationMnemonic.begin(), operationMnemonic.end(),
                    operationMnemonic.begin(),
                    [](unsigned char c){ return std::tolower(c); });
+    operation = nullptr;
+    createOperation();
+}
+
+void DataLine::createOperation() {
     if (operationMnemonic == "const") {
         if (operands.size() == 1)
             operation = new ConstDataType(getLabel(), getOperands()[0]);
@@ -28,9 +34,6 @@ void DataLine::extractOperation() {
             operation = new ConstDataType(getLabel(), "0");
     } else if (operationMnemonic == "space"){
         operation = new SpaceDataType(getLabel());
-    } else {
-        operation = nullptr;
-        throw OperationNotFoundException(operationMnemonic);
     }
 }
 
@@ -44,4 +47,8 @@ bool DataLine::isValid() {
     if (operation == nullptr)
         return true;
     return operands.size() == operation->getRequiredOperandCount();
+}
+
+DataType *DataLine::getOperation() {
+    return operation;
 }

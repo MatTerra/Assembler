@@ -34,11 +34,17 @@ private:
     void addDataLine(const DataLine &dataLine);
     unsigned long getLineEnd(size_t initPos) const;
     std::string getLine(size_t initPos, unsigned long nextPos) const;
-    void updateSymbolTable(uint16_t nowAddress, DataLine &dataLine);
+    void updateSymbolTable(DataLine &dataLine);
 
-    uint16_t startingAddress;
+    uint16_t nowAddress;
     std::vector<ParsingError> errors;
     long nowLine;
+
+    void processLine(std::string line);
+
+    void updateAddress(DataLine &dataLine);
+
+    void validateOperation(DataLine &dataLine);
 };
 
 

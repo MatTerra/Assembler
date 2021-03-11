@@ -2,8 +2,9 @@
 // Created by mateusberardo on 08/03/2021.
 //
 #include <parsingerrors/invalidoperandcounterror.h>
+#include <parsingerrors/symbolredefinederror.h>
 #include "gtest/gtest.h"
-#include "datafirstpasser.h"
+#include "passers/datafirstpasser.h"
 #include "dataline.h"
 #include "parsingerrors/unknownoperationerror.h"
 
@@ -112,6 +113,19 @@ TEST(DataFirstPasser, should_register_all_errors){
     std::vector<ParsingError> errors;
     errors.insert(errors.end(), UnknownOperationError(1, "cons"));
     errors.insert(errors.end(), UnknownOperationError(2, "spac"));
+    errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
+}
+
+TEST(DataFirstPasser, should_register_redefinition_errors){
+    std::string lines = "start: cons 8 ; simple const\nstart: spac\nok: CONST 1, 2";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), UnknownOperationError(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationError(2, "spac"));
+    errors.insert(errors.end(), SymbolRedefinedError(2, "start"));
     errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());

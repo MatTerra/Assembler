@@ -21,9 +21,13 @@ public:
 
     bool isValid();
 
+    DataType * getOperation();
+
 private:
     DataType *operation;
-    void extractOperation() override;;
+    void extractOperation() override;
+
+    void createOperation();
 };
 
 

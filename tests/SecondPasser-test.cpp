@@ -5,7 +5,7 @@
 #include <parsingerrors/unknownoperationerror.h>
 #include <parsingerrors/invalidoperandcounterror.h>
 #include "gtest/gtest.h"
-#include "secondpasser.h"
+#include "passers/secondpasser.h"
 #include "codeline.h"
 #include "symboltable.h"
 

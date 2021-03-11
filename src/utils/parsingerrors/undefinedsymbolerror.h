@@ -13,7 +13,7 @@
 
 class UndefinedSymbolError : public ParsingError {
 public:
-    explicit UndefinedSymbolError(uint16_t line,
+    explicit UndefinedSymbolError(uint64_t line,
                                   std::string symbol);
 };
 

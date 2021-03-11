@@ -9,7 +9,7 @@
 
 class UnknownOperationError : public ParsingError {
 public:
-    explicit UnknownOperationError(uint16_t line, std::string mnemonic);
+    explicit UnknownOperationError(uint64_t line, std::string mnemonic);
 };
 
 

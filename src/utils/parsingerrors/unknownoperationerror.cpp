@@ -3,7 +3,8 @@
 //
 
 #include "unknownoperationerror.h"
-UnknownOperationError::UnknownOperationError(uint16_t line,
+
+UnknownOperationError::UnknownOperationError(uint64_t line,
                                              std::string mnemonic)
         : ParsingError(line, "Lexical Error") {
     std::ostringstream what_arg_stream;

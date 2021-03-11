@@ -10,7 +10,7 @@
 
 class InvalidOperandCountError : public ParsingError {
 public:
-    explicit InvalidOperandCountError(uint16_t line, std::string operation);
+    explicit InvalidOperandCountError(uint64_t line, std::string operation);
 };
 
 

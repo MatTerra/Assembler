@@ -11,7 +11,7 @@
 
 class ParsingError {
 public:
-    explicit ParsingError(uint16_t line, std::string errorType)
+    explicit ParsingError(uint64_t line, std::string errorType)
         :line(line), errorType(std::move(errorType)){};
     std::string what();
 

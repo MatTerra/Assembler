@@ -167,8 +167,9 @@ TEST(DataLine_Operand, should_have_operands){
     ASSERT_TRUE(dl->hasOperands());
 }
 
-TEST(DataLine_Operation, should_throw_exception_if_mnemonic_wrong){
-    ASSERT_THROW(new DataLine("cons 6"), OperationNotFoundException);
+TEST(DataLine_Operation, operation_should_be_null_if_mnemonic_wrong){
+    auto dl = new DataLine("cons 6");
+    ASSERT_EQ(nullptr, dl->getOperation());
 }
 
 TEST(DataLine_Operand, should_be_empty_if_no_operands){
@@ -210,6 +211,11 @@ TEST(DataLine_Operand, should_be_invalid_if_const_no_operands){
 TEST(DataLine_Operand, should_be_valid_if_no_operation){
     auto *dl = new DataLine("end:     ; final");
     ASSERT_TRUE(dl->isValid());
+}
+
+TEST(DataLine_Operation, should_get_operation){
+    auto *dl = new DataLine("end: const 8    ; final");
+    ASSERT_NE(nullptr, dl->getOperation());
 }
 
 TEST(DataLine_equals, should_be_equal_if_raw_equals){

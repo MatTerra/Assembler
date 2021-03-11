@@ -1,8 +1,9 @@
 //
 // Created by mateusberardo on 01/03/2021.
 //
+#include <parsingerrors/symbolredefinederror.h>
 #include "gtest/gtest.h"
-#include "codefirstpasser.h"
+#include "passers/codefirstpasser.h"
 #include "codeline.h"
 
 TEST(CodeFirstPasser, may_instantiate_first_passer){
@@ -43,10 +44,10 @@ TEST(FirstPasser_CodeLines, should_get_final_address){
 }
 
 TEST(FirstPasser_CodeLines, pass_should_generate_code_lines_vector_with_multiple_code_lines){
-    std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
+    std::string lines = "start: add 8 ; simple add\n  stop\nok: jmp start";
     auto *cl = new CodeLine("start: add 8 ; simple add");
     auto *cl2 = new CodeLine("  stop");
-    auto *cl3 = new CodeLine("ok: CONST 1");
+    auto *cl3 = new CodeLine("ok: jmp start");
     auto codeLines = std::vector<CodeLine>();
     codeLines.insert(codeLines.cend(), *cl);
     codeLines.insert(codeLines.cend(), *cl2);
@@ -57,7 +58,7 @@ TEST(FirstPasser_CodeLines, pass_should_generate_code_lines_vector_with_multiple
 }
 
 TEST(FirstPasser_ShouldGenerateSymbolTable, pass_should_register_all_symbols){
-    std::string lines = "start: add 8 ; simple add\n  stop\nok: CONST 1";
+    std::string lines = "start: add 8 ; simple add\n  stop\nok: jmp start";
     auto fp = new CodeFirstPasser(lines);
     fp->pass();
     auto *st = fp->getSymbolTable();
@@ -73,4 +74,30 @@ TEST(FirstPasser, should_generate_correct_addresses){
     ASSERT_EQ(0, st->getSymbolAddress("start"));
     ASSERT_EQ(4, st->getSymbolAddress("end"));
     ASSERT_EQ(5, fp->getFinalAddress());
+}
+
+TEST(FirstPasser, should_count_0_errors_if_ok){
+    auto *firstPasser = new CodeFirstPasser("start: add 8 ; simple add\nstop");
+    firstPasser->pass();
+    ASSERT_EQ(0, firstPasser->getErrorCount());
+}
+
+TEST(FirstPasser, should_count_errors_if_not_ok){
+    auto *firstPasser = new CodeFirstPasser("start: add 8 ; simple add\nstart: stop");
+    firstPasser->pass();
+    ASSERT_EQ(1, firstPasser->getErrorCount());
+}
+
+TEST(FirstPasser, should_have_error_if_symbol_redefined){
+    auto *firstPasser = new CodeFirstPasser("start: add 8 ; simple add\nstart: stop");
+    firstPasser->pass();
+    ASSERT_EQ(SymbolRedefinedError(2, "start").what(),
+              firstPasser->getErrors()[0].what());
+}
+
+TEST(FirstPasser, error_should_consider_starting_line){
+    auto *firstPasser = new CodeFirstPasser("start: add 8 ; simple add\nstart: stop", 2);
+    firstPasser->pass();
+    ASSERT_EQ(SymbolRedefinedError(3, "start").what(),
+              firstPasser->getErrors()[0].what());
 }

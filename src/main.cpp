@@ -2,11 +2,11 @@
 #include <vector>
 #include <fstream>
 #include <streambuf>
-#include <codefirstpasser.h>
-#include <secondpasser.h>
+#include <passers/codefirstpasser.h>
+#include <passers/secondpasser.h>
 #include <iostream>
 #include <sectionextractor.h>
-#include <datafirstpasser.h>
+#include <passers/datafirstpasser.h>
 #include <iomanip>
 
 std::string readFile(const char *filename);
@@ -68,7 +68,8 @@ void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
 }
 
 CodeFirstPasser *makeTextPass(SectionExtractor *extractor) {
-    auto first = new CodeFirstPasser(extractor->getTextSection());
+    auto first = new CodeFirstPasser(extractor->getTextSection(),
+                                     extractor->getTextLineOffset());
     first->pass();
     return first;
 }

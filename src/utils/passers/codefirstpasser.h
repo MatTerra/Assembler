@@ -8,12 +8,17 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "symboltable.h"
-#include "codeline.h"
+#include <iostream>
+#include <utility>
+#include <exceptions/symbolalreadyexistsexception.h>
+#include <parsingerrors/symbolredefinederror.h>
+#include <parsingerrors/parsingerror.h>
+#include <symboltable.h>
+#include <codeline.h>
 
 class CodeFirstPasser {
 public:
-    explicit CodeFirstPasser(std::string fileContent);
+    explicit CodeFirstPasser(std::string fileContent, uint64_t startingLine=1);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
     std::vector<CodeLine> getCodeLines();
@@ -21,6 +26,10 @@ public:
     void pass();
 
     uint16_t getFinalAddress() const;
+
+    int getErrorCount();
+
+    std::vector<ParsingError> getErrors();
 
 private:
     std::string fileContent;
@@ -33,6 +42,15 @@ private:
     void updateSymbolTable(CodeLine &codeLine);
 
     uint16_t nowAddress{};
+    std::vector<ParsingError> errors;
+
+    void updateAddress(CodeLine &codeLine);
+
+    void processLine(std::string line);
+
+    bool hasMoreLines(unsigned long lineEnd) const;
+
+    uint64_t nowLine;
 };
 
 

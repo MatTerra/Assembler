@@ -16,12 +16,11 @@ std::string SecondPasser::getProcessedLine(int line) {
 }
 
 void SecondPasser::pass() {
-    uint16_t lineCounter = startingLine;
     for (auto &line : codeLines)
-        processLine(line, lineCounter++);
+        processLine(line, startingLine++);
 }
 
-void SecondPasser::processLine(CodeLine &line, uint16_t lineNumber) {
+void SecondPasser::processLine(CodeLine &line, uint64_t lineNumber) {
     std::ostringstream processedLine;
 
     if (line.hasOperation())
@@ -55,14 +54,14 @@ void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
 
 void SecondPasser::addOperandsAddressesToProcessedLine(CodeLine &line,
                                                        std::ostringstream &processedLine,
-                                                       long lineNumber) {
+                                                       uint64_t lineNumber) {
     for (auto &operand : line.getOperands())
         addFormattedOperandToProcessedLine(operand, processedLine, lineNumber);
 }
 
 void SecondPasser::addFormattedOperandToProcessedLine(std::string &operand,
                                                       std::ostringstream &processedLine,
-                                                      long lineNumber) {
+                                                      uint64_t lineNumber) {
     try{
         processedLine << " " << std::setfill('0')
                       << std::setw(2)
