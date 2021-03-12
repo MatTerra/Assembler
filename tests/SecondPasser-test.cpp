@@ -4,6 +4,7 @@
 #include <parsingerrors/undefinedsymbolerror.h>
 #include <parsingerrors/unknownoperationerror.h>
 #include <parsingerrors/invalidoperandcounterror.h>
+#include <parsingerrors/invalidoperanderror.h>
 #include "gtest/gtest.h"
 #include "passers/secondpasser.h"
 #include "codeline.h"
@@ -85,6 +86,17 @@ TEST(SecondPasser, error_should_consider_starting_line){
     auto *secondPasser = new SecondPasser(cl, sb, 3);
     secondPasser->pass();
     ASSERT_EQ(InvalidOperandCountError(3, "JMP").what(),
+              secondPasser->getErrors()[0].what());
+}
+
+TEST(SecondPasser, invalid_operand_should_generate_error){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.cbegin(), CodeLine("start: JMP 10; nothing to do"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb, 3);
+    secondPasser->pass();
+    ASSERT_EQ(InvalidOperandError(3, "10").what(),
               secondPasser->getErrors()[0].what());
 }
 

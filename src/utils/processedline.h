@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 #include <string>
+#include "stringutils.h"
 
 class ProcessedLine {
 public:
@@ -38,6 +39,8 @@ protected:
     void extractOperationMnemonic();
     void extractOperands();
     virtual void extractOperation() = 0;
+
+
 };
 
 

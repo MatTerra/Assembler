@@ -40,6 +40,19 @@ TEST(SymbolTable_Symbol, symbol_should_exist_after_adding){
     ASSERT_TRUE(st->hasSymbol("test"));
 }
 
+TEST(SymbolTable_Symbol, should_validate_symbol){
+    ASSERT_FALSE(SymbolTable::isValidSymbol("test test"));
+    ASSERT_FALSE(SymbolTable::isValidSymbol("test "));
+    ASSERT_FALSE(SymbolTable::isValidSymbol("8test"));
+    ASSERT_FALSE(SymbolTable::isValidSymbol("test,test"));
+    ASSERT_FALSE(SymbolTable::isValidSymbol("testtesttesttesttestt"));
+    ASSERT_FALSE(SymbolTable::isValidSymbol(""));
+}
+
+TEST(SymbolTable_Symbol, should_validate_symbol_when_ok){
+    ASSERT_TRUE(SymbolTable::isValidSymbol("test"));
+}
+
 TEST(SymbolTable_Symbol, add_duplicate_symbol_should_throw_exception){
     auto *st = new SymbolTable();
     st->addSymbol("test", 0);

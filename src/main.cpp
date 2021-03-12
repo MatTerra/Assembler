@@ -1,27 +1,24 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <streambuf>
 #include <passers/codefirstpasser.h>
 #include <passers/secondpasser.h>
-#include <iostream>
 #include <sectionextractor.h>
 #include <passers/datafirstpasser.h>
-#include <iomanip>
 
-std::string readFile(const char *filename);
+std::string readFile(std::string filename);
 void printErrors(std::vector<ParsingError> errors);
 
 bool hasErrors(SecondPasser *second);
 bool hasErrors(DataFirstPasser *passer);
 
-void outputAssembledInstructions(std::ostream &output, SecondPasser *second);
+void outputAssembledInstructions(std::ofstream &output, SecondPasser *second);
 
-void outputAssembledData(std::ostream &output, DataFirstPasser *data);
+void outputAssembledData(std::ofstream &output, DataFirstPasser *data);
 
 void printAllErrors(DataFirstPasser *data, SecondPasser *second);
 
-void outputAssembledProgram(std::ostream &output, DataFirstPasser *data,
+void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
                             SecondPasser *second);
 
 SecondPasser * makeSecondPass(CodeFirstPasser *first, long lineOffset);
@@ -36,13 +33,21 @@ void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
                    DataFirstPasser *&data);
 
 int main(int argc, char **argv) {
-    std::ostream &output = std::cout;
     if (argc != 2) {
         std::cout << "Expected filename as single argument to executable!";
         return 1;
     }
 
-    auto extractor = new SectionExtractor(readFile(argv[1]));
+    auto filename = std::string(argv[1]);
+
+    auto extension = filename.substr(filename.find_last_of('.'));
+    if (extension != ".asm"){
+        std::cout << "Expected an .asm file!";
+        return 1;
+    }
+
+
+    auto extractor = new SectionExtractor(readFile(filename));
 
     CodeFirstPasser *first;
     DataFirstPasser *data;
@@ -55,6 +60,8 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    std::ofstream output;
+    output.open(filename.substr(0, filename.find_last_of('.'))+".obj") ;
     outputAssembledProgram(output, data, second);
 
     return 0;
@@ -92,10 +99,12 @@ SecondPasser * makeSecondPass(CodeFirstPasser *first, long lineOffset) {
     return second;
 }
 
-void outputAssembledProgram(std::ostream &output, DataFirstPasser *data,
+void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
                             SecondPasser *second) {
     outputAssembledInstructions(output, second);
     outputAssembledData(output, data);
+    output.flush();
+    output.close();
 }
 
 void printAllErrors(DataFirstPasser *data, SecondPasser *second) {
@@ -103,13 +112,13 @@ void printAllErrors(DataFirstPasser *data, SecondPasser *second) {
     printErrors(second->getErrors());
 }
 
-void outputAssembledData(std::ostream &output, DataFirstPasser *data) {
+void outputAssembledData(std::ofstream &output, DataFirstPasser *data) {
     for (auto &dataLine : data->getDataLines())
         if (dataLine.hasOperation())
             output << " " << dataLine.getValue();
 }
 
-void outputAssembledInstructions(std::ostream &output, SecondPasser *second) {
+void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
     for (int i = 0; i < second->getLineCount(); i++) {
         auto pl = second->getProcessedLine(i);
         if (!pl.empty()) {
@@ -133,7 +142,7 @@ void printErrors(std::vector<ParsingError> errors) {
         std::cout << error.what() << std::endl;
 }
 
-std::string readFile(const char *filename) {
+std::string readFile(std::string filename) {
     std::ifstream t(filename);
     return std::string ((std::istreambuf_iterator<char>(t)),
                         std::istreambuf_iterator<char>());

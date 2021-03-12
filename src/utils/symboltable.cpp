@@ -3,6 +3,7 @@
 //
 
 #include <exceptions/symbolalreadyexistsexception.h>
+#include <regex>
 #include "symboltable.h"
 #include "exceptions/symbolnotfoundexception.h"
 
@@ -24,4 +25,8 @@ uint16_t SymbolTable::getSymbolAddress(std::string symbol) {
     if(!hasSymbol(symbol))
         throw SymbolNotFoundException(symbol);
     return symbolTable[symbol];
+}
+
+bool SymbolTable::isValidSymbol(std::string symbol) {
+    return std::regex_match(symbol, std::regex("[a-zA-Z_][a-zA-Z0-9]{0,19}"));
 }

@@ -3,6 +3,8 @@
 //
 
 #include <parsingerrors/symbolredefinederror.h>
+#include <parsingerrors/invalidlabelerror.h>
+#include <parsingerrors/invalidoperanderror.h>
 #include "gtest/gtest.h"
 #include "parsingerrors/undefinedsymbolerror.h"
 #include "parsingerrors/unknownoperationerror.h"
@@ -27,6 +29,18 @@ TEST(InvalidOperandCountError, what_shoud_describe_error){
 TEST(SymbolRedefinedError, what_shoud_describe_error){
     auto *exc = new SymbolRedefinedError(2, "add");
     ASSERT_EQ("Semantic Error: Redefinition of symbol \"add\" in line 2.",
+              exc->what());
+}
+
+TEST(InvalidLabelError, what_shoud_describe_error){
+    auto *exc = new InvalidLabelError(2, "label label");
+    ASSERT_EQ("Syntax Error: Invalid label \"label label\" in line 2.",
+              exc->what());
+}
+
+TEST(InvalidOperandError, what_shoud_describe_error){
+    auto *exc = new InvalidOperandError(2, "3");
+    ASSERT_EQ("Semantic Error: Invalid operand \"3\" in line 2.",
               exc->what());
 }
 

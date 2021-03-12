@@ -17,8 +17,8 @@ class SecondPasser {
 public:
     SecondPasser(std::vector<CodeLine> codeLines, SymbolTable* symbolTable,
                  uint64_t startingLine = 1)
-        :codeLines(std::move(codeLines)), symbolTable(symbolTable),
-         startingLine(startingLine){};
+        : codeLines(std::move(codeLines)), symbolTable(symbolTable),
+          nowLine(startingLine){};
 
     void pass();
 
@@ -30,7 +30,7 @@ public:
     uint16_t getLineCount();
 
 private:
-    uint16_t startingLine;
+    uint16_t nowLine;
     std::vector<CodeLine> codeLines;
     SymbolTable *symbolTable;
     std::vector<std::string> processedLines;
@@ -39,16 +39,13 @@ private:
     void
     addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);
     void addOperandsAddressesToProcessedLine(CodeLine &line,
-                                             std::ostringstream &processedLine,
-                                             uint64_t lineNumber);
-    void addFormattedOperandToProcessedLine(std::string &operand,
-                                            std::ostringstream &processedLine,
-                                            uint64_t lineNumber);
+                                             std::ostringstream &processedLine);
+    void addFormattedOperandToProcessedLineIfValid(std::string &operand,
+                                                   std::ostringstream &processedLine);
     void processOperation(CodeLine &line,
-                          std::ostringstream &processedLine,
-                          long lineNumber);
-    void processLine(CodeLine &line, uint64_t lineNumber);
-    void validateOperation(CodeLine &line, long lineNumber);
+                          std::ostringstream &processedLine);
+    void processLine(CodeLine &line);
+    void validateOperation(CodeLine &line);
 };
 
 

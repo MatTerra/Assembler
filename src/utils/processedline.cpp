@@ -3,7 +3,6 @@
 //
 
 #include "processedline.h"
-#include "stringutils.h"
 
 ProcessedLine::ProcessedLine(std::string line) :rawLine(std::move(line)) {
     if (hasLabel())

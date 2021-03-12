@@ -2,6 +2,7 @@
 // Created by mateusberardo on 01/03/2021.
 //
 
+#include <parsingerrors/invalidlabelerror.h>
 #include "codefirstpasser.h"
 
 CodeFirstPasser::CodeFirstPasser(std::string fileContent, uint64_t startingLine)
@@ -53,7 +54,12 @@ void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
 void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
     if (codeLine.hasLabel())
         try {
-            symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
+            if (SymbolTable::isValidSymbol(codeLine.getLabel())) {
+                symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
+                return;
+            }
+            errors.insert(errors.end(), InvalidLabelError(nowLine,
+                                                          codeLine.getLabel()));
         }catch (SymbolAlreadyExistsException &exception){
             errors.insert(errors.end(), SymbolRedefinedError(nowLine,
                                                              exception.what()));

@@ -17,6 +17,8 @@ public:
     bool hasSymbol(std::string string);
     uint16_t getSymbolAddress(std::string symbol);
 
+    static bool isValidSymbol(std::string string);
+
 private:
     std::unordered_map<std::string, uint16_t> symbolTable;
 };
