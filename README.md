@@ -59,7 +59,7 @@ This repository doesn't accept contributions until December 2021. If you must co
 
 * **Mateus Berardo** - *Initial Work* - [MatTerra](https://github.com/MatTerra)
 
-Also check out the [contributors](contributors).
+Also check out the [contributors](graphs/contributors).
 
 ## License
 
@@ -67,5 +67,5 @@ The author reserves all rights to the code hereby provided. It is strictly prohi
 
 ## Agradecimentos
 
-* **Billie Thompson** - *Trabalho Inicial* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Billie Thompson** - *README template* - [PurpleBooth](https://github.com/PurpleBooth)
 
