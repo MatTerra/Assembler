@@ -8,7 +8,7 @@ This is an assembler for a made up assembly language. The machine has a memory w
 
 The supported operations are shown in the figure below:
 
-![rsc/instructions.png]
+![instructions](rsc/instructions.png)
 
 ## First Steps
 
