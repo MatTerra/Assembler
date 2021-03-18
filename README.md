@@ -46,7 +46,7 @@ The project was developed through an TDD approach, thus, it contains a thorough 
 ./montador_tst
 ```
 
-## Ferramentas de build
+## Build tools
 
 * [CMake](https://cmake.org/)
 * [Make](https://www.gnu.org/software/make/)
@@ -58,6 +58,7 @@ This repository doesn't accept contributions until December 2021. If you must co
 ## Autores
 
 * **Mateus Berardo** - *Initial Work* - [MatTerra](https://github.com/MatTerra)
+
 Also check out the [contributors](contributors).
 
 ## License
