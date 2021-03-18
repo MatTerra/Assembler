@@ -21,7 +21,7 @@ To compile the project, follow the steps below.
 First, run cmake to generate the makefiles:
 ```
 cmake -B build
-``'
+```
 
 Then, go into the build dir, and run make (you may add `-j<cores>` to speed up compilation):
 ```
