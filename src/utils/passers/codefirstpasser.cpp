@@ -30,7 +30,7 @@ void CodeFirstPasser::pass() {
 }
 
 unsigned long CodeFirstPasser::getLineEnd(size_t initPos) const {
-    return fileContent.find_first_of('\n', initPos + 1);
+    return fileContent.find_first_of('\n', initPos);
 }
 
 std::string CodeFirstPasser::getLine(size_t initPos, unsigned long nextPos) const {

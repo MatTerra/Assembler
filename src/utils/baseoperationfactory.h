@@ -27,6 +27,7 @@
 #include "operations/jmpzoperation.h"
 #include "operations/copyoperation.h"
 #include "datatype.h"
+#include "stringutils.h"
 
 template <typename T>
 class BaseOperationFactory {
@@ -42,8 +43,7 @@ public:
     }
 
     T* create(std::string name, std::vector<std::string> operands) {
-        std::transform(name.begin(), name.end(), name.begin(),
-                       [](unsigned char c){ return std::tolower(c); });
+        lowerCaseString(name);
         if (_createFuncs.find(name) != _createFuncs.end()) {
             return _createFuncs[name](operands);
         }

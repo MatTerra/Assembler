@@ -7,6 +7,11 @@
 
 #include <unordered_map>
 #include <string>
+#include <regex>
+#include <exceptions/symbolalreadyexistsexception.h>
+#include <exceptions/symbolnotfoundexception.h>
+#include "stringutils.h"
+
 
 
 class SymbolTable {
@@ -21,6 +26,7 @@ public:
 
 private:
     std::unordered_map<std::string, uint16_t> symbolTable;
+
 };
 
 

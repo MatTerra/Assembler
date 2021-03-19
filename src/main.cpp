@@ -123,7 +123,7 @@ void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
         auto pl = second->getProcessedLine(i);
         if (!pl.empty()) {
             output << pl;
-            if (i < (second->getLineCount() - 2))
+            if (i < (second->getLineCount() - 1))
                 output << " ";
         }
     }

@@ -5,6 +5,8 @@
 #define STRING_UTILS_H
 
 #include <string>
+#include <algorithm>
+
 static const char *const whitespaces = " \t\r\f\v\n";
 
 static void removeLeadingWhitespaces(std::string &myString){
@@ -17,4 +19,8 @@ static void trim(std::string &myString){
     removeLeadingWhitespaces(myString);
     removeTrailingWhitespaces(myString);
 };
+static void lowerCaseString(std::string &string) {
+    std::transform(string.begin(), string.end(), string.begin(),
+                   [](unsigned char c){ return tolower(c); });
+}
 #endif

@@ -109,3 +109,9 @@ TEST(FirstPasser, error_should_consider_starting_line){
     ASSERT_EQ(SymbolRedefinedError(3, "start").what(),
               firstPasser->getErrors()[0].what());
 }
+TEST(FirstPasser, shouldnt_skip_newlines){
+    auto *firstPasser = new CodeFirstPasser("start:\n\n; Starting the code now\n\nstart: load start", 11);
+    firstPasser->pass();
+    ASSERT_EQ(SymbolRedefinedError(15, "start").what(),
+              firstPasser->getErrors()[0].what());
+}
