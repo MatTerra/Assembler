@@ -17,7 +17,7 @@ TEST(UndefinedSymbolError, what_shoud_describe_error){
 
 TEST(UnknowOperationError, what_shoud_describe_error){
     auto *exc = new UnknownOperationError(1, "ok");
-    ASSERT_EQ("Lexical Error: Unknown mnemonic \"ok\" in line 1.", exc->what());
+    ASSERT_EQ("Syntax Error: Unknown mnemonic \"ok\" in line 1.", exc->what());
 }
 
 TEST(InvalidOperandCountError, what_shoud_describe_error){
