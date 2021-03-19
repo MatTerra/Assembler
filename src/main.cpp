@@ -119,14 +119,9 @@ void outputAssembledData(std::ofstream &output, DataFirstPasser *data) {
 }
 
 void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
-    for (int i = 0; i < second->getLineCount(); i++) {
-        auto pl = second->getProcessedLine(i);
-        if (!pl.empty()) {
-            output << pl;
-            if (i < (second->getLineCount() - 1))
-                output << " ";
-        }
-    }
+    int lineCount = second->getLineCount();
+    for (auto pl : second->getProcessedLines())
+        output << pl << ((--lineCount > 0)?" ":"");
 }
 
 bool hasErrors(SecondPasser *second) {

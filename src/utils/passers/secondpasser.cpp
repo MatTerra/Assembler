@@ -17,10 +17,8 @@ std::string SecondPasser::getProcessedLine(int line) {
 }
 
 void SecondPasser::pass() {
-    for (auto &line : codeLines) {
+    for (auto &line : codeLines)
         processLine(line);
-        nowLine++;
-    }
 }
 
 void SecondPasser::processLine(CodeLine &line) {
@@ -29,8 +27,7 @@ void SecondPasser::processLine(CodeLine &line) {
     if (line.hasOperation())
         processOperation(line, processedLine);
 
-    processedLines.insert(processedLines.end(),
-                          processedLine.str());
+    nowLine++;
 }
 
 void SecondPasser::processOperation(CodeLine &line,
@@ -38,6 +35,8 @@ void SecondPasser::processOperation(CodeLine &line,
     validateOperation(line);
     addOpCodeToProcessedLine(line, processedLine);
     addOperandsAddressesToProcessedLine(line, processedLine);
+    processedLines.insert(processedLines.end(),
+                          processedLine.str());
 }
 
 void SecondPasser::validateOperation(CodeLine &line) {
@@ -87,4 +86,8 @@ int16_t SecondPasser::getErrorCount() {
 
 uint16_t SecondPasser::getLineCount() {
     return processedLines.size();
+}
+
+std::vector<std::string> SecondPasser::getProcessedLines() {
+    return processedLines;
 }

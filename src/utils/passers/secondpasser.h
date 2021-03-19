@@ -29,6 +29,8 @@ public:
 
     uint16_t getLineCount();
 
+    std::vector<std::string> getProcessedLines();
+
 private:
     uint16_t nowLine;
     std::vector<CodeLine> codeLines;

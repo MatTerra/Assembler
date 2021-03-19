@@ -166,7 +166,7 @@ TEST(SecondPasser, should_count_1_line){
     ASSERT_EQ(1, secondPasser->getLineCount());
 }
 
-TEST(SecondPasser, should_be_able_to_count_3_lines_with_comments){
+TEST(SecondPasser, should_be_able_to_count_3_lines_with_comments_and_count_only_code_lines){
     auto cl = std::vector<CodeLine>();
     cl.insert(cl.cbegin(), CodeLine("start: JMP start; nothing to do"));
     cl.insert(cl.cbegin(), CodeLine(" ; just comment"));
@@ -175,7 +175,7 @@ TEST(SecondPasser, should_be_able_to_count_3_lines_with_comments){
     sb->addSymbol("start", 0);
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
-    ASSERT_EQ(3, secondPasser->getLineCount());
+    ASSERT_EQ(2, secondPasser->getLineCount());
 }
 
 TEST(SecondPasser, should_be_able_to_parse_3_lines_independently){
@@ -188,8 +188,22 @@ TEST(SecondPasser, should_be_able_to_parse_3_lines_independently){
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
     ASSERT_EQ("05 00", secondPasser->getProcessedLine(0));
-    ASSERT_EQ("", secondPasser->getProcessedLine(1));
-    ASSERT_EQ("01 00", secondPasser->getProcessedLine(2));
+    ASSERT_EQ("01 00", secondPasser->getProcessedLine(1));
+}
+
+TEST(SecondPasser, should_be_able_to_get_all_lines){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("start: JMP start; nothing to do"));
+    cl.insert(cl.end(), CodeLine(" ; just comment"));
+    cl.insert(cl.end(), CodeLine(" add start"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    auto pl = std::vector<std::string>();
+    pl.insert(pl.end(), "05 00");
+    pl.insert(pl.end(), "01 00");
+    ASSERT_EQ(pl, secondPasser->getProcessedLines());
 }
 
 TEST(SecondPasser, get_non_existent_line_shouldnt_crash){
