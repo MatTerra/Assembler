@@ -22,7 +22,7 @@ TEST(UnknowOperationError, what_shoud_describe_error){
 
 TEST(InvalidOperandCountError, what_shoud_describe_error){
     auto *exc = new InvalidOperandCountError(1, "add");
-    ASSERT_EQ("Semantic Error: Invalid operand count for operation \"add\" in line 1.",
+    ASSERT_EQ("Syntax Error: Invalid operand count for operation \"add\" in line 1.",
               exc->what());
 }
 
@@ -34,13 +34,13 @@ TEST(SymbolRedefinedError, what_shoud_describe_error){
 
 TEST(InvalidLabelError, what_shoud_describe_error){
     auto *exc = new InvalidLabelError(2, "label label");
-    ASSERT_EQ("Syntax Error: Invalid label \"label label\" in line 2.",
+    ASSERT_EQ("Lexical Error: Invalid label \"label label\" in line 2.",
               exc->what());
 }
 
 TEST(InvalidOperandError, what_shoud_describe_error){
     auto *exc = new InvalidOperandError(2, "3");
-    ASSERT_EQ("Semantic Error: Invalid operand \"3\" in line 2.",
+    ASSERT_EQ("Syntax Error: Invalid operand \"3\" in line 2.",
               exc->what());
 }
 

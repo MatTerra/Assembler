@@ -6,7 +6,7 @@
 
 InvalidOperandCountError::InvalidOperandCountError(uint64_t line,
                                                    std::string operation)
-        : ParsingError(line, "Semantic Error"){
+        : ParsingError(line, "Syntax Error"){
     std::ostringstream what_arg_stream;
     what_arg_stream << "Invalid operand count for operation \""
         << operation << "\"";
