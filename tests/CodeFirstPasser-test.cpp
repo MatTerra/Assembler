@@ -96,6 +96,13 @@ TEST(FirstPasser, should_have_error_if_symbol_redefined){
               firstPasser->getErrors()[0].what());
 }
 
+TEST(FirstPasser, should_have_error_if_symbol_redefined_2){
+    auto *firstPasser = new CodeFirstPasser("adding_one: add just_single_data\nADDING_one: add just_single_data\n;\n; This label was redefined\nstop\n");
+    firstPasser->pass();
+    ASSERT_EQ(SymbolRedefinedError(2, "adding_one").what(),
+              firstPasser->getErrors()[0].what());
+}
+
 TEST(FirstPasser, should_have_error_if_label_invalid){
     auto *firstPasser = new CodeFirstPasser("start start: add 8 ; simple add\nstart: stop");
     firstPasser->pass();

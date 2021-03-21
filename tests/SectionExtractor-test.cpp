@@ -23,6 +23,13 @@ TEST(SectionExtractor, may_get_data_content){
     ASSERT_EQ(dataContent, se->getDataSection());
 }
 
+TEST(SectionExtractor, may_get_data_content_case_insensitive){
+    auto line = "section dAtA\nlabel: const 8\nsection text\nstop";
+    auto dataContent = "label: const 8\n";
+    auto se = new SectionExtractor(line);
+    ASSERT_EQ(dataContent, se->getDataSection());
+}
+
 TEST(SectionExtractor, may_get_data_content_after){
     auto line = "section text\nstop\nsection data\nlabel: const 8";
     auto dataContent = "label: const 8";
@@ -72,6 +79,13 @@ TEST(SectionExtractor, shouldnt_crash_if_unknown_section){
 
 TEST(SectionExtractor, may_get_text_content){
     auto line = "section data\nlabel: const 8\nsection text\nstop";
+    auto dataContent = "stop";
+    auto se = new SectionExtractor(line);
+    ASSERT_EQ(dataContent, se->getTextSection());
+}
+
+TEST(SectionExtractor, may_get_text_content_case_insensitive){
+    auto line = "section data\nlabel: const 8\nsection tEXt\nstop";
     auto dataContent = "stop";
     auto se = new SectionExtractor(line);
     ASSERT_EQ(dataContent, se->getTextSection());

@@ -3,6 +3,7 @@
 //
 #include <parsingerrors/invalidoperandcounterror.h>
 #include <parsingerrors/symbolredefinederror.h>
+#include <parsingerrors/invalidoperanderror.h>
 #include "gtest/gtest.h"
 #include "passers/datafirstpasser.h"
 #include "dataline.h"
@@ -127,6 +128,16 @@ TEST(DataFirstPasser, should_register_redefinition_errors){
     errors.insert(errors.end(), UnknownOperationError(2, "spac"));
     errors.insert(errors.end(), SymbolRedefinedError(2, "start"));
     errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
+}
+
+TEST(DataFirstPasser, should_register_invalid_operand_errors){
+    std::string lines = "start: const 8 ; simple const\nusing: const start\n";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), InvalidOperandError(2, "start"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }

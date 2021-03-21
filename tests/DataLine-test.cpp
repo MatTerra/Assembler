@@ -172,6 +172,11 @@ TEST(DataLine_Operation, operation_should_be_null_if_mnemonic_wrong){
     ASSERT_EQ(nullptr, dl->getOperation());
 }
 
+TEST(DataLine_Operation, operation_should_be_null_if_operand_wrong){
+    auto dl = new DataLine("const start");
+    ASSERT_EQ(nullptr, dl->getOperation());
+}
+
 TEST(DataLine_Operand, should_be_empty_if_no_operands){
     auto *dl = new DataLine("end:     space ; final");
     auto result = std::vector<std::string>();
@@ -211,6 +216,11 @@ TEST(DataLine_Operand, should_be_invalid_if_const_no_operands){
 TEST(DataLine_Operand, should_be_valid_if_no_operation){
     auto *dl = new DataLine("end:     ; final");
     ASSERT_TRUE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_invalid_if_operands_wrong){
+    auto *dl = new DataLine("end:     const start; final");
+    ASSERT_FALSE(dl->isValid());
 }
 
 TEST(DataLine_Operation, should_get_operation){

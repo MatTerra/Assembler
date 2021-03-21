@@ -10,13 +10,15 @@ std::string readFile(std::string filename);
 void printErrors(std::vector<ParsingError> errors);
 
 bool hasErrors(SecondPasser *second);
+bool hasErrors(CodeFirstPasser *passer);
 bool hasErrors(DataFirstPasser *passer);
 
 void outputAssembledInstructions(std::ofstream &output, SecondPasser *second);
 
 void outputAssembledData(std::ofstream &output, DataFirstPasser *data);
 
-void printAllErrors(DataFirstPasser *data, SecondPasser *second);
+void printAllErrors(DataFirstPasser *data,
+                    CodeFirstPasser *first, SecondPasser *second);
 
 void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
                             SecondPasser *second);
@@ -55,8 +57,8 @@ int main(int argc, char **argv) {
 
     auto second = makeSecondPass(first, extractor->getTextLineOffset());
 
-    if (hasErrors(second) || hasErrors(data)) {
-        printAllErrors(data, second);
+    if (hasErrors(first) || hasErrors(second) || hasErrors(data)) {
+        printAllErrors(data, first, second);
         return 1;
     }
 
@@ -107,8 +109,10 @@ void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
     output.close();
 }
 
-void printAllErrors(DataFirstPasser *data, SecondPasser *second) {
+void printAllErrors(DataFirstPasser *data,
+                    CodeFirstPasser *first, SecondPasser *second) {
     printErrors(data->getErrors());
+    printErrors(first->getErrors());
     printErrors(second->getErrors());
 }
 
@@ -126,6 +130,10 @@ void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
 
 bool hasErrors(SecondPasser *second) {
     return second->getErrorCount() > 0;
+}
+
+bool hasErrors(CodeFirstPasser *passer) {
+    return passer->getErrorCount() > 0;
 }
 
 bool hasErrors(DataFirstPasser *passer) {

@@ -28,6 +28,8 @@ private:
     void extractOperation() override;
 
     void createOperation();
+
+    bool operandsValid;
 };
 
 

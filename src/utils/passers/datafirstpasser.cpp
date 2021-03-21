@@ -9,6 +9,7 @@
 #include <parsingerrors/symbolredefinederror.h>
 
 #include <utility>
+#include <parsingerrors/invalidoperanderror.h>
 #include "datafirstpasser.h"
 
 
@@ -37,15 +38,19 @@ void DataFirstPasser::pass() {
 }
 
 void DataFirstPasser::processLine(std::string line) {
-    auto dataLine = DataLine(std::move(line));
+    try {
+        auto dataLine = DataLine(std::move(line));
 
-    validateOperation(dataLine);
+        validateOperation(dataLine);
 
-    addDataLine(dataLine);
+        addDataLine(dataLine);
 
-    updateSymbolTable(dataLine);
+        updateSymbolTable(dataLine);
 
-    updateAddress(dataLine);
+        updateAddress(dataLine);
+    } catch (std::invalid_argument) {
+        errors.insert(errors.end(), InvalidOperandError(nowLine, ""));
+    }
 }
 
 void DataFirstPasser::validateOperation(DataLine &dataLine) {

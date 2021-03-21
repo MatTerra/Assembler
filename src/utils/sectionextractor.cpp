@@ -63,6 +63,7 @@ std::string SectionExtractor::getDataSection() {
 
 SectionTypes SectionExtractor::getSectionType(size_t start) {
     auto sectionType = extractSectionTypeName(start);
+    lowerCaseString(sectionType);
 
     if (sectionType == "data")
         return SectionTypes::DATA;
