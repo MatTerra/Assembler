@@ -54,9 +54,18 @@ void DataFirstPasser::processLine(std::string line) {
 }
 
 void DataFirstPasser::validateOperation(DataLine &dataLine) {
-    if (!dataLine.isValid())
+    if (!dataLine.isValid()) {
+        if (dataLine.getOperation() == nullptr && dataLine.hasOperation()) {
+            errors.insert(errors.end(),
+                          InvalidOperandError(nowLine,
+                                              dataLine.getOperands()[0]));
+            return;
+        }
         errors.insert(errors.end(),
-                      InvalidOperandCountError(nowLine, dataLine.getOperationMnemonic()));
+                      InvalidOperandCountError(nowLine,
+                                               dataLine.getOperationMnemonic()));
+        return;
+    }
     if(dataLine.hasOperation() && dataLine.getOperation() == nullptr)
         errors.insert(errors.end(),
                       UnknownOperationError(nowLine, dataLine.getOperationMnemonic()));
