@@ -21,6 +21,11 @@ TEST(DataLine_Label, should_get_label){
     ASSERT_EQ("label", dl->getLabel());
 }
 
+TEST(DataLine_Label, should_get_label_with_space_before_colon){
+    auto *dl = new DataLine("label :");
+    ASSERT_EQ("label", dl->getLabel());
+}
+
 TEST(DataLine_Label, label_should_be_empty_if_no_label){
     auto *dl = new DataLine("const 8");
     ASSERT_EQ("", dl->getLabel());

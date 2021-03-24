@@ -24,7 +24,7 @@ bool ProcessedLine::hasLabel() {
 
 void ProcessedLine::extractLabel() {
     label = rawLine.substr(0, rawLine.find(':'));
-    removeLeadingWhitespaces(label);
+    trim(label);
 }
 
 bool ProcessedLine::hasComment() {

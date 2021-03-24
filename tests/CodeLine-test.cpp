@@ -20,6 +20,11 @@ TEST(CodeLine_Label, should_get_label){
     ASSERT_EQ("label", cl->getLabel());
 }
 
+TEST(CodeLine_Label, should_get_label_with_space_just_before_colon){
+    auto *cl = new CodeLine("label :");
+    ASSERT_EQ("label", cl->getLabel());
+}
+
 TEST(CodeLine_Label, shouldnt_have_label_if_colon_in_comment){
     auto *cl = new CodeLine("label ; okok :");
     ASSERT_FALSE(cl->hasLabel());
