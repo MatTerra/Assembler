@@ -38,32 +38,24 @@ void DataFirstPasser::pass() {
 }
 
 void DataFirstPasser::processLine(std::string line) {
-    try {
-        auto dataLine = DataLine(std::move(line));
+    auto dataLine = DataLine(std::move(line));
 
-        validateOperation(dataLine);
+    validateOperation(dataLine);
 
-        addDataLine(dataLine);
+    addDataLine(dataLine);
 
-        updateSymbolTable(dataLine);
+    updateSymbolTable(dataLine);
 
-        updateAddress(dataLine);
-    } catch (std::invalid_argument) {
-        errors.insert(errors.end(), InvalidOperandError(nowLine, ""));
-    }
+    updateAddress(dataLine);
 }
 
 void DataFirstPasser::validateOperation(DataLine &dataLine) {
     if (!dataLine.isValid()) {
         if (dataLine.getOperation() == nullptr && dataLine.hasOperation()) {
-            errors.insert(errors.end(),
-                          InvalidOperandError(nowLine,
-                                              dataLine.getOperands()[0]));
+            errors.insert(errors.end(), InvalidOperandError(nowLine, dataLine.getOperands()[0]));
             return;
         }
-        errors.insert(errors.end(),
-                      InvalidOperandCountError(nowLine,
-                                               dataLine.getOperationMnemonic()));
+        errors.insert(errors.end(), InvalidOperandCountError(nowLine, dataLine.getOperationMnemonic()));
         return;
     }
     if(dataLine.hasOperation() && dataLine.getOperation() == nullptr)

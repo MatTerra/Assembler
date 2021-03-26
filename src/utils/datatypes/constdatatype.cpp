@@ -5,4 +5,6 @@
 #include "constdatatype.h"
 
 ConstDataType::ConstDataType(std::string symbol, std::string value)
-    :DataType(std::move(symbol), std::move(value)){}
+    :DataType(std::move(symbol), std::move(value)){
+
+}

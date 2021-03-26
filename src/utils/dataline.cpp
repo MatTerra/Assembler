@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <exceptions/operationnotfoundexception.h>
+#include <regex>
 #include "dataline.h"
 #include "datatypes/spacedatatype.h"
 #include "datatypes/constdatatype.h"
@@ -30,9 +31,11 @@ void DataLine::extractOperation() {
 void DataLine::createOperation() {
     try {
         if (operationMnemonic == "const") {
-            if (operands.size() == 1)
+            if (operands.size() == 1) {
+                if (!std::regex_match(getOperands()[0], std::regex("-?[0-9]+")))
+                    throw std::invalid_argument("const");
                 operation = new ConstDataType(getLabel(), getOperands()[0]);
-            else
+            }else
                 operation = new ConstDataType(getLabel(), "0");
         } else if (operationMnemonic == "space") {
             operation = new SpaceDataType(getLabel());

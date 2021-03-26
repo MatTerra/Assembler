@@ -119,6 +119,18 @@ TEST(DataFirstPasser, should_register_all_errors){
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }
 
+TEST(DataFirstPasser, should_register_missing_const_operand){
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    std::vector<ParsingError> errors;
+    errors.insert(errors.end(), UnknownOperationError(1, "cons"));
+    errors.insert(errors.end(), UnknownOperationError(2, "spac"));
+    errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
+    for (int i=0; i< errors.size(); i++)
+        ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
+}
+
 TEST(DataFirstPasser, should_register_redefinition_errors){
     std::string lines = "start: cons 8 ; simple const\nstart: spac\nok: CONST 1, 2";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
@@ -133,11 +145,12 @@ TEST(DataFirstPasser, should_register_redefinition_errors){
 }
 
 TEST(DataFirstPasser, should_register_invalid_operand_errors){
-    std::string lines = "start: const 8 ; simple const\nusing: const start\n";
+    std::string lines = "start: const 8 ; simple const\nusing: const start\nnew: const 2.0";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
     fp->pass();
     std::vector<ParsingError> errors;
     errors.insert(errors.end(), InvalidOperandError(2, "start"));
+    errors.insert(errors.end(), InvalidOperandError(3, "2.0"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }

@@ -106,7 +106,7 @@ TEST(DataLine_Value, should_get_value_const){
     ASSERT_EQ(-1, dl->getValue());
 }
 
-TEST(DataLine_Value, should_get_value_not_valid){
+TEST(DataLine_Value, should_get_value_valid){
     auto *dl = new DataLine("label:     const -1 ; Comment");
     ASSERT_EQ(-1, dl->getValue());
 }
@@ -206,6 +206,12 @@ TEST(DataLine_Operand, should_be_invalid_if_space_has_operands){
 TEST(DataLine_Operand, should_be_valid_if_const_one_operand){
     auto *dl = new DataLine("end:     const 2 ; final");
     ASSERT_TRUE(dl->isValid());
+}
+
+TEST(DataLine_Operand, should_be_invalid_if_const_float_operand){
+    auto *dl = new DataLine("end:     const 2.0 ; final");
+    std::cout << dl->getOperands()[0];
+    ASSERT_FALSE(dl->isValid());
 }
 
 TEST(DataLine_Operand, should_be_invalid_if_const_two_operands){
