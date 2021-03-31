@@ -11,6 +11,7 @@
 
 SectionExtractor::SectionExtractor(std::string content)
     :fileContent(std::move(content)) {
+    lowerCaseString(fileContent);
     auto start = findSectionKeywordFromOffset(0);
 
     while (start != std::string::npos) {
@@ -48,7 +49,7 @@ long SectionExtractor::getSectionLineOffset(int start) {
 std::string SectionExtractor::getSection(size_t start=0) const {
     auto sectionHeaderStart = findSectionKeywordFromOffset(start);
     auto sectionStart = fileContent.find_first_of('\n', sectionHeaderStart) + 1;
-    auto sectionEnd = fileContent.find("section", sectionStart);
+    auto sectionEnd = findSectionKeywordFromOffset(sectionStart);
     auto sectionContent = fileContent.substr(sectionStart, sectionEnd - sectionStart);
     return sectionContent;
 }

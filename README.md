@@ -28,7 +28,7 @@ Then, go into the build dir, and run make (you may add `-j<cores>` to speed up c
 cd build && make
 ```
 
-After that, the program is compiled and available in the src folder.
+After that, the program is compiled and available in the src folder of the build dir.
 ```
 cd src && ls montador
 ```
@@ -55,7 +55,7 @@ The project was developed through an TDD approach, thus, it contains a thorough 
 
 This repository doesn't accept contributions until December 2021. If you must contribute, please reach out for the author.
 
-## Autores
+## Authors
 
 * **Mateus Berardo** - *Initial Work* - [MatTerra](https://github.com/MatTerra)
 
@@ -65,7 +65,7 @@ Also check out the [contributors](graphs/contributors).
 
 The author reserves all rights to the code hereby provided. It is strictly prohibited to copy or modify the code provided. It is allowed to use the code for educational purposes only and only if the author is credited. For any other use or more permissive conditions, contact the author. Any exceptions made by the author for third-parties does not mean changes in this license's terms for other people.
 
-## Agradecimentos
+## Acknoledgments
 
 * **Billie Thompson** - *README template* - [PurpleBooth](https://github.com/PurpleBooth)
 
