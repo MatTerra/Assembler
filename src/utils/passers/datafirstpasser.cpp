@@ -96,3 +96,7 @@ std::vector<ParsingError> DataFirstPasser::getErrors() {
 int16_t DataFirstPasser::getErrorCount() {
     return errors.size();
 }
+
+uint16_t DataFirstPasser::getFinalAddress() {
+    return nowAddress;
+}

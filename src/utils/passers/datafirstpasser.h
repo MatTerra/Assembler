@@ -26,6 +26,8 @@ public:
 
     int16_t getErrorCount();
 
+    uint16_t getFinalAddress();
+
 private:
     std::string fileContent;
     SymbolTable *symbolTable;

@@ -154,3 +154,10 @@ TEST(DataFirstPasser, should_register_invalid_operand_errors){
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }
+
+TEST(DataFirstPasser, should_return_final_address){
+    std::string lines = "start: const 8 ; simple const\nusing: space\n";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    ASSERT_EQ(4, fp->getFinalAddress());
+}

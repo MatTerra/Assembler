@@ -34,6 +34,9 @@ CodeFirstPasser *makeTextPass(SectionExtractor *extractor);
 void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
                    DataFirstPasser *&data);
 
+void outputProgramHeader(std::ofstream &ofstream, std::string basicString,
+                         DataFirstPasser *pPasser, SecondPasser *pPasser1);
+
 int main(int argc, char **argv) {
     if (argc != 2) {
         std::cout << "Expected filename as single argument to executable!";
@@ -64,6 +67,7 @@ int main(int argc, char **argv) {
 
     std::ofstream output;
     output.open(filename.substr(0, filename.find_last_of('.'))+".obj") ;
+    outputProgramHeader(output, filename, data, second);
     outputAssembledProgram(output, data, second);
 
     return 0;
@@ -99,6 +103,13 @@ SecondPasser * makeSecondPass(CodeFirstPasser *first, long lineOffset) {
                                    lineOffset);
     second->pass();
     return second;
+}
+
+
+void outputProgramHeader(std::ofstream &output, std::string filename,
+                         DataFirstPasser *data, SecondPasser *second) {
+    output << "H: " << filename << std::endl;
+    output << "H: " << data->getFinalAddress() << std::endl;
 }
 
 void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
