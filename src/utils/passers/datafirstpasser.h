@@ -28,10 +28,13 @@ public:
 
     uint16_t getFinalAddress();
 
+    std::string getRelocationBitmap();
+
 private:
     std::string fileContent;
     SymbolTable *symbolTable;
     std::vector<DataLine> dataLines;
+    std::string relocationBitmap;
 
     void addDataLine(const DataLine &dataLine);
     unsigned long getLineEnd(size_t initPos) const;

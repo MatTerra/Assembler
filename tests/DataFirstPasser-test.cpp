@@ -161,3 +161,10 @@ TEST(DataFirstPasser, should_return_final_address){
     fp->pass();
     ASSERT_EQ(4, fp->getFinalAddress());
 }
+
+TEST(DataFirstPasser, relocation_table_should_have_length_of_0){
+    std::string lines = "start: const 8 ; simple const\nusing: space\nconst 2\n";
+    auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
+    fp->pass();
+    ASSERT_EQ("000", fp->getRelocationBitmap());
+}

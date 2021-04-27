@@ -37,6 +37,8 @@ void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
 void outputProgramHeader(std::ofstream &ofstream, std::string basicString,
                          DataFirstPasser *pPasser, SecondPasser *pPasser1);
 
+void outputHeader(std::ofstream &output, std::string headerContent);
+
 int main(int argc, char **argv) {
     if (argc != 2) {
         std::cout << "Expected filename as single argument to executable!";
@@ -67,7 +69,10 @@ int main(int argc, char **argv) {
 
     std::ofstream output;
     output.open(filename.substr(0, filename.find_last_of('.'))+".obj") ;
-    outputProgramHeader(output, filename, data, second);
+    unsigned int baseNameStart = filename.find_last_of('/')+1;
+    unsigned int baseNameLength = filename.find_last_of('.') - baseNameStart;
+    std::string baseFileName = filename.substr(baseNameStart, baseNameLength);
+    outputProgramHeader(output, baseFileName, data, second);
     outputAssembledProgram(output, data, second);
 
     return 0;
@@ -108,16 +113,21 @@ SecondPasser * makeSecondPass(CodeFirstPasser *first, long lineOffset) {
 
 void outputProgramHeader(std::ofstream &output, std::string filename,
                          DataFirstPasser *data, SecondPasser *second) {
-    output << "H: " << filename << std::endl;
-    output << "H: " << data->getFinalAddress() << std::endl;
-    output << "H: " << second->getRelocationBitmap() << data->getRelocationBitmap() << std::endl;
-    output << "T: ";
+    outputHeader(output, filename);
+    outputHeader(output, std::to_string(data->getFinalAddress()));
+    outputHeader(output, second->getRelocationBitmap().append(data->getRelocationBitmap()));
+}
+
+void outputHeader(std::ofstream &output, std::string headerContent){
+    output << "H: " << headerContent << std::endl;
 }
 
 void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
                             SecondPasser *second) {
+    output << "T: ";
     outputAssembledInstructions(output, second);
     outputAssembledData(output, data);
+    output << std::endl;
     output.flush();
     output.close();
 }

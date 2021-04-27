@@ -74,7 +74,9 @@ void DataFirstPasser::updateSymbolTable(DataLine &dataLine) {
 }
 
 void DataFirstPasser::updateAddress(DataLine &dataLine) {
-    nowAddress +=dataLine.getAddressSize();
+    nowAddress += dataLine.getAddressSize();
+    for (int i= dataLine.getAddressSize(); i>0;i--)
+        relocationBitmap.insert(relocationBitmap.end(), '0');
 }
 
 std::string DataFirstPasser::getLine(size_t initPos, unsigned long nextPos) const {
@@ -99,4 +101,8 @@ int16_t DataFirstPasser::getErrorCount() {
 
 uint16_t DataFirstPasser::getFinalAddress() {
     return nowAddress;
+}
+
+std::string DataFirstPasser::getRelocationBitmap() {
+    return relocationBitmap;
 }
