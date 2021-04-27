@@ -39,21 +39,32 @@ void outputProgramHeader(std::ofstream &ofstream, std::string basicString,
 
 void outputHeader(std::ofstream &output, std::string headerContent);
 
+int assembleFile(std::string filename);
+
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        std::cout << "Expected filename as single argument to executable!";
+    if (argc < 2) {
+        std::cout << "Expected at least 1 filename as argument to executable!";
         return 1;
     }
-
-    auto filename = std::string(argv[1]);
-
-    auto extension = filename.substr(filename.find_last_of('.'));
-    if (extension != ".asm"){
-        std::cout << "Expected an .asm file!";
-        return 1;
+    std::vector<std::string> files;
+    for (int i = 1; i < argc; i++) {
+        auto filename = std::string(argv[i]);
+        auto extension = filename.substr(filename.find_last_of('.'));
+        if (extension != ".asm"){
+            std::cout << "Expected an .asm file!";
+            return 1;
+        }
+        files.insert(files.end(), filename);
     }
+    auto foundErrors = 0;
 
+    for (auto filename : files)
+        foundErrors+=assembleFile(filename);
 
+    return foundErrors;
+}
+
+int assembleFile(std::string filename) {
     auto extractor = new SectionExtractor(readFile(filename));
 
     CodeFirstPasser *first;
