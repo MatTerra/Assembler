@@ -110,6 +110,8 @@ void outputProgramHeader(std::ofstream &output, std::string filename,
                          DataFirstPasser *data, SecondPasser *second) {
     output << "H: " << filename << std::endl;
     output << "H: " << data->getFinalAddress() << std::endl;
+    output << "H: " << second->getRelocationBitmap() << data->getRelocationBitmap() << std::endl;
+    output << "T: ";
 }
 
 void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,

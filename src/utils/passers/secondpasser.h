@@ -31,12 +31,15 @@ public:
 
     std::vector<std::string> getProcessedLines();
 
+    std::string getRelocationBitmap();
+
 private:
     uint16_t nowLine;
     std::vector<CodeLine> codeLines;
     SymbolTable *symbolTable;
     std::vector<std::string> processedLines;
     std::vector<ParsingError> errors;
+    std::string relocationBitmap;
 
     void
     addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);

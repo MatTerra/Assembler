@@ -51,6 +51,7 @@ void SecondPasser::validateOperation(CodeLine &line) {
 void SecondPasser::addOpCodeToProcessedLine(CodeLine &line,
                                             std::ostringstream &processedLine) {
     processedLine << std::setfill('0') << std::setw(2) << line.getOpCode();
+    relocationBitmap.insert(relocationBitmap.end(), '0');
 }
 
 void SecondPasser::addOperandsAddressesToProcessedLine(CodeLine &line,
@@ -67,6 +68,7 @@ SecondPasser::addFormattedOperandToProcessedLineIfValid(std::string &operand,
             processedLine << " " << std::setfill('0')
                           << std::setw(2)
                           << symbolTable->getSymbolAddress(operand);
+            relocationBitmap.insert(relocationBitmap.end(), '1');
             return;
         }
         errors.insert(errors.end(), InvalidOperandError(nowLine, operand));
@@ -90,4 +92,8 @@ uint16_t SecondPasser::getLineCount() {
 
 std::vector<std::string> SecondPasser::getProcessedLines() {
     return processedLines;
+}
+
+std::string SecondPasser::getRelocationBitmap() {
+    return relocationBitmap;
 }

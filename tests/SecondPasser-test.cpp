@@ -215,3 +215,25 @@ TEST(SecondPasser, get_non_existent_line_shouldnt_crash){
     secondPasser->pass();
     ASSERT_EQ("", secondPasser->getProcessedLine(1));
 }
+
+TEST(SecondPasser, opcode_should_generate_bitmap_0){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("end:      stop; nothing to do"));
+    auto sb = new SymbolTable();
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ("0", secondPasser->getRelocationBitmap());
+}
+
+TEST(SecondPasser, operand_should_generate_bitmap_1){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("start: JMP start; nothing to do"));
+    cl.insert(cl.end(), CodeLine(" ; just comment"));
+    cl.insert(cl.end(), CodeLine(" add start"));
+    cl.insert(cl.end(), CodeLine(" copy start, start"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_EQ("0101011", secondPasser->getRelocationBitmap());
+}
