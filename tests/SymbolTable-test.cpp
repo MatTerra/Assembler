@@ -84,3 +84,36 @@ TEST(SymbolTable_Address, exception_should_have_symbol_in_what){
         ASSERT_TRUE(exception.what() == std::string("test"));
     }
 }
+
+TEST(SymbolTable_Extern, external_symbol_address_should_always_be_0){
+    auto *st = new SymbolTable();
+    st->addExternSymbol("test");
+    ASSERT_EQ(0, st->getSymbolAddress("test"));
+}
+
+TEST(SymbolTable_Extern, symbol_added_as_extern_should_be_extern){
+    auto *st = new SymbolTable();
+    st->addExternSymbol("test");
+    ASSERT_EQ(true, st->isExternSymbol("test"));
+}
+
+TEST(SymbolTable_Extern, symbol_not_added_as_extern_should_not_be_extern){
+    auto *st = new SymbolTable();
+    st->addSymbol("test", 1);
+    ASSERT_EQ(false, st->isExternSymbol("test"));
+}
+
+TEST(SymbolTable_Symbol_, may_get_symbol_address){
+    auto *s = new SymbolData(1);
+    ASSERT_EQ(1, s->getAddress());
+}
+
+TEST(SymbolTable_Symbol_, may_check_if_symbol_is_extern){
+    auto *s = new SymbolData(1, true);
+    ASSERT_EQ(true, s->isExternSymbol());
+}
+
+TEST(SymbolTable_Symbol_, may_check_if_symbol_is_extern_by_default){
+    auto *s = new SymbolData(1);
+    ASSERT_EQ(false, s->isExternSymbol());
+}

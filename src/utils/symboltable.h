@@ -12,21 +12,34 @@
 #include <exceptions/symbolnotfoundexception.h>
 #include "stringutils.h"
 
+class SymbolData{
+public:
+    SymbolData(){};
+    SymbolData(uint16_t address): address(address), isExtern(false){};
+    SymbolData(uint16_t address, bool isExtern):address(address),
+        isExtern(isExtern){};
 
+    uint16_t getAddress() { return address; }
+    bool isExternSymbol() { return isExtern; }
+
+private:
+  uint16_t address;
+  bool isExtern;
+};
 
 class SymbolTable {
 
 public:
     size_t getSymbolCount();
-    void addSymbol(std::string symbol, uint16_t address);
-    bool hasSymbol(std::string string);
+    void addSymbol(std::string symbol, uint16_t address, bool isExtern=false);
+    void addExternSymbol(std::string symbol);
+    bool hasSymbol(std::string symbol);
     uint16_t getSymbolAddress(std::string symbol);
-
-    static bool isValidSymbol(std::string string);
+    static bool isValidSymbol(std::string symbol);
+    bool isExternSymbol(std::string symbol);
 
 private:
-    std::unordered_map<std::string, uint16_t> symbolTable;
-
+    std::unordered_map<std::string, SymbolData> symbolTable;
 };
 
 
