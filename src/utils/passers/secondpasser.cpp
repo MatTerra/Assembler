@@ -34,10 +34,12 @@ void SecondPasser::processLine(CodeLine &line) {
 void SecondPasser::processOperation(CodeLine &line,
                                     std::ostringstream &processedLine) {
     validateOperation(line);
-    addOpCodeToProcessedLine(line, processedLine);
-    addOperandsAddressesToProcessedLine(line, processedLine);
-    processedLines.insert(processedLines.end(),
-                          processedLine.str());
+    if (line.getOpCode() != "0") {
+        addOpCodeToProcessedLine(line, processedLine);
+        addOperandsAddressesToProcessedLine(line, processedLine);
+        processedLines.insert(processedLines.end(),
+                              processedLine.str());
+    }
 }
 
 void SecondPasser::validateOperation(CodeLine &line) {

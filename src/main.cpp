@@ -60,8 +60,10 @@ int main(int argc, char **argv) {
     }
     auto foundErrors = 0;
 
-    for (auto filename : files)
-        foundErrors+=assembleFile(filename);
+    for (auto filename : files) {
+        std::cout << "assembling " << filename << std::endl;
+        foundErrors += assembleFile(filename);
+    }
 
     return foundErrors;
 }
@@ -81,10 +83,10 @@ int assembleFile(std::string filename) {
     }
 
     std::ofstream output;
+    std::cout << "Generating output in: " << filename.substr(0, filename.find_last_of('.'))+".obj" << std::endl;
     output.open(filename.substr(0, filename.find_last_of('.'))+".obj") ;
     outputProgramHeader(output, getBaseName(filename), data, second);
     outputAssembledProgram(output, data, second);
-    output.flush();
     output.close();
 
     return 0;
@@ -157,10 +159,23 @@ void outputProgramHeader(std::ofstream &output, std::string filename,
     outputHeader(output, filename);
     outputHeader(output, std::to_string(data->getFinalAddress()));
     outputHeader(output, second->getRelocationBitmap().append(data->getRelocationBitmap()));
+    auto useTable = second->getUseTable();
+    if (useTable->getUsedSymbols().size() > 0){
+        for (auto symbol : useTable->getUsedSymbols()) {
+            std::stringstream usesString;
+            usesString << "U " << symbol;
+            auto uses = useTable->getSymbolUse(symbol);
+            for (auto use: uses){
+                usesString << " " << use;
+            }
+            outputHeader(output, usesString.str());
+        }
+    }
 }
 
 void outputHeader(std::ofstream &output, std::string headerContent){
     output << "H: " << headerContent << std::endl;
+    output.flush();
 }
 
 std::string getBaseName(std::string filename) {
@@ -176,6 +191,7 @@ void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
     outputAssembledInstructions(output, second);
     outputAssembledData(output, data);
     output << std::endl;
+    output.flush();
 }
 
 void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
