@@ -3,6 +3,7 @@
 //
 #include <parsingerrors/symbolredefinederror.h>
 #include <parsingerrors/invalidlabelerror.h>
+#include <parsingerrors/missinglabelerror.h>
 #include "gtest/gtest.h"
 #include "passers/codefirstpasser.h"
 #include "codeline.h"
@@ -116,6 +117,21 @@ TEST(FirstPasser, error_should_consider_starting_line){
     ASSERT_EQ(SymbolRedefinedError(3, "start").what(),
               firstPasser->getErrors()[0].what());
 }
+
+TEST(FirstPasser, extern_with_no_label_shoul_generate_error) {
+    auto *firstPasser = new CodeFirstPasser("extern\nstart: stop");
+    firstPasser->pass();
+    ASSERT_EQ(MissingLabelError(1).what(),
+              firstPasser->getErrors()[0].what());
+}
+
+TEST(FirstPasser, should_generate_extern_symbol) {
+    auto *firstPasser = new CodeFirstPasser("try: extern\nstart: stop");
+    firstPasser->pass();
+    ASSERT_EQ(true,
+              firstPasser->getSymbolTable()->isExternSymbol("try"));
+}
+
 TEST(FirstPasser, shouldnt_skip_newlines){
     auto *firstPasser = new CodeFirstPasser("start:\n\n; Starting the code now\n\nstart: load start", 11);
     firstPasser->pass();

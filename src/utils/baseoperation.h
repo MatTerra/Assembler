@@ -15,7 +15,8 @@ public:
     uint16_t getOpCode() const{ return opCode; };
     std::string getOperation() const{ return operation; };
     std::vector<std::string> getOperands() const{ return operands; };
-    bool isValid() { return operands.size() == addressSize-1; };
+
+    virtual bool isValid() { return operands.size() == addressSize-1; };
     virtual std::string getOutput() = 0;
 protected:
     BaseOperation(std::string operation, uint16_t addressSize,

@@ -14,7 +14,7 @@
 class AddOperation : public BaseOperation{
 public:
     AddOperation(std::vector<std::string> operands)
-        :BaseOperation("add", 2, 1, std::move(operands)){};
+        : BaseOperation("add", 2, 1, std::move(operands)){};
     std::string getOutput() override;
 };
 

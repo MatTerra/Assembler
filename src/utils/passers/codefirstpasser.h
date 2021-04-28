@@ -51,6 +51,8 @@ private:
     bool hasMoreLines(unsigned long lineEnd) const;
 
     uint64_t nowLine;
+
+    bool isExternSymbol(CodeLine &codeLine) const;
 };
 
 

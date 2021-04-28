@@ -16,6 +16,7 @@
 #include <operations/stopoperation.h>
 #include <datatypes/spacedatatype.h>
 #include <datatypes/constdatatype.h>
+#include <operations/externoperation.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -78,6 +79,7 @@ static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<InputOperation>("input");
     operFactory->registerType<OutputOperation>("output");
     operFactory->registerType<StopOperation>("stop");
+    operFactory->registerType<ExternOperation>("extern");
     return operFactory;
 }
 

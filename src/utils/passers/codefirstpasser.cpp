@@ -3,6 +3,7 @@
 //
 
 #include <parsingerrors/invalidlabelerror.h>
+#include <parsingerrors/missinglabelerror.h>
 #include "codefirstpasser.h"
 
 CodeFirstPasser::CodeFirstPasser(std::string fileContent, uint64_t startingLine)
@@ -54,16 +55,27 @@ void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
 void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
     if (codeLine.hasLabel())
         try {
-            if (SymbolTable::isValidSymbol(codeLine.getLabel())) {
-                symbolTable->addSymbol(codeLine.getLabel(), nowAddress);
+            if (!SymbolTable::isValidSymbol(codeLine.getLabel())) {
+                errors.insert(errors.end(), InvalidLabelError(nowLine,
+                                                              codeLine.getLabel()));
                 return;
             }
-            errors.insert(errors.end(), InvalidLabelError(nowLine,
-                                                          codeLine.getLabel()));
-        }catch (SymbolAlreadyExistsException &exception){
+            symbolTable->addSymbol(codeLine.getLabel(), nowAddress,
+                                   isExternSymbol(codeLine));
+        } catch (SymbolAlreadyExistsException &exception) {
             errors.insert(errors.end(), SymbolRedefinedError(nowLine,
                                                              exception.what()));
+
         }
+    else if (codeLine.hasOperation())
+        if (codeLine.getOperation()->getOpCode() == 0)
+            errors.insert(errors.end(), MissingLabelError(nowLine));
+}
+
+bool CodeFirstPasser::isExternSymbol(CodeLine &codeLine) const {
+    if (codeLine.hasOperation())
+        return codeLine.getOperation()->getOpCode() == 0;
+    return false;
 }
 
 void CodeFirstPasser::updateAddress(CodeLine &codeLine) {

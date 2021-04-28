@@ -143,3 +143,12 @@ TEST(BaseOperationFactory_Output, create_output_should_return_output_operation){
     ASSERT_EQ("output", outputOperation->getOperation());
     ASSERT_EQ(13, outputOperation->getOpCode());
 }
+
+TEST(BaseOperationFactory_Output, create_extern_should_return_extern_operation){
+    std::vector<std::string> operands;
+    auto operationFactory = getBaseOperationFactory();
+    auto externOperation = operationFactory->create("extern", operands);
+    ASSERT_TRUE(externOperation != nullptr);
+    ASSERT_EQ("extern", externOperation->getOperation());
+    ASSERT_EQ(0, externOperation->getOpCode());
+}
