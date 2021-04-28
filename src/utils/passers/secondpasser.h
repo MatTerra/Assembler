@@ -11,6 +11,7 @@
 #include <string>
 #include "codeline.h"
 #include "symboltable.h"
+#include "usetable.h"
 #include "parsingerrors/parsingerror.h"
 
 class SecondPasser {
@@ -18,7 +19,9 @@ public:
     SecondPasser(std::vector<CodeLine> codeLines, SymbolTable* symbolTable,
                  uint64_t startingLine = 1)
         : codeLines(std::move(codeLines)), symbolTable(symbolTable),
-          nowLine(startingLine){};
+          nowLine(startingLine){
+        useTable = new UseTable();
+    };
 
     void pass();
 
@@ -33,6 +36,8 @@ public:
 
     std::string getRelocationBitmap();
 
+    UseTable *getUseTable();
+
 private:
     uint16_t nowLine;
     std::vector<CodeLine> codeLines;
@@ -40,9 +45,9 @@ private:
     std::vector<std::string> processedLines;
     std::vector<ParsingError> errors;
     std::string relocationBitmap;
+    UseTable *useTable;
 
-    void
-    addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);
+    void addOpCodeToProcessedLine(CodeLine &line, std::ostringstream &processedLine);
     void addOperandsAddressesToProcessedLine(CodeLine &line,
                                              std::ostringstream &processedLine);
     void addFormattedOperandToProcessedLineIfValid(std::string &operand,

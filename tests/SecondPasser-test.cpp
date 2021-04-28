@@ -5,6 +5,7 @@
 #include <parsingerrors/unknownoperationerror.h>
 #include <parsingerrors/invalidoperandcounterror.h>
 #include <parsingerrors/invalidoperanderror.h>
+#include <usetable.h>
 #include "gtest/gtest.h"
 #include "passers/secondpasser.h"
 #include "codeline.h"
@@ -236,4 +237,42 @@ TEST(SecondPasser, operand_should_generate_bitmap_1){
     auto *secondPasser = new SecondPasser(cl, sb);
     secondPasser->pass();
     ASSERT_EQ("0101011", secondPasser->getRelocationBitmap());
+}
+
+TEST(SecondPasser, may_get_use_table){
+    auto cl = std::vector<CodeLine>();
+    auto sb = new SymbolTable();
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_NE(nullptr, secondPasser->getUseTable());
+}
+
+TEST(SecondPasser, extern_symbols_used_should_be_registered){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("JMP start; nothing to do"));
+    auto sb = new SymbolTable();
+    sb->addExternSymbol("start");
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    auto *ut = new UseTable();
+    ut->addSymbolUse("start", 1);
+    ASSERT_EQ(ut->getUsedSymbols(), secondPasser->getUseTable()->getUsedSymbols());
+}
+
+TEST(SecondPasser, extern_symbol_uses_should_be_registered){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("JMP start; nothing to do"));
+    cl.insert(cl.end(), CodeLine(" ; just comment"));
+    cl.insert(cl.end(), CodeLine(" add start"));
+    cl.insert(cl.end(), CodeLine(" copy start, start"));
+    auto sb = new SymbolTable();
+    sb->addExternSymbol("start");
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    auto *ut = new UseTable();
+    ut->addSymbolUse("start", 1);
+    ut->addSymbolUse("start", 3);
+    ut->addSymbolUse("start", 5);
+    ut->addSymbolUse("start", 6);
+    ASSERT_EQ(ut->getSymbolUse("start"), secondPasser->getUseTable()->getSymbolUse("start"));
 }

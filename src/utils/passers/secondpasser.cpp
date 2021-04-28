@@ -8,6 +8,7 @@
 #include <parsingerrors/unknownoperationerror.h>
 #include <parsingerrors/invalidoperandcounterror.h>
 #include <parsingerrors/invalidoperanderror.h>
+#include <usetable.h>
 #include "secondpasser.h"
 
 std::string SecondPasser::getProcessedLine(int line) {
@@ -68,6 +69,8 @@ SecondPasser::addFormattedOperandToProcessedLineIfValid(std::string &operand,
             processedLine << " " << std::setfill('0')
                           << std::setw(2)
                           << symbolTable->getSymbolAddress(operand);
+            if (symbolTable->isExternSymbol(operand))
+                useTable->addSymbolUse(operand, relocationBitmap.length());
             relocationBitmap.insert(relocationBitmap.end(), '1');
             return;
         }
@@ -96,4 +99,8 @@ std::vector<std::string> SecondPasser::getProcessedLines() {
 
 std::string SecondPasser::getRelocationBitmap() {
     return relocationBitmap;
+}
+
+UseTable *SecondPasser::getUseTable() {
+    return useTable;
 }
