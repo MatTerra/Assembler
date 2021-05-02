@@ -17,6 +17,7 @@
 #include <datatypes/spacedatatype.h>
 #include <datatypes/constdatatype.h>
 #include <operations/externoperation.h>
+#include <operations/publicoperation.h>
 #include "baseoperation.h"
 #include "operations/addoperation.h"
 #include "operations/suboperation.h"
@@ -65,6 +66,8 @@ private:
 
 static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
     auto *operFactory = new BaseOperationFactory<BaseOperation>();
+    operFactory->registerType<ExternOperation>("extern");
+    operFactory->registerType<PublicOperation>("public");
     operFactory->registerType<AddOperation>("add");
     operFactory->registerType<SubOperation>("sub");
     operFactory->registerType<MulOperation>("mul");
@@ -79,7 +82,6 @@ static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<InputOperation>("input");
     operFactory->registerType<OutputOperation>("output");
     operFactory->registerType<StopOperation>("stop");
-    operFactory->registerType<ExternOperation>("extern");
     return operFactory;
 }
 
