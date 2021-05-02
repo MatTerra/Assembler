@@ -47,6 +47,17 @@ std::string getBaseName(std::string filename);
 
 bool isValidFile(int fileCount, const std::string& filename);
 
+void outputDefinitionHeader(std::ofstream &output, uint16_t symbolAddress,
+                            std::string &symbol);
+
+void outputDefinitionTable(std::ofstream &output, SymbolTable *symbolTable);
+
+void
+outputUseHeader(std::ofstream &output, const std::string &symbol,
+                const std::vector<uint16_t> &symbolUses);
+
+void outputUseTable(std::ofstream &output, UseTable *useTable);
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         std::cout << "Expected at least 1 filename as argument to executable!";
@@ -180,18 +191,39 @@ void outputProgramHeader(std::ofstream &output, std::string filename,
     outputHeader(output, filename);
     outputHeader(output, std::to_string(data->getFinalAddress()));
     outputHeader(output, second->getRelocationBitmap().append(data->getRelocationBitmap()));
-    auto useTable = second->getUseTable();
-    if (useTable->getUsedSymbols().size() > 0){
-        for (auto symbol : useTable->getUsedSymbols()) {
-            std::stringstream usesString;
-            usesString << "U " << symbol;
-            auto uses = useTable->getSymbolUse(symbol);
-            for (auto use: uses){
-                usesString << " " << use;
-            }
-            outputHeader(output, usesString.str());
-        }
+    outputUseTable(output, second->getUseTable());
+    outputDefinitionTable(output, data->getSymbolTable());
+}
+
+void outputUseTable(std::ofstream &output, UseTable *useTable) {
+    for (auto symbol : useTable->getUsedSymbols())
+        outputUseHeader(output, symbol, useTable->getSymbolUse(symbol));
+}
+
+void outputUseHeader(std::ofstream &output, const std::string &symbol,
+                const std::vector<uint16_t> &symbolUses) {
+    std::stringstream usesString;
+    usesString << "U " << symbol;
+    auto uses = symbolUses;
+    for (auto use: uses){
+        usesString << " " << use;
     }
+    outputHeader(output, usesString.str());
+}
+
+void outputDefinitionTable(std::ofstream &output, SymbolTable *symbolTable) {
+    for (auto symbol : symbolTable->getPublicSymbols())
+        outputDefinitionHeader(output,
+                               symbolTable->getSymbolAddress(symbol),
+                               symbol);
+}
+
+void outputDefinitionHeader(std::ofstream &output, uint16_t symbolAddress,
+                            std::string &symbol) {
+    std::stringstream definitionString;
+    definitionString << "D " << symbol << " ";
+    definitionString << symbolAddress;
+    outputHeader(output, definitionString.str());
 }
 
 void outputHeader(std::ofstream &output, std::string headerContent){
@@ -218,7 +250,7 @@ void outputAssembledProgram(std::ofstream &output, DataFirstPasser *data,
 void outputAssembledInstructions(std::ofstream &output, SecondPasser *second) {
     int lineCount = second->getLineCount();
     for (auto pl : second->getProcessedLines())
-        output << pl << ((--lineCount > 0)?" ":"");
+        output << pl << ((--lineCount > 0 && !pl.empty())?" ":"");
 }
 
 void outputAssembledData(std::ofstream &output, DataFirstPasser *data) {
