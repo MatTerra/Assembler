@@ -118,3 +118,11 @@ TEST(SectionExtractor, may_get_text_line_offset_first){
     auto se = new SectionExtractor(line);
     ASSERT_EQ(2, se->getTextLineOffset());
 }
+
+TEST(SectionExtractor, must_not_include_end_if_module){
+    auto line = "begin\nsection text\nstop\nsection data\nlabel: const 8\nend";
+    auto se = new SectionExtractor(line, true);
+    auto dataContent = "label: const 8\n";
+    std::cout << se->getDataSection() << std::endl;
+    ASSERT_EQ(dataContent, se->getDataSection());
+}

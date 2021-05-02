@@ -67,7 +67,7 @@ void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
                                                              exception.what()));
 
         }
-    else if (codeLine.hasOperation())
+    else if (codeLine.getOperation() != nullptr)
         if (codeLine.getOperation()->getOpCode() == 0)
             errors.insert(errors.end(), MissingLabelError(nowLine));
 }

@@ -16,7 +16,7 @@ enum SectionTypes{
 class SectionExtractor {
 
 public:
-    SectionExtractor(std::string content);
+    explicit SectionExtractor(std::string content, bool isModule=false);
 
     std::string getFileContent();
 
@@ -53,6 +53,10 @@ private:
     void extractTextSection(unsigned long start);
 
     void proccessSection(unsigned long start);
+
+    bool isModule;
+
+    void removeEnd();
 };
 
 

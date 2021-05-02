@@ -9,14 +9,24 @@
 #include "sectionextractor.h"
 #include "stringutils.h"
 
-SectionExtractor::SectionExtractor(std::string content)
-    :fileContent(std::move(content)) {
+SectionExtractor::SectionExtractor(std::string content, bool isModule)
+    :fileContent(std::move(content)), isModule(isModule) {
     lowerCaseString(fileContent);
     auto start = findSectionKeywordFromOffset(0);
+
+    removeEnd();
 
     while (start != std::string::npos) {
         proccessSection(start);
         start = findSectionKeywordFromOffset(start+7);
+    }
+
+}
+
+void SectionExtractor::removeEnd() {
+    if (isModule) {
+        int endIndex = fileContent.find_last_of("end");
+        fileContent.erase(endIndex - 2, 3);
     }
 }
 

@@ -5,6 +5,8 @@
 #include <passers/secondpasser.h>
 #include <sectionextractor.h>
 #include <passers/datafirstpasser.h>
+#include <modulechecker.h>
+#include <programchecker.h>
 
 std::string readFile(std::string filename);
 void printErrors(std::vector<ParsingError> errors);
@@ -39,9 +41,11 @@ void outputProgramHeader(std::ofstream &ofstream, std::string basicString,
 
 void outputHeader(std::ofstream &output, std::string headerContent);
 
-int assembleFile(std::string filename);
+int assembleFile(std::string filename, bool isModule);
 
 std::string getBaseName(std::string filename);
+
+bool isValidFile(int fileCount, const std::string& filename);
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -60,16 +64,33 @@ int main(int argc, char **argv) {
     }
     auto foundErrors = 0;
 
+    std::cout << "Program is composed of " << files.size() << " file(s)."
+        << std::endl;
+
     for (auto filename : files) {
         std::cout << "assembling " << filename << std::endl;
-        foundErrors += assembleFile(filename);
+        if (!isValidFile(files.size(), filename)){
+            std::cout << "Can't assemble " << filename
+                << " because it should be a "
+                << (files.size()>1?"module with":"program without")
+                << " BEGIN...END." << std::endl;
+            continue;
+        }
+        foundErrors += assembleFile(filename, files.size() > 1);
     }
 
     return foundErrors;
 }
 
-int assembleFile(std::string filename) {
-    auto extractor = new SectionExtractor(readFile(filename));
+bool isValidFile(int fileCount, const std::string& filename) {
+    if (fileCount > 1)
+        return ModuleChecker::check(readFile(filename));
+    bool b = ProgramChecker::check(readFile(filename));
+    return b;
+}
+
+int assembleFile(std::string filename, bool isModule) {
+    auto extractor = new SectionExtractor(readFile(filename), isModule);
 
     CodeFirstPasser *first;
     DataFirstPasser *data;

@@ -4,7 +4,6 @@
 
 #include "symboltable.h"
 
-#include <utility>
 
 size_t SymbolTable::getSymbolCount() {
     return symbolTable.size();
@@ -17,8 +16,6 @@ void SymbolTable::addSymbol(std::string symbol, uint16_t address, bool isExtern)
 
     symbolTable.emplace(symbol, SymbolData(address, isExtern));
 }
-
-
 
 bool SymbolTable::hasSymbol(std::string symbol) {
     lowerCaseString(symbol);
@@ -41,5 +38,22 @@ void SymbolTable::addExternSymbol(std::string symbol) {
 }
 
 bool SymbolTable::isExternSymbol(std::string symbol) {
+    lowerCaseString(symbol);
+    if(!hasSymbol(symbol))
+        throw SymbolNotFoundException(symbol);
     return symbolTable[symbol].isExternSymbol();
+}
+
+bool SymbolTable::isPublicSymbol(std::string symbol) {
+    lowerCaseString(symbol);
+    if(!hasSymbol(symbol))
+        throw SymbolNotFoundException(symbol);
+    return symbolTable[symbol].isPublicSymbol();
+}
+
+void SymbolTable::setPublicSymbol(std::string symbol) {
+    lowerCaseString(symbol);
+    if(!hasSymbol(symbol))
+        throw SymbolNotFoundException(symbol);
+    symbolTable[symbol].setPublic();
 }

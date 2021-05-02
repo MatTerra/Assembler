@@ -22,9 +22,14 @@ public:
     uint16_t getAddress() { return address; }
     bool isExternSymbol() { return isExtern; }
 
+    bool isPublicSymbol(){ return isPublic; };
+
+    void setPublic(){ isPublic = true; };
+
 private:
-  uint16_t address;
-  bool isExtern;
+    uint16_t address;
+    bool isExtern;
+    bool isPublic = false;
 };
 
 class SymbolTable {
@@ -37,6 +42,10 @@ public:
     uint16_t getSymbolAddress(std::string symbol);
     static bool isValidSymbol(std::string symbol);
     bool isExternSymbol(std::string symbol);
+
+    bool isPublicSymbol(std::string string);
+
+    void setPublicSymbol(std::string string);
 
 private:
     std::unordered_map<std::string, SymbolData> symbolTable;

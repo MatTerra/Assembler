@@ -97,6 +97,40 @@ TEST(SymbolTable_Extern, symbol_added_as_extern_should_be_extern){
     ASSERT_EQ(true, st->isExternSymbol("test"));
 }
 
+TEST(SymbolTable_Extern, symbol_added_as_extern_should_be_extern_case_insen){
+    auto *st = new SymbolTable();
+    st->addExternSymbol("test");
+    ASSERT_EQ(true, st->isExternSymbol("TesT"));
+}
+
+TEST(SymbolTable_Public, should_be_able_to_check_if_symbol_is_public){
+    auto *st = new SymbolTable();
+    st->addSymbol("test", 1);
+    ASSERT_FALSE(st->isPublicSymbol("test"));
+}
+
+TEST(SymbolTable_Public, should_be_able_to_set_symbol_as_public){
+    auto *st = new SymbolTable();
+    st->addSymbol("test", 1);
+    st->setPublicSymbol("test");
+    ASSERT_TRUE(st->isPublicSymbol("test"));
+}
+
+TEST(SymbolTable_Public, set_non_existing_symbol_as_public_should_throw){
+    auto *st = new SymbolTable();
+    ASSERT_THROW(st->setPublicSymbol("test"), SymbolNotFoundException);
+}
+
+TEST(SymbolTable_Public, check_public_on_non_existing_symbol_should_throw){
+    auto *st = new SymbolTable();
+    ASSERT_THROW(st->isPublicSymbol("test"), SymbolNotFoundException);
+}
+
+TEST(SymbolTable_Extern, check_extern_on_non_existing_symbol_should_throw){
+    auto *st = new SymbolTable();
+    ASSERT_THROW(st->isExternSymbol("test"), SymbolNotFoundException);
+}
+
 TEST(SymbolTable_Extern, symbol_not_added_as_extern_should_not_be_extern){
     auto *st = new SymbolTable();
     st->addSymbol("test", 1);
@@ -110,10 +144,21 @@ TEST(SymbolTable_Symbol_, may_get_symbol_address){
 
 TEST(SymbolTable_Symbol_, may_check_if_symbol_is_extern){
     auto *s = new SymbolData(1, true);
-    ASSERT_EQ(true, s->isExternSymbol());
+    ASSERT_TRUE(s->isExternSymbol());
 }
 
 TEST(SymbolTable_Symbol_, may_check_if_symbol_is_extern_by_default){
     auto *s = new SymbolData(1);
-    ASSERT_EQ(false, s->isExternSymbol());
+    ASSERT_FALSE(s->isExternSymbol());
+}
+
+TEST(SymbolTable_Symbol_, may_check_if_symbol_is_public_by_default){
+    auto *s = new SymbolData(1);
+    ASSERT_FALSE(s->isPublicSymbol());
+}
+
+TEST(SymbolTable_Symbol_, may_set_symbol_as_public){
+    auto *s = new SymbolData(1);
+    s->setPublic();
+    ASSERT_TRUE(s->isPublicSymbol());
 }
