@@ -128,8 +128,13 @@ TEST(FirstPasser, extern_with_no_label_shoul_generate_error) {
 TEST(FirstPasser, should_generate_extern_symbol) {
     auto *firstPasser = new CodeFirstPasser("try: extern\nstart: stop");
     firstPasser->pass();
-    ASSERT_EQ(true,
-              firstPasser->getSymbolTable()->isExternSymbol("try"));
+    ASSERT_TRUE(firstPasser->getSymbolTable()->isExternSymbol("try"));
+}
+
+TEST(FirstPasser, shouldnt_have_error_on_public_with_no_label) {
+    auto *firstPasser = new CodeFirstPasser("public start\nstart: stop");
+    firstPasser->pass();
+    ASSERT_EQ(0, firstPasser->getErrors().size());
 }
 
 TEST(FirstPasser, shouldnt_skip_newlines){

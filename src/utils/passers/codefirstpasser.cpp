@@ -67,9 +67,15 @@ void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
                                                              exception.what()));
 
         }
-    else if (codeLine.getOperation() != nullptr)
-        if (codeLine.getOperation()->getOpCode() == 0)
-            errors.insert(errors.end(), MissingLabelError(nowLine));
+    else if (isExtern(codeLine))
+        errors.insert(errors.end(), MissingLabelError(nowLine));
+}
+
+bool CodeFirstPasser::isExtern(CodeLine &codeLine) const {
+    if(codeLine.getOperation() == nullptr)
+        return false;
+    return codeLine.getOperation()->getOpCode() == 0
+        && codeLine.getOperation()->getOperation() == "extern";
 }
 
 bool CodeFirstPasser::isExternSymbol(CodeLine &codeLine) const {

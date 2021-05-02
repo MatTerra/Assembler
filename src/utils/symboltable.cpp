@@ -55,5 +55,11 @@ void SymbolTable::setPublicSymbol(std::string symbol) {
     lowerCaseString(symbol);
     if(!hasSymbol(symbol))
         throw SymbolNotFoundException(symbol);
+    publicSymbols.insert(symbol);
     symbolTable[symbol].setPublic();
+}
+
+std::vector<std::string> SymbolTable::getPublicSymbols() {
+    return std::vector<std::string>(publicSymbols.begin(),
+                                    publicSymbols.end());
 }

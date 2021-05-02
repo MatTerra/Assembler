@@ -276,3 +276,17 @@ TEST(SecondPasser, extern_symbol_uses_should_be_registered){
     ut->addSymbolUse("start", 6);
     ASSERT_EQ(ut->getSymbolUse("start"), secondPasser->getUseTable()->getSymbolUse("start"));
 }
+
+TEST(SecondPasser, public_symbols_should_be_registered_as_public){
+    auto cl = std::vector<CodeLine>();
+    cl.insert(cl.end(), CodeLine("start: jmp next; nothing to do"));
+    cl.insert(cl.end(), CodeLine("PUBLIC start ; just comment"));
+    cl.insert(cl.end(), CodeLine("next: add start"));
+    cl.insert(cl.end(), CodeLine(" copy start, start"));
+    auto sb = new SymbolTable();
+    sb->addSymbol("start", 0);
+    ASSERT_FALSE(sb->isPublicSymbol("start"));
+    auto *secondPasser = new SecondPasser(cl, sb);
+    secondPasser->pass();
+    ASSERT_TRUE(sb->isPublicSymbol("start"));
+}

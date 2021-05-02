@@ -39,6 +39,8 @@ void SecondPasser::processOperation(CodeLine &line,
         addOperandsAddressesToProcessedLine(line, processedLine);
         processedLines.insert(processedLines.end(),
                               processedLine.str());
+    } else if (line.getOperation()->getOperation() == "public"){
+        symbolTable->setPublicSymbol(line.getOperands()[0]);
     }
 }
 

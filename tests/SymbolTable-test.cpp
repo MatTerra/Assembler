@@ -162,3 +162,15 @@ TEST(SymbolTable_Symbol_, may_set_symbol_as_public){
     s->setPublic();
     ASSERT_TRUE(s->isPublicSymbol());
 }
+
+TEST(SymbolTable_Public, may_get_public_symbols){
+    auto *s = new SymbolTable();
+    s->addSymbol("s",0);
+    s->addSymbol("b",1);
+    s->setPublicSymbol("S");
+    s->setPublicSymbol("B");
+    std::vector<std::string> publicSymbols;
+    publicSymbols.insert(publicSymbols.end(), "b");
+    publicSymbols.insert(publicSymbols.end(), "s");
+    ASSERT_EQ(publicSymbols, s->getPublicSymbols());
+}

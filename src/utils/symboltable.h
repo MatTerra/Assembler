@@ -6,6 +6,7 @@
 #define MONTADOR_SYMBOLTABLE_H
 
 #include <unordered_map>
+#include <set>
 #include <string>
 #include <regex>
 #include <exceptions/symbolalreadyexistsexception.h>
@@ -47,8 +48,11 @@ public:
 
     void setPublicSymbol(std::string string);
 
+    std::vector<std::string> getPublicSymbols();
+
 private:
     std::unordered_map<std::string, SymbolData> symbolTable;
+    std::set<std::string> publicSymbols;
 };
 
 

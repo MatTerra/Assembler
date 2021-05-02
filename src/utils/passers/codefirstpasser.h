@@ -53,6 +53,8 @@ private:
     uint64_t nowLine;
 
     bool isExternSymbol(CodeLine &codeLine) const;
+
+    bool isExtern(CodeLine &codeLine) const;
 };
 
 
