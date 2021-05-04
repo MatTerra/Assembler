@@ -6,6 +6,7 @@
 
 #include <string>
 #include <algorithm>
+#include <fstream>
 
 static const char *const whitespaces = " \t\r\f\v\n";
 
@@ -22,5 +23,11 @@ static void trim(std::string &myString){
 static void lowerCaseString(std::string &string) {
     std::transform(string.begin(), string.end(), string.begin(),
                    [](unsigned char c){ return tolower(c); });
+}
+
+std::string readFile(std::string filename) {
+    std::ifstream t(filename);
+    return std::string ((std::istreambuf_iterator<char>(t)),
+                        std::istreambuf_iterator<char>());
 }
 #endif

@@ -7,10 +7,9 @@
 #include <passers/datafirstpasser.h>
 #include <modulechecker.h>
 #include <programchecker.h>
+#include "stringutils.h"
 
-std::string readFile(std::string filename);
 void printErrors(std::vector<ParsingError> errors);
-
 bool hasErrors(SecondPasser *second);
 bool hasErrors(CodeFirstPasser *passer);
 bool hasErrors(DataFirstPasser *passer);
@@ -122,12 +121,6 @@ int assembleFile(std::string filename, bool isModule) {
     output.close();
 
     return 0;
-}
-
-std::string readFile(std::string filename) {
-    std::ifstream t(filename);
-    return std::string ((std::istreambuf_iterator<char>(t)),
-                        std::istreambuf_iterator<char>());
 }
 
 void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
