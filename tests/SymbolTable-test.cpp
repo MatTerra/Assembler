@@ -6,6 +6,7 @@
 #include "exceptions/symbolnotfoundexception.h"
 #include <string>
 #include <exceptions/symbolalreadyexistsexception.h>
+#include <exceptions/symbolinvalidexception.h>
 
 TEST(SymbolTable, may_get_symboltable_instance){
     auto *st = new SymbolTable();
@@ -53,6 +54,12 @@ TEST(SymbolTable_Symbol, should_validate_symbol){
     ASSERT_FALSE(SymbolTable::isValidSymbol("test,test"));
     ASSERT_FALSE(SymbolTable::isValidSymbol("testtesttesttesttestt"));
     ASSERT_FALSE(SymbolTable::isValidSymbol(""));
+    ASSERT_FALSE(SymbolTable::isValidSymbol("*N1"));
+}
+
+TEST(SymbolTable_Symbol, should_throw_exception_when_label_invalid){
+    auto *st = new SymbolTable();
+    ASSERT_THROW(st->addSymbol("test test",1), SymbolInvalidException);
 }
 
 TEST(SymbolTable_Symbol, should_validate_symbol_when_ok){

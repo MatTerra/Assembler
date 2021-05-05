@@ -4,6 +4,7 @@
 
 #include <parsingerrors/invalidlabelerror.h>
 #include <parsingerrors/missinglabelerror.h>
+#include <exceptions/symbolinvalidexception.h>
 #include "codefirstpasser.h"
 
 CodeFirstPasser::CodeFirstPasser(std::string fileContent, uint64_t startingLine)
@@ -55,17 +56,15 @@ void CodeFirstPasser::addCodeLine(const CodeLine &codeLine) {
 void CodeFirstPasser::updateSymbolTable(CodeLine &codeLine) {
     if (codeLine.hasLabel())
         try {
-            if (!SymbolTable::isValidSymbol(codeLine.getLabel())) {
-                errors.insert(errors.end(), InvalidLabelError(nowLine,
-                                                              codeLine.getLabel()));
-                return;
-            }
             symbolTable->addSymbol(codeLine.getLabel(), nowAddress,
                                    isExternSymbol(codeLine));
         } catch (SymbolAlreadyExistsException &exception) {
             errors.insert(errors.end(), SymbolRedefinedError(nowLine,
                                                              exception.what()));
 
+        } catch (SymbolInvalidException &exception){
+            errors.insert(errors.end(), InvalidLabelError(nowLine,
+                                                          exception.what()));
         }
     else if (isExtern(codeLine))
         errors.insert(errors.end(), MissingLabelError(nowLine));

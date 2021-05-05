@@ -4,6 +4,7 @@
 #include <parsingerrors/invalidoperandcounterror.h>
 #include <parsingerrors/symbolredefinederror.h>
 #include <parsingerrors/invalidoperanderror.h>
+#include <parsingerrors/invalidlabelerror.h>
 #include "gtest/gtest.h"
 #include "passers/datafirstpasser.h"
 #include "dataline.h"
@@ -108,13 +109,14 @@ TEST(DataFirstPasser, should_count_all_errors){
 }
 
 TEST(DataFirstPasser, should_register_all_errors){
-    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1, 2";
+    std::string lines = "start: cons 8 ; simple const\n  spac\nok: CONST 1, 2\n*n1: space";
     auto *fp = new DataFirstPasser(lines, new SymbolTable(), 2);
     fp->pass();
     std::vector<ParsingError> errors;
     errors.insert(errors.end(), UnknownOperationError(1, "cons"));
     errors.insert(errors.end(), UnknownOperationError(2, "spac"));
     errors.insert(errors.end(), InvalidOperandCountError(3, "const"));
+    errors.insert(errors.end(), InvalidLabelError(4, "*n1"));
     for (int i=0; i< errors.size(); i++)
         ASSERT_EQ(errors[i].what(), fp->getErrors()[i].what());
 }

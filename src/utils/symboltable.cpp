@@ -2,6 +2,7 @@
 // Created by mateusberardo on 28/02/2021.
 //
 
+#include <exceptions/symbolinvalidexception.h>
 #include "symboltable.h"
 
 
@@ -11,6 +12,8 @@ size_t SymbolTable::getSymbolCount() {
 
 void SymbolTable::addSymbol(std::string symbol, uint16_t address, bool isExtern) {
     lowerCaseString(symbol);
+    if(!isValidSymbol(symbol))
+        throw SymbolInvalidException(symbol);
     if(hasSymbol(symbol))
         throw SymbolAlreadyExistsException(symbol);
 

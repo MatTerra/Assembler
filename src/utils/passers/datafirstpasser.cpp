@@ -10,6 +10,8 @@
 
 #include <utility>
 #include <parsingerrors/invalidoperanderror.h>
+#include <parsingerrors/invalidlabelerror.h>
+#include <exceptions/symbolinvalidexception.h>
 #include "datafirstpasser.h"
 
 
@@ -70,7 +72,10 @@ void DataFirstPasser::updateSymbolTable(DataLine &dataLine) {
         }catch (SymbolAlreadyExistsException &exception){
             errors.insert(errors.end(), SymbolRedefinedError(nowLine,
                                                              exception.what()));
-        }
+        }catch (SymbolInvalidException &exception){
+            errors.insert(errors.end(), InvalidLabelError(nowLine,
+                                                          exception.what()));
+    }
 }
 
 void DataFirstPasser::updateAddress(DataLine &dataLine) {

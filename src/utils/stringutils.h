@@ -25,7 +25,7 @@ static void lowerCaseString(std::string &string) {
                    [](unsigned char c){ return tolower(c); });
 }
 
-std::string readFile(std::string filename) {
+static std::string readFile(std::string filename) {
     std::ifstream t(filename);
     return std::string ((std::istreambuf_iterator<char>(t)),
                         std::istreambuf_iterator<char>());
