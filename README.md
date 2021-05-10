@@ -33,10 +33,12 @@ After that, the program is compiled and available in the src folder of the build
 cd src && ls montador
 ```
 
-You may copy it to the folder you would like to use and run it as following. The asm_file may be the absolute or relative path to the assembly source code file. It must have an .asm extension. The `montador` will generate an .obj file in the same folder as the source file if it succeeds:
+You may copy it to the folder you would like to use and run it as following. The asm_file may be the absolute or relative path to the assembly source code file. It must have an .asm extension. The `montador` will generate an .o file in the same folder as the source file if it succeeds:
 ```
 ./montador <asm_file>
 ```
+
+This file must be linked into an .obj file to be run by the simulator.
 
 ## Running Unit Tests
 
