@@ -115,7 +115,7 @@ int assembleFile(std::string filename, bool isModule) {
 
     std::ofstream output;
     std::cout << "Generating output in: " << filename.substr(0, filename.find_last_of('.'))+".obj" << std::endl;
-    output.open(filename.substr(0, filename.find_last_of('.'))+".obj") ;
+    output.open(filename.substr(0, filename.find_last_of('.'))+".o") ;
     outputProgramHeader(output, getBaseName(filename), data, second);
     outputAssembledProgram(output, data, second);
     output.close();
