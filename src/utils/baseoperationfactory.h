@@ -66,8 +66,6 @@ private:
 
 static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
     auto *operFactory = new BaseOperationFactory<BaseOperation>();
-    operFactory->registerType<ExternOperation>("extern");
-    operFactory->registerType<PublicOperation>("public");
     operFactory->registerType<AddOperation>("add");
     operFactory->registerType<SubOperation>("sub");
     operFactory->registerType<MulOperation>("mul");
@@ -82,6 +80,13 @@ static BaseOperationFactory<BaseOperation> *getBaseOperationFactory(){
     operFactory->registerType<InputOperation>("input");
     operFactory->registerType<OutputOperation>("output");
     operFactory->registerType<StopOperation>("stop");
+    return operFactory;
+}
+
+static BaseOperationFactory<BaseOperation> *getModuleOperationFactory(){
+    auto *operFactory = new BaseOperationFactory<BaseOperation>();
+    operFactory->registerType<ExternOperation>("extern");
+    operFactory->registerType<PublicOperation>("public");
     return operFactory;
 }
 

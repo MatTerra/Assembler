@@ -7,10 +7,12 @@
 #include <exceptions/symbolinvalidexception.h>
 #include "codefirstpasser.h"
 
-CodeFirstPasser::CodeFirstPasser(std::string fileContent, uint64_t startingLine)
+CodeFirstPasser::CodeFirstPasser(std::string fileContent,
+                                 uint64_t startingLine, SymbolTable *st)
         : fileContent(std::move(fileContent)),
           nowAddress(0), nowLine(startingLine){
-    symbolTable = new SymbolTable();
+    if (st == nullptr)
+        symbolTable = new SymbolTable();
 }
 
 std::vector<CodeLine> CodeFirstPasser::getCodeLines() {
@@ -20,9 +22,9 @@ std::vector<CodeLine> CodeFirstPasser::getCodeLines() {
 void CodeFirstPasser::pass() {
     size_t lineStart = 0;
     while (true){
-        auto lineEnd = getLineEnd(lineStart);
+        auto lineEnd = getLineEnd(fileContent, lineStart);
 
-        processLine(getLine(lineStart, lineEnd));
+        processLine(getLine(fileContent, lineStart, lineEnd));
         nowLine++;
 
         if (!hasMoreLines(lineEnd))
@@ -31,13 +33,6 @@ void CodeFirstPasser::pass() {
     }
 }
 
-unsigned long CodeFirstPasser::getLineEnd(size_t initPos) const {
-    return fileContent.find_first_of('\n', initPos);
-}
-
-std::string CodeFirstPasser::getLine(size_t initPos, unsigned long nextPos) const {
-    return fileContent.substr(initPos, (nextPos) - initPos);
-}
 
 void CodeFirstPasser::processLine(std::string line) {
     auto codeLine = CodeLine(std::move(line));
@@ -85,10 +80,6 @@ bool CodeFirstPasser::isExternSymbol(CodeLine &codeLine) const {
 
 void CodeFirstPasser::updateAddress(CodeLine &codeLine) {
     nowAddress += codeLine.getAddressSize();
-}
-
-bool CodeFirstPasser::hasMoreLines(unsigned long lineEnd) const {
-    return lineEnd != std::string::npos;
 }
 
 uint16_t CodeFirstPasser::getFinalAddress() const {

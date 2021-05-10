@@ -107,6 +107,19 @@ TEST(SectionExtractor, may_get_text_content_first){
     ASSERT_EQ(dataContent, se->getTextSection());
 }
 
+TEST(SectionExtractor, may_get_module_section){
+    auto line = "begin\npublic label\nsection text\nstop\nsection data\nlabel: const 8\nend";
+    auto moduleContent = "public label\n";
+    auto se = new SectionExtractor(line, true);
+    ASSERT_EQ(moduleContent, se->getModuleSection());
+}
+
+TEST(SectionExtractor, may_get_module_starting_line){
+    auto line = "begin\npublic label\nsection text\nstop\nsection data\nlabel: const 8\nend";
+    auto se = new SectionExtractor(line, true);
+    ASSERT_EQ(2, se->getModuleLineOffset());
+}
+
 TEST(SectionExtractor, may_get_text_starting_line){
     auto line = "section data\nlabel: const 8\nsection text\nstop\n";
     auto se = new SectionExtractor(line);

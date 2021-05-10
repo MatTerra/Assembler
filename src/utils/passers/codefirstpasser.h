@@ -18,7 +18,8 @@
 
 class CodeFirstPasser {
 public:
-    explicit CodeFirstPasser(std::string fileContent, uint64_t startingLine=1);
+    explicit CodeFirstPasser(std::string fileContent, uint64_t startingLine=1,
+                             SymbolTable *st= nullptr);
     size_t getSymbolCount() { return symbolTable->getSymbolCount(); }
     SymbolTable *getSymbolTable() { return symbolTable; }
     std::vector<CodeLine> getCodeLines();
@@ -37,8 +38,6 @@ private:
     std::vector<CodeLine> codeLines;
 
     void addCodeLine(const CodeLine &codeLine);
-    unsigned long getLineEnd(size_t initPos) const;
-    std::string getLine(size_t initPos, unsigned long nextPos) const;
     void updateSymbolTable(CodeLine &codeLine);
 
     uint16_t nowAddress{};
@@ -47,8 +46,6 @@ private:
     void updateAddress(CodeLine &codeLine);
 
     void processLine(std::string line);
-
-    bool hasMoreLines(unsigned long lineEnd) const;
 
     uint64_t nowLine;
 

@@ -7,6 +7,7 @@
 #include <passers/datafirstpasser.h>
 #include <modulechecker.h>
 #include <programchecker.h>
+#include <passers/modulepasser.h>
 #include "stringutils.h"
 
 void printErrors(std::vector<ParsingError> errors);
@@ -107,10 +108,17 @@ int assembleFile(std::string filename, bool isModule) {
 
     CodeFirstPasser *first;
     DataFirstPasser *data;
+    ModulePasser *modulePasser;
     makeFirstPass(extractor, first, data);
 
-    if(isModule)
+
+    if(isModule) {
         getModuleLabel(fileContent, first);
+        modulePasser = new ModulePasser(extractor->getModuleSection(),
+                                        extractor->getModuleLineOffset(),
+                                        first->getSymbolTable());
+        modulePasser->pass();
+    }
 
     auto second = makeSecondPass(first, extractor->getTextLineOffset());
 

@@ -29,6 +29,10 @@ public:
 
     int getTextLineOffset();
 
+    std::string getModuleSection();
+
+    int getModuleLineOffset();
+
 private:
     std::string fileContent;
     std::string dataSection;
@@ -57,6 +61,9 @@ private:
     bool isModule;
 
     void removeEnd();
+
+    std::string moduleSection;
+    int moduleLineOffset;
 };
 
 

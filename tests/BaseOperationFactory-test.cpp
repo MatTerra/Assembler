@@ -144,18 +144,18 @@ TEST(BaseOperationFactory_Output, create_output_should_return_output_operation){
     ASSERT_EQ(13, outputOperation->getOpCode());
 }
 
-TEST(BaseOperationFactory_Extern, create_extern_should_return_extern_operation){
+TEST(ModuleOperationFactory_Extern, create_extern_should_return_extern_operation){
     std::vector<std::string> operands;
-    auto operationFactory = getBaseOperationFactory();
+    auto operationFactory = getModuleOperationFactory();
     auto externOperation = operationFactory->create("extern", operands);
     ASSERT_TRUE(externOperation != nullptr);
     ASSERT_EQ("extern", externOperation->getOperation());
     ASSERT_EQ(0, externOperation->getOpCode());
 }
 
-TEST(BaseOperationFactory_Public, create_public_should_return_public_operation){
+TEST(ModuleOperationFactory_Public, create_public_should_return_public_operation){
     std::vector<std::string> operands;
-    auto operationFactory = getBaseOperationFactory();
+    auto operationFactory = getModuleOperationFactory();
     auto publicOperation = operationFactory->create("public", operands);
     ASSERT_TRUE(publicOperation != nullptr);
     ASSERT_EQ("public", publicOperation->getOperation());

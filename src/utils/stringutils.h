@@ -30,4 +30,18 @@ static std::string readFile(std::string filename) {
     return std::string ((std::istreambuf_iterator<char>(t)),
                         std::istreambuf_iterator<char>());
 }
+
+static unsigned long getLineEnd(std::string string, size_t initPos) {
+    return string.find_first_of('\n', initPos);
+}
+
+static std::string getLine(const std::string& fileContent,
+                           size_t initPos, unsigned long nextPos) {
+    return fileContent.substr(initPos, (nextPos) - initPos);
+}
+
+static bool hasMoreLines(unsigned long lineEnd) {
+    return lineEnd != std::string::npos;
+}
+
 #endif

@@ -111,30 +111,12 @@ TEST(FirstPasser, should_have_error_if_label_invalid){
               firstPasser->getErrors()[0].what());
 }
 
-TEST(FirstPasser, error_should_consider_starting_line){
-    auto *firstPasser = new CodeFirstPasser("start: add 8 ; simple add\nstart: stop", 2);
+TEST(FirstPasser, error_should_consider_starting_line) {
+    auto *firstPasser = new CodeFirstPasser(
+            "start: add 8 ; simple add\nstart: stop", 2);
     firstPasser->pass();
     ASSERT_EQ(SymbolRedefinedError(3, "start").what(),
               firstPasser->getErrors()[0].what());
-}
-
-TEST(FirstPasser, extern_with_no_label_shoul_generate_error) {
-    auto *firstPasser = new CodeFirstPasser("extern\nstart: stop");
-    firstPasser->pass();
-    ASSERT_EQ(MissingLabelError(1).what(),
-              firstPasser->getErrors()[0].what());
-}
-
-TEST(FirstPasser, should_generate_extern_symbol) {
-    auto *firstPasser = new CodeFirstPasser("try: extern\nstart: stop");
-    firstPasser->pass();
-    ASSERT_TRUE(firstPasser->getSymbolTable()->isExternSymbol("try"));
-}
-
-TEST(FirstPasser, shouldnt_have_error_on_public_with_no_label) {
-    auto *firstPasser = new CodeFirstPasser("public start\nstart: stop");
-    firstPasser->pass();
-    ASSERT_EQ(0, firstPasser->getErrors().size());
 }
 
 TEST(FirstPasser, shouldnt_skip_newlines){

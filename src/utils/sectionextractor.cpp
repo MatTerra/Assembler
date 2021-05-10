@@ -13,6 +13,14 @@ SectionExtractor::SectionExtractor(std::string content, bool isModule)
     :fileContent(std::move(content)), isModule(isModule) {
     lowerCaseString(fileContent);
     auto start = findSectionKeywordFromOffset(0);
+    if (isModule) {
+        auto begin = fileContent.find_first_of('\n',
+                                               fileContent.find("begin"));
+        moduleLineOffset = getSectionLineOffset(begin);
+
+        moduleSection = fileContent.substr(begin+1, start - (begin+1));
+    }
+
 
     removeEnd();
 
@@ -105,4 +113,12 @@ std::string SectionExtractor::getTextSection() {
 
 int SectionExtractor::getTextLineOffset() {
     return textLineOffset;
+}
+
+std::string SectionExtractor::getModuleSection() {
+    return moduleSection;
+}
+
+int SectionExtractor::getModuleLineOffset() {
+    return moduleLineOffset;
 }
