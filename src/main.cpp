@@ -57,6 +57,8 @@ outputUseHeader(std::ofstream &output, const std::string &symbol,
 
 void outputUseTable(std::ofstream &output, UseTable *useTable);
 
+void getModuleLabel(std::string &fileContent, CodeFirstPasser *first);
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         std::cout << "Expected at least 1 filename as argument to executable!";
@@ -100,11 +102,15 @@ bool isValidFile(int fileCount, const std::string& filename) {
 }
 
 int assembleFile(std::string filename, bool isModule) {
-    auto extractor = new SectionExtractor(readFile(filename), isModule);
+    auto fileContent = readFile(filename);
+    auto extractor = new SectionExtractor(fileContent, isModule);
 
     CodeFirstPasser *first;
     DataFirstPasser *data;
     makeFirstPass(extractor, first, data);
+
+    if(isModule)
+        getModuleLabel(fileContent, first);
 
     auto second = makeSecondPass(first, extractor->getTextLineOffset());
 
@@ -113,14 +119,30 @@ int assembleFile(std::string filename, bool isModule) {
         return 1;
     }
 
+
     std::ofstream output;
-    std::cout << "Generating output in: " << filename.substr(0, filename.find_last_of('.'))+".obj" << std::endl;
+    std::cout << "Generating output in: " << filename.substr(0, filename.find_last_of('.'))+".o" << std::endl;
     output.open(filename.substr(0, filename.find_last_of('.'))+".o") ;
     outputProgramHeader(output, getBaseName(filename), data, second);
     outputAssembledProgram(output, data, second);
     output.close();
 
     return 0;
+}
+
+void getModuleLabel(std::string &fileContent, CodeFirstPasser *first) {
+    lowerCaseString(fileContent);
+    auto beginLineEnd = fileContent.find('\n', fileContent.find("begin"));
+    auto beginLineStart = fileContent.find_last_of('\n', beginLineEnd - 1);
+    if (beginLineStart==std::string::npos)
+        beginLineStart=0;
+    auto beginLine = fileContent.substr(beginLineStart,
+                                        beginLineEnd - beginLineStart);
+    trim(beginLine);
+    DataLine begin(beginLine);
+    if (begin.hasLabel()) {
+        first->getSymbolTable()->addSymbol(begin.getLabel(), 0);
+    }
 }
 
 void makeFirstPass(SectionExtractor *extractor, CodeFirstPasser *&first,
