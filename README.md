@@ -10,6 +10,11 @@ The supported operations are shown in the figure below:
 
 ![instructions](rsc/instructions.png)
 
+The language also supports the `PUBLIC` and `EXTERN` directives in the `TEXT`
+section. These may be used to modularize code. It is necessary to add a `BEGIN`
+before any section and an `END` after all sections if the code is written in modules. 
+If your program is a single file it must not include `BEGIN...END`.
+
 ## First Steps
 
 This program depends on cmake, make and g++ to build. It uses C++11. Please install cmake, make and C++11 before proceeding.
