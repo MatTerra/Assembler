@@ -10,10 +10,9 @@ The supported operations are shown in the figure below:
 
 ![instructions](rsc/instructions.png)
 
-The language also supports the `PUBLIC` and `EXTERN` directives in the `TEXT`
-section. These may be used to modularize code. It is necessary to add a `BEGIN`
-before any section and an `END` after all sections if the code is written in modules. 
-If your program is a single file it must not include `BEGIN...END`.
+The language also supports the `PUBLIC` and `EXTERN` directives. These may be used to modularize code. It is necessary to add a `BEGIN` before any section, followed by all public and extern definitions, and an `END` after all sections if the code is written in modules. 
+
+If your program is a single file it must not include `BEGIN...END`, `PUBLIC` or `EXTERN`.
 
 ## First Steps
 
